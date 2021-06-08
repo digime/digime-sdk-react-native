@@ -1,4 +1,3 @@
-
 {
   "name": "react-native-tes",
   "version": "1.0.0",
@@ -15,6 +14,14 @@
   "peerDependencies": {
     "react-native": "^0.41.2",
     "react-native-windows": "0.41.0-rc.1"
-
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "base64url": "^3.0.1",
+    "buffer": "^6.0.3",
+    "hash": "^0.2.1",
+    "hash.js": "^1.1.7",
+    "jsrsasign": "^10.3.0",
+    "react-native-randombytes": "^3.6.1"
   }
 }

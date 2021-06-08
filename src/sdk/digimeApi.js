@@ -1,12 +1,10 @@
 /**
  * digi.me React-Native SDK
  */
-import { Buffer } from 'buffer';
-global.Buffer = Buffer;
 
-import {getSessionURL, getPrivateShareGuestURL} from './src/sdk/urlPaths';
-import {authorise} from './src/sdk/authorise';
-import {request} from './src/sdk/request';
+import {getSessionURL, getPrivateShareGuestURL} from './urlPaths';
+import {authorise} from './authorise';
+import {request} from './request';
 
 const authOngoingOnce = async (applicationId, contractId, privateKey) => {
     return await authorise(applicationId, contractId, privateKey);
