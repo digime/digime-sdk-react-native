@@ -32,5 +32,8 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
+
+    // todo: add here
+    // compile project(':randombytes')
 }
-  
+

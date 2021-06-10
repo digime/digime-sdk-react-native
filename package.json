@@ -11,17 +11,17 @@
   ],
   "author": "",
   "license": "",
-  "peerDependencies": {
-    "react-native": "^0.41.2",
+  "__peerDependencies": {
+    "react-native": "^0.64.0",
     "react-native-windows": "0.41.0-rc.1"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "base64url": "^3.0.1",
     "buffer": "^6.0.3",
-    "hash": "^0.2.1",
     "hash.js": "^1.1.7",
-    "jsrsasign": "^10.3.0",
+    "jsrsasign": "^10.2.0",
+    "react-native-get-random-values": "^1.7.0",
     "react-native-randombytes": "^3.6.1"
   }
 }

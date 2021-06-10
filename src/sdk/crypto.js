@@ -2,8 +2,9 @@
  * Copyright (c) 2009-2021 digi.me Limited. All rights reserved.
  */
 
-import { randomBytes } from 'react-native-randombytes';
-import * as hash from 'hash';
+const randomBytes = require('react-native-randombytes');
+const randomValues = require('react-native-get-random-values');
+const hash = require('hash.js');
 
 const BYTES = {
     DSK: [0, 256],
@@ -19,6 +20,12 @@ const NUMERIC = `0123456789`;
 const ALPHA_NUMERIC = `${ALPHA_LOWER}${ALPHA_UPPER}${NUMERIC}`;
 
 export const getRandomAlphaNumeric = (size) => {
+    
+    console.log("IN GET RANDOM VALUES")
+    console.log(randomBytes)
+    console.log(randomValues)
+
+
     const charsLength = ALPHA_NUMERIC.length;
     const value = new Array(size);
     for (let i = 0; i < size; i++) {

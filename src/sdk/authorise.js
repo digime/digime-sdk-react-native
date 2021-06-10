@@ -82,6 +82,7 @@ const getVerifiedJWTPayload = async (token, options) => {
 export const authorise = async (applicationId, contractId, privateKey) => {
     const {jwt, codeVerifier} = await generateToken(applicationId, contractId, privateKey);
 
+    return 'hello'
     const response = await request.func.post(getAuthURL, {}, {
         Authorization: `Bearer ${jwt}`
     });
