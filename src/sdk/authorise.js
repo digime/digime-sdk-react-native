@@ -10,6 +10,7 @@ const generateToken = async (applicationId, contractId, privateKey) => {
     const state = "";
     const redirectUri = "https://totesfake.com"
 
+
     const jwt = await sign(
         {
             typ: "JWT",
