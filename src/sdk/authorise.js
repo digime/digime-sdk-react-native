@@ -4,11 +4,8 @@ import {request} from './request';
 import {getAuthURL} from './urlPaths';
 import {sign, decode, verify} from './jwt';
 
-const generateToken = async (applicationId, contractId, privateKey) => {
+const generateToken = async (applicationID, contractID, privateKey, redirectUri, state) => {
     const codeVerifier = base64url(getRandomAlphaNumeric(32));
-
-    const state = "";
-    const redirectUri = "https://totesfake.com"
 
 
     const jwt = await sign(
@@ -17,7 +14,7 @@ const generateToken = async (applicationId, contractId, privateKey) => {
             alg: "PS512"
         },
         {
-            client_id: `${applicationId}_${contractId}`,
+            client_id: `${applicationID}_${contractID}`,
             code_challenge: base64url(hashSha256(codeVerifier)),
             code_challenge_method: "S256",
             nonce: getRandomAlphaNumeric(32),
@@ -41,57 +38,31 @@ const getVerifiedJWTPayload = async (token, options) => {
 
     // todo: add validation.. .
     return decodedToken.payload;
+}
 
-    /*
-    if (!isPlainObject(decodedToken)) {
-        throw new JWTVerificationError("Unexpected JWT payload in token");
-    }
-    */
+const authorise = async (contractDetails, sdkConfig) => {
+    const {contractID, privateKey, redirectUri} = contractDetails;
+    const state = "";
 
-    const jku = decodedToken.header?.jku;
-    const kid = decodedToken.header?.kid;
+    const {jwt, codeVerifier} = await generateToken(sdkConfig.applicationID, contractID, privateKey, redirectUri, state);
 
-    /*
-    if (!isString(jku) || !isString(kid)) {
-        throw new JWTVerificationError("Unexpected JWT payload in token");
-    }
-    */
-
-    const jkuResponse = await request.direct.get(jku, {
-        responseType: "json",
-        //retry: options.retryOptions,
-    });
-
-    /*
-    if (!isJWKS(jkuResponse.body)) {
-        throw new JWTVerificationError("Server returned non-JWKS response");
-    }
-    */
-    const pem = jkuResponse.keys
-        .filter((key) => key.kid === kid)
-        .map((key) => key.pem);
-
-    try {
-        // NOTE: Casting to any as pem is unknown and this will throw anyway
-        return verify(token, pem[0], ["PS512"]);
-    } catch (error) {
-        throw error("JWT Error")
-        //throw new JWTVerificationError(get(error, "body.error.message"));
-    }
-};
-
-export const authorise = async (applicationId, contractId, privateKey) => {
-    const {jwt, codeVerifier} = await generateToken(applicationId, contractId, privateKey);
-    const response = await request.func.post(getAuthURL, {}, {
+    const body = await request.func.post(getAuthURL, {}, {
         Authorization: `Bearer ${jwt}`
     });
 
     const {
-        preauthorization_code: preauthorizationCode
-    } = await getVerifiedJWTPayload(response?.token);
+        preauthorization_code: code
+    } = await getVerifiedJWTPayload(body?.token);
 
     return {
         codeVerifier,
-        preauthorizationCode
+        code
+    }
+}
+
+export const getAuthorizeUrl = async (props, sdkConfig) => {
+    const auth = await authorise(props, sdkConfig);
+    return {
+
     }
 }

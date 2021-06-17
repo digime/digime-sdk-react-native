@@ -4,14 +4,19 @@ import * as JSR from 'jsrsasign';
 const JWS = JSR.jws.JWS;
 
 export const sign = (header, payload, key) => {
-    return new Promise((res, rej) => {
-        const sig = JWS.sign(
-            null,
-            header,
-            payload,
-            key
-        );
-        res(sig)
+    return new Promise((resolve, reject) => {
+        try {
+            const sig = JWS.sign(
+                null,
+                header,
+                payload,
+                key
+            );
+            resolve(sig);
+        }
+        catch (err) {
+            reject(err)
+        }
     });
 }
 
