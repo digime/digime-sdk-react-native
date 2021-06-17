@@ -8,11 +8,11 @@ import {getSessionURL, getPrivateShareGuestURL} from './src/sdk/urlPaths';
 import {getAuthorizeUrl} from './src/sdk/authorise';
 import {request} from './src/sdk/request';
 
-const authOngoingOnce = async ({applicationID: appID, contractID, privateKey}) => {
-    return await authorise(appID, contractID, privateKey);
+const authOngoingOnce = async ({applicationId: appId, contractId, privateKey}) => {
+    return await authorise(appId, contractId, privateKey);
 }
 
-export const establishSession = async ({applicationID: appId, contractID: contractId}) => {
+export const establishSession = async ({applicationId: appId, contractId: contractId}) => {
     return await request.func.post(getSessionURL, {appId, contractId});
 }
 
@@ -30,13 +30,6 @@ const auth = {
     }
 }
 
-/*
-export {
-    establishSession,
-    auth
-}
-*/
-
 // implement this
 const addTrailingSlash = string => string;
 
@@ -45,10 +38,24 @@ export const init = config => {
 
     const formatted = {
         ...config,
-        baseUrl: addTrailingSlash(config.baseUrl),
-        onboardUrl: addTrailingSlash(config.onboardUrl),
     };
 
+    if (config.baseUrl) {
+        formatted = {
+            baseUrl: addTrailingSlash(config.baseUrl),
+            ...formatted
+        }
+    }
+
+    if (config.onboardUrl) {
+        formatted = {
+            onboardUrl: addTrailingSlash(config.onboardUrl),
+            ...formatted
+        }
+    }
+
+
+    // overlay defaults
     const sdkConfig = {
         baseUrl: "https://api.digi.me/v1.6/",
         onboardUrl: "https://api.digi.me/apps/saas/",
@@ -77,8 +84,8 @@ export const init = config => {
         deleteUser: (props) => (
             deleteUser(props, sdkConfig)
         ),
-        getAvailableServices: (contractID) => (
-            getAvailableServices(sdkConfig, contractID)
+        getAvailableServices: (contractId) => (
+            getAvailableServices(sdkConfig, contractId)
         ),
         readFile: (props) => (
             readFile(props, sdkConfig)

@@ -44,6 +44,7 @@ const callUrl = async (method, url, data, headers) => {
             .then(res => {
                 const {data} = res;
                 console.log("status: ", res.status)
+                //console.log("status: ", JSON.stringify(res))
                 resolve(data)
             })
             .catch(error => {

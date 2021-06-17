@@ -6,12 +6,12 @@ import {getSessionURL, getPrivateShareGuestURL} from './urlPaths';
 import {authorise} from './authorise';
 import {request} from './request';
 
-const authOngoingOnce = async (applicationID, contractID, privateKey) => {
-    return await authorise(applicationID, contractID, privateKey);
+const authOngoingOnce = async (applicationId, contractId, privateKey) => {
+    return await authorise(applicationId, contractId, privateKey);
 }
 
-const establishSession = async (appID, contractID) => {
-    return await request.func.post(getSessionURL, {appID, contractID});
+const establishSession = async (appId, contractId) => {
+    return await request.func.post(getSessionURL, {appId, contractId});
 }
 
 const guestShareURL = (sessionKey, callbackUrl) => {
