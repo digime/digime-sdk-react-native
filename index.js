@@ -4,9 +4,10 @@
 import { Buffer } from 'buffer';
 global.Buffer = Buffer;
 
-import {getSessionURL, getPrivateShareGuestURL} from './src/sdk/urlPaths';
+import {getSessionURL, getPrivateShareGuestURL} from './src/constants/urlPaths';
 import {getAuthorizeUrl} from './src/sdk/authorise';
 import {request} from './src/sdk/request';
+import * as DL from './src/sdk/deepLinking';
 
 const authOngoingOnce = async ({applicationId: appId, contractId, privateKey}) => {
     return await authorise(appId, contractId, privateKey);
@@ -32,6 +33,13 @@ const auth = {
 
 // implement this
 const addTrailingSlash = string => string;
+
+export const deeplinking = {
+    init: DL.init,
+    unload: DL.unload,
+    addRoute: DL.addRoute,
+    openUrl: DL.openUrl
+}
 
 export const init = config => {
     config = config || {};

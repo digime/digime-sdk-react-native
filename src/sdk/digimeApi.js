@@ -2,7 +2,7 @@
  * digi.me React-Native SDK
  */
 
-import {getSessionURL, getPrivateShareGuestURL} from './urlPaths';
+import {getSessionURL, getPrivateShareGuestURL} from '../constants/urlPaths';
 import {authorise} from './authorise';
 import {request} from './request';
 

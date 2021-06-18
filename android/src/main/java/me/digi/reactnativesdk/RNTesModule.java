@@ -13,7 +13,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ActivityEventListener;
 
-public class RNTesModule extends ReactContextBaseJavaModule implements ActivityEventListener {
+public class RNTesModule extends ReactContextBaseJavaModule
+  //implements ActivityEventListener
+{
 
   private final ReactApplicationContext reactContext;
 
@@ -22,7 +24,7 @@ public class RNTesModule extends ReactContextBaseJavaModule implements ActivityE
     this.reactContext = reactContext;
   }
 
-
+ /* 
   @Override
   public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
     Log.d("SDK", "RTB");
@@ -33,6 +35,7 @@ public class RNTesModule extends ReactContextBaseJavaModule implements ActivityE
   public void onNewIntent(Intent intent) {
     // mandatory override¬
   }
+  */
 
   @ReactMethod
   public void auth() {

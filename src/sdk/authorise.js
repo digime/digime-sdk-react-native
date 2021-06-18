@@ -1,10 +1,9 @@
 import {hashSha256, getRandomAlphaNumeric} from './crypto';
 import base64url from 'base64url';
 import {request} from './request';
-import {getOauthURL} from './urlPaths';
+import {getOauthURL, getAuthURL} from '../constants/urlPaths';
 import {sign, decode, verify} from './jwt';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
-import {getAuthURL} from './urlPaths';
 
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
     const codeVerifier = base64url(getRandomAlphaNumeric(32));
