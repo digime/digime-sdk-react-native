@@ -8,10 +8,7 @@ import {getSessionURL} from './src/constants/urlPaths';
 import {getAuthorizeUrl} from './src/sdk/authorise';
 import {request} from './src/sdk/request';
 import * as DL from './src/sdk/deepLinking';
-
-const authOngoingOnce = async ({applicationId: appId, contractId, privateKey}) => {
-    return await authorise(appId, contractId, privateKey);
-}
+import { getAvailableServices } from './src/sdk/getAvailableServices';
 
 export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
     return await request.func.post(getSessionURL, {baseUrl}, {appId, contractId});

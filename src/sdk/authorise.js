@@ -55,9 +55,13 @@ const authorise = async (props, sdkConfig) => {
 
     const {jwt, codeVerifier} = await generateToken(sdkConfig.applicationId, contractId, privateKey, redirectUri, state);
 
-    const body = await request.func.post(getOauthURL, {}, {
-        Authorization: `Bearer ${jwt}`
-    });
+    const body = await request.func.post(
+        getOauthURL,
+        sdkConfig,
+        {},
+        {
+            Authorization: `Bearer ${jwt}`
+        });
 
     console.log(body)
 

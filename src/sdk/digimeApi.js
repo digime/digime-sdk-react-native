@@ -1,22 +1,21 @@
 /**
  * digi.me React-Native SDK
  */
-
+/*
 import {getSessionURL, getPrivateShareGuestURL} from '../constants/urlPaths';
 import {authorise} from './authorise';
 import {request} from './request';
 
-const authOngoingOnce = async (applicationId, contractId, privateKey) => {
-    return await authorise(applicationId, contractId, privateKey);
+const authOngoingOnce = async (applicationId, contractId, privateKey, sdkConfig) => {
+    return await authorise(applicationId, contractId, privateKey, sdkConfig);
 }
 
-const establishSession = async (appId, contractId) => {
-    return await request.func.post(getSessionURL, {appId, contractId});
+const establishSession = async (appId, contractId, sdkConfig) => {
+    return await request.func.post(getSessionURL, sdkConfig, {appId, contractId});
 }
 
-const guestShareURL = (sessionKey, callbackUrl) => {
-    const baseurl = "https://api.digi.me"; // temp
-    return getPrivateShareGuestURL(baseurl, sessionKey, callbackUrl)
+const guestShareURL = (sessionKey, callbackUrl, sdkConfig) => {
+    return getPrivateShareGuestURL(sdkConfig?.baseurl, sessionKey, callbackUrl)
 }
 
 const auth = {
@@ -32,3 +31,4 @@ export {
     establishSession,
     auth
 }
+*/

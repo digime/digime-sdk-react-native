@@ -1,34 +1,8 @@
 import axios from 'axios';
 
-const callURLFunction = async (method, urlFunction, data, headers) => {
-    const sdkOptions = {
-        baseUrl: "https://api.digi.me/v1.5",
-        retryOptions: {
-            retries: 5,
-        },
-        //...options,
-    };
-
-    const sdkVersion = "4.0.0";
-
-    const sdkAgent = {
-        name: "js",
-        version: sdkVersion,
-        meta: {
-            node: process.version,
-        },
-    };
-    const defaultData = {
-        sdkAgent,
-        accept: {
-            compression: "gzip",
-        }
-
-        //responseType: "json",
-        //retry: sdkOptions.retryOptions,
-    }
-
-    const url = urlFunction(sdkOptions.baseUrl);
+const callURLFunction = async (method, sdkConfig, urlFunction, data, headers) => {
+    const url = urlFunction(sdkConfig?.baseUrl);
+    console.log(url)
     return await callUrl(method, url, data, headers);
 }
 
@@ -44,11 +18,11 @@ const callUrl = async (method, url, data, headers) => {
             .then(res => {
                 const {data} = res;
                 console.log("status: ", res.status)
-                //console.log("status: ", JSON.stringify(res))
+                console.log("status: ", JSON.stringify(res))
                 resolve(data)
             })
             .catch(error => {
-                //console.log(JSON.stringify(error.response, null, 2))
+                console.log(JSON.stringify(error.response, null, 2))
                 reject('have error')
             })
     })
@@ -65,7 +39,7 @@ export const request = {
         get: async (url, data, headers) => await callUrl(METHOD.GET, url, data, headers),
     },
     func: {
-        post: async (urlFunction, data, headers) => await callURLFunction(METHOD.POST, urlFunction, data, headers),
-        get: async (urlFunction, data, headers) => await callURLFunction(METHOD.GET, urlFunction, data, headers),
+        post: async (urlFunction, sdkConfig, data, headers) => await callURLFunction(METHOD.POST, sdkConfig, urlFunction, data, headers),
+        get: async (urlFunction, sdkConfig, data, headers) => await callURLFunction(METHOD.GET, sdkConfig, urlFunction, data, headers),
     }
 }
