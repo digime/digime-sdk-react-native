@@ -13,8 +13,8 @@ const authOngoingOnce = async ({applicationId: appId, contractId, privateKey}) =
     return await authorise(appId, contractId, privateKey);
 }
 
-export const establishSession = async ({applicationId: appId, contractId: contractId}) => {
-    return await request.func.post(getSessionURL, {appId, contractId});
+export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
+    return await request.func.post(getSessionURL, {baseUrl}, {appId, contractId});
 }
 
 const guestShareURL = ({sessionKey, callbackUrl}) => {
