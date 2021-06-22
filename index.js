@@ -4,7 +4,7 @@
 import { Buffer } from 'buffer';
 global.Buffer = Buffer;
 
-import {getSessionURL, getPrivateShareGuestURL} from './src/constants/urlPaths';
+import {getSessionURL} from './src/constants/urlPaths';
 import {getAuthorizeUrl} from './src/sdk/authorise';
 import {request} from './src/sdk/request';
 import * as DL from './src/sdk/deepLinking';
@@ -17,22 +17,12 @@ export const establishSession = async ({applicationId: appId, contractId, baseUr
     return await request.func.post(getSessionURL, {baseUrl}, {appId, contractId});
 }
 
-const guestShareURL = ({sessionKey, callbackUrl}) => {
-    const baseurl = "https://api.digi.me"; // temp
-    return getPrivateShareGuestURL(baseurl, sessionKey, callbackUrl)
-}
-
-const auth = {
-    ongoing: {
-        once: authOngoingOnce
-    },
-    once: {
-        guestURL: guestShareURL
+const addTrailingSlash = url => {
+    if (url.slice(-1) != '/') {
+        return url+'/';
     }
-}
-
-// implement this
-const addTrailingSlash = string => string;
+    return url;
+};
 
 export const deeplinking = {
     init: DL.init,
@@ -44,24 +34,23 @@ export const deeplinking = {
 export const init = config => {
     config = config || {};
 
-    const formatted = {
+    let formatted = {
         ...config,
     };
 
     if (config.baseUrl) {
         formatted = {
+            ...formatted,
             baseUrl: addTrailingSlash(config.baseUrl),
-            ...formatted
         }
     }
 
     if (config.onboardUrl) {
         formatted = {
+            ...formatted,
             onboardUrl: addTrailingSlash(config.onboardUrl),
-            ...formatted
         }
     }
-
 
     // overlay defaults
     const sdkConfig = {
