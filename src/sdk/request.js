@@ -7,6 +7,7 @@ const callURLFunction = async (method, sdkConfig, urlFunction, data, headers) =>
 }
 
 const callUrl = async (method, url, data, headers) => {
+
     return new Promise((resolve, reject) => {
         axios
             .request({
@@ -18,7 +19,7 @@ const callUrl = async (method, url, data, headers) => {
             .then(res => {
                 const {data} = res;
                 console.log("status: ", res.status)
-                console.log("status: ", JSON.stringify(res))
+                console.log(JSON.stringify(res, null, 4))
                 resolve(data)
             })
             .catch(error => {

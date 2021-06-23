@@ -10,9 +10,13 @@ import {request} from './src/sdk/request';
 import * as DL from './src/sdk/deepLinking';
 import { getAvailableServices } from './src/sdk/getAvailableServices';
 
+import * as JWT from './src/sdk/jwt'
+
 export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
     return await request.func.post(getSessionURL, {baseUrl}, {appId, contractId});
 }
+
+export const testSign = (...args) => JWT.testSign(args);
 
 const addTrailingSlash = url => {
     if (url.slice(-1) != '/') {
@@ -58,6 +62,8 @@ export const init = config => {
         },
         ...formatted,
     };
+
+    console.log("sdk config ", sdkConfig)
 
     return {
         getAuthorizeUrl: (props) => (

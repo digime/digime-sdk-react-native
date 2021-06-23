@@ -8,7 +8,6 @@ import {URL, URLSearchParams} from 'react-native-url-polyfill';
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
     const codeVerifier = base64url(getRandomAlphaNumeric(32));
 
-
     const jwt = await sign(
         {
             typ: "JWT",
@@ -28,17 +27,37 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
         privateKey
     );
 
+    console.log(jwt)
+
     return {
         jwt,
         codeVerifier
     };
 }
 
-const getVerifiedJWTPayload = async (token, options) => {
+const getPayloadFromToken = async (token, sdkConfig) => {
     const decodedToken = decode(token);
 
+    const jku = decodedToken?.header?.jku;
+    const kid = decodedToken?.header?.kid;
+
+    const jkuResponse = await request.direct.get(jku);
+
+    if(!jkuResponse) {
+        throw new Error("Server returned non-JWKS response");
+    }
+
+    const pem = jkuResponse
+        .keys
+        .filter((key) => key.kid === kid)
+        .map((key) => key.pem);
+
+    verify(token, pem[0], ["PS512"]);
+
     // todo: add validation.. .
-    return decodedToken.payload;
+    return {
+        code: decodedToken.payload
+    };
 }
 
 const authorise = async (props, sdkConfig) => {
@@ -47,13 +66,21 @@ const authorise = async (props, sdkConfig) => {
         state
     } = props;
 
+    const {applicationId} = sdkConfig;
+
     const {
         contractId,
         privateKey,
         redirectUri
     } = contractDetails;
 
-    const {jwt, codeVerifier} = await generateToken(sdkConfig.applicationId, contractId, privateKey, redirectUri, state);
+    const {jwt, codeVerifier} = await generateToken(
+        applicationId,
+        contractId,
+        privateKey,
+        redirectUri,
+        state
+    );
 
     const body = await request.func.post(
         getOauthURL,
@@ -65,9 +92,7 @@ const authorise = async (props, sdkConfig) => {
 
     console.log(body)
 
-    const {
-        preauthorization_code: code
-    } = await getVerifiedJWTPayload(body?.token);
+    const {code} = await getPayloadFromToken(body?.token);
 
     const session = body?.session;
 
@@ -85,8 +110,6 @@ export const getAuthorizeUrl = async (props, sdkConfig) => {
         session
     } = await authorise(props, sdkConfig);
 
-    console.log(sdkConfig)
-
     const result = new URL(getAuthURL(sdkConfig.onboardUrl));
     result.search = new URLSearchParams({
         code,
@@ -96,6 +119,7 @@ export const getAuthorizeUrl = async (props, sdkConfig) => {
 
     return {
         url: result.toString(),
-        codeVerifier
+        codeVerifier,
+        session
     }
 }
