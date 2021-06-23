@@ -13,6 +13,7 @@ import { getAvailableServices } from './src/sdk/getAvailableServices';
 import * as JWT from './src/sdk/jwt'
 
 export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
+    baseUrl = addTrailingSlash(baseUrl);
     return await request.func.post(getSessionURL, {baseUrl}, {appId, contractId});
 }
 
