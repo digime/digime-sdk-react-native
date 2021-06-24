@@ -1,15 +1,34 @@
 import * as JSR from 'jsrsasign';
+import { getRandomAlphaNumeric } from './crypto';
 const JWS = JSR.jws.JWS;
-const {KEYUTIL} = JSR;
 
-export const sign = (header, payload, privateKey) => {
+export const createJWT = async (payload, privateKey) => {
+    payload = {
+        nonce: getRandomAlphaNumeric(32),
+        timestamp: new Date().getTime(),
+        ...payload
+    };
+
+    const header = {
+        typ: "JWT",
+        alg: "PS512"
+    };
+
+    return await sign(
+        header,
+        payload,
+        privateKey
+    )
+};
+
+const sign = (header, payload, privateKey) => {
     return new Promise((resolve, reject) => {
         try {
             const sig = JWS.sign(
                 null,
                 header,
                 payload,
-                privateKey
+                privateKey.toString()
             );
             resolve(sig);
         }

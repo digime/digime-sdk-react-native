@@ -11,6 +11,8 @@ import * as DL from './src/sdk/deepLinking';
 import { getAvailableServices } from './src/sdk/getAvailableServices';
 
 import * as JWT from './src/sdk/jwt'
+import { readSession } from './src/sdk/readSession';
+import { exchangeCodeForToken } from './src/sdk/exchangeCode';
 
 export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
     baseUrl = addTrailingSlash(baseUrl);
@@ -26,10 +28,8 @@ const addTrailingSlash = url => {
     return url;
 };
 
-export const deeplinking = {
+export const appLinking = {
     init: DL.init,
-    unload: DL.unload,
-    addRoute: DL.addRoute,
     openUrl: DL.openUrl
 }
 

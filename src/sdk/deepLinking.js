@@ -4,6 +4,7 @@ import DeepLinking from 'react-native-deep-linking';
 import {
     Linking
 } from 'react-native';
+import { URL } from 'react-native-url-polyfill';
 
 const handleUrl = (obj) => {
     console.log('APP OPENED, WAS IN THE BACKGROUND')
@@ -17,11 +18,14 @@ const handleUrl = (obj) => {
             }
         });
 }
-export const addRoute = (routeExpression, callback) => {
-    DeepLinking.addRoute(routeExpression, callback);
+const addRoute = (scheme, route, callback) => {
+    console.log("*****")
+    console.log("add deeplinking route to ", scheme, route)
+    DeepLinking.addRoute(route, callback);
+    return scheme + route
 }
 
-export const unload = () => {
+const unload = () => {
     Linking.removeEventListener('url', handleUrl);
 }
 
@@ -67,4 +71,13 @@ export const init = (scheme) => {
         .catch(err = () => {
             console.error('An error occurred', err);
         });
+
+    return {
+        addRoute: (route, callback) => {
+            addRoute(scheme, route, callback)
+        },
+        unload: () => {
+            unload();
+        }
+    }
 }

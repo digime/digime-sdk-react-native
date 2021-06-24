@@ -2,32 +2,25 @@ import {hashSha256, getRandomAlphaNumeric} from './crypto';
 import base64url from 'base64url';
 import {request} from './request';
 import {getOauthURL, getAuthURL} from '../constants/urlPaths';
-import {sign, decode, verify} from './jwt';
+import {sign, decode, verify, createJWT} from './jwt';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
 
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
     const codeVerifier = base64url(getRandomAlphaNumeric(32));
 
-    const jwt = await sign(
-        {
-            typ: "JWT",
-            alg: "PS512"
-        },
+    const jwt = await createJWT(
         {
             client_id: `${applicationId}_${contractId}`,
             code_challenge: base64url(hashSha256(codeVerifier)),
             code_challenge_method: "S256",
-            nonce: getRandomAlphaNumeric(32),
             redirect_uri: redirectUri,
             response_mode: "query",
             response_type: "code",
             state,
-            timestamp: new Date().getTime(),
         },
         privateKey
     );
 
-    console.log(jwt)
 
     return {
         jwt,
@@ -35,9 +28,13 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
     };
 }
 
-const getPayloadFromToken = async (token, sdkConfig) => {
+export const getPayloadFromToken = async (token, sdkConfig) => {
     const decodedToken = decode(token);
+    return {
+        code: decodedToken.payload
+    };
 
+    /*
     const jku = decodedToken?.header?.jku;
     const kid = decodedToken?.header?.kid;
 
@@ -58,6 +55,7 @@ const getPayloadFromToken = async (token, sdkConfig) => {
     return {
         code: decodedToken.payload
     };
+    */
 }
 
 const authorise = async (props, sdkConfig) => {

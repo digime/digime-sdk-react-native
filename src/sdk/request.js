@@ -7,7 +7,6 @@ const callURLFunction = async (method, sdkConfig, urlFunction, data, headers) =>
 }
 
 const callUrl = async (method, url, data, headers) => {
-
     return new Promise((resolve, reject) => {
         axios
             .request({
