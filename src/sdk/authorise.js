@@ -29,9 +29,18 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
 }
 
 export const getPayloadFromToken = async (token, sdkConfig) => {
-    const decodedToken = decode(token);
+    const {
+        payload,
+        header
+    } = decode(token);
+
+    const {
+        preauthorization_code,
+        signature
+    } = payload;
+
     return {
-        code: decodedToken.payload
+        code: preauthorization_code
     };
 
     /*
