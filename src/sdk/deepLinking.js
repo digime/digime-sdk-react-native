@@ -1,10 +1,6 @@
 
 import DeepLinking from 'react-native-deep-linking';
-
-import {
-    Linking
-} from 'react-native';
-import { URL } from 'react-native-url-polyfill';
+import {Linking} from 'react-native';
 
 const handleUrl = (obj) => {
     console.log('APP OPENED, WAS IN THE BACKGROUND')
@@ -19,10 +15,28 @@ const handleUrl = (obj) => {
         });
 }
 const addRoute = (scheme, route, callback) => {
-    console.log("*****")
-    console.log("add deeplinking route to ", scheme, route)
+    console.log("*****", route)
     DeepLinking.addRoute(route, callback);
-    return scheme + route
+
+    /*
+    DeepLinking.addRoute(route, (asd) => {
+        console.log('have route')
+        console.log(asd)
+        console.log('end')
+        callback('as')
+    });
+    */
+    const callbackUrl = `${scheme}${removeStartingSlash(route)}`;
+    return callbackUrl;
+}
+
+const removeStartingSlash = url => {
+    url = url || '';
+
+    if (url.slice(0,1) === '/') {
+        return url.slice(1);
+    }
+    return url;
 }
 
 const unload = () => {
@@ -73,9 +87,9 @@ export const init = (scheme) => {
         });
 
     return {
-        addRoute: (route, callback) => {
+        addRoute: (route, callback) => (
             addRoute(scheme, route, callback)
-        },
+        ),
         unload: () => {
             unload();
         }
