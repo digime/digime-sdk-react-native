@@ -2,8 +2,8 @@ import { getOauthTokenURL } from "../constants/urlPaths";
 import { getPayloadFromToken } from "./authorise";
 import { createJWT } from "./jwt";
 
-export const refreshToken = async (options, sdkConfig) => {
-    const { contractDetails, userAccessToken } = options;
+export const refreshToken = async (props, sdkConfig) => {
+    const { contractDetails, userAccessToken } = props;
     const { contractId, privateKey, redirectUri } = contractDetails;
 
     const jwt = await createJWT(
@@ -17,7 +17,6 @@ export const refreshToken = async (options, sdkConfig) => {
     );
 
     try {
-
         const body = await request.func.post(
             getOauthTokenURL,
             sdkConfig,
@@ -26,8 +25,13 @@ export const refreshToken = async (options, sdkConfig) => {
                 Authorization: `Bearer ${jwt}`
             });
 
-        const payload = await getPayloadFromToken(body?.token, sdkConfig);
+        const {
+            access_token,
+            refresh_token
+        } = await getPayloadFromToken(body?.token, sdkConfig);
 
+        /*
+        // original
         return {
             accessToken: {
                 value: get(payload, ["access_token", "value"]),
@@ -38,12 +42,34 @@ export const refreshToken = async (options, sdkConfig) => {
                 expiry: get(payload, ["refresh_token", "expires_on"]),
             },
         };
+        */
+
+        const getParam = (obj) => {
+            const {
+                expires_on: expires,
+                value,
+            } = obj;
+            return {
+                expires,
+                value
+            };
+          }
+
+        return {
+            accessToken: {
+                ...getParam(access_token),
+            },
+            refreshToken: {
+                ...getParam(refresh_token),
+            },
+        };
 
     } catch (error) {
         if (!(error instanceof HTTPError)) {
             throw error;
         }
 
+        // TODO: check these error codes, and object paths are correct
         const errorCode = get(error, "body.error.code");
 
         if (

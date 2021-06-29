@@ -28,16 +28,26 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
     };
 }
 
+const getParam = (obj, name) => {
+    const {
+        [name]: {
+            expires_on: expires,
+            value,
+        }
+    } = obj;
+    return {
+        expires,
+        value
+    };
+  }
+
 export const getPayloadFromToken = async (token, sdkConfig) => {
     const {
         payload,
         header
     } = decode(token);
 
-    const {
-        preauthorization_code,
-        signature
-    } = payload;
+    console.log(payload)
 
     return {
         ...payload

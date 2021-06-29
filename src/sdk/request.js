@@ -2,8 +2,6 @@ import axios from 'axios';
 
 const callURLFunction = async (method, sdkConfig, urlFunction, data, headers) => {
     const url = urlFunction(sdkConfig?.baseUrl);
-    console.log(sdkConfig)
-    console.log(url)
     return await callUrl(method, url, data, headers);
 }
 

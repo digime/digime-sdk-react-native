@@ -4,10 +4,14 @@ import { createJWT } from "./jwt";
 import { request } from "./request";
 
 
-export const exchangeCodeForToken = async (options, sdkConfig) => {
-    const { authorizationCode, codeVerifier, contractDetails } = options;
+export const exchangeCodeForToken = async (props, sdkConfig) => {
+    const { authorizationCode, codeVerifier, contractDetails } = props;
     const { contractId, privateKey, redirectUri } = contractDetails;
 
+    console.log("exchange code")
+
+    /*
+    // TODO: Add string validation here...
     if (!isNonEmptyString(authorizationCode)) {
         throw new TypeValidationError("Authorization code cannot be empty");
     }

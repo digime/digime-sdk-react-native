@@ -5,4 +5,6 @@ export const getOauthURL = baseUrl => `${baseUrl}oauth/authorize`
 export const getOauthTokenURL = baseUrl => `${baseUrl}oauth/token`
 export const getAuthURL = baseUrl => `${baseUrl}authorize`;
 export const getTriggerURL = baseUrl => `${baseUrl}permission-access/trigger`;
-export const getServices = baseUrl => `${baseUrl}discovery/services`;
+export const getServicesURL = baseUrl => `${baseUrl}discovery/services`;
+export const getTokenReferenceURL = baseUrl => `${baseUrl}oauth/token/reference`;
+export const getServiceOnboard = baseUrl => `${baseUrl}onboard`

@@ -13,6 +13,7 @@ import { getAvailableServices } from './src/sdk/getAvailableServices';
 import * as JWT from './src/sdk/jwt'
 import { readSession } from './src/sdk/readSession';
 import { exchangeCodeForToken } from './src/sdk/exchangeCode';
+import { getOnboardServiceUrl } from './src/sdk/getOnboardServices';
 
 export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
     baseUrl = addTrailingSlash(baseUrl);

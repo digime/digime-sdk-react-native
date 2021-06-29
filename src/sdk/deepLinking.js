@@ -15,20 +15,18 @@ const handleUrl = (obj) => {
             }
         });
 }
-const addRoute = (scheme, route, callback) => {
-    console.log("*****", route)
-    console.log(new RegExp(route+"\/*", 'g'))
 
+const addRoute = (scheme, route, callback) => {
     DeepLinking.addRoute(new RegExp(route+"\/*", 'g'), ({path, scheme}) => {
         const urls = new URL(scheme+path)
         const params = new URLSearchParams(urls.search);
 
-        const searchprops = {}
+        const searchProps = {}
         params.forEach((value, key) => {
-            searchprops[key] = value;
+            searchProps[key] = value;
         });
 
-        callback(searchprops);
+        callback(searchProps);
     });
 
     const callbackUrl = `${scheme}${removeStartingSlash(route)}`;
