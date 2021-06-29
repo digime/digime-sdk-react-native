@@ -40,10 +40,11 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
     } = payload;
 
     return {
-        code: preauthorization_code
+        ...payload
     };
 
     /*
+    // TODO: Add token validation from response
     const jku = decodedToken?.header?.jku;
     const kid = decodedToken?.header?.kid;
 
@@ -99,9 +100,13 @@ const authorise = async (props, sdkConfig) => {
 
     console.log(body)
 
-    const {code} = await getPayloadFromToken(body?.token);
+    const {
+        preauthorization_code: code
+    } = await getPayloadFromToken(body?.token, sdkConfig);
 
     const session = body?.session;
+
+    
 
     return {
         codeVerifier,

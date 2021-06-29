@@ -1,8 +1,10 @@
+import { getOauthTokenURL } from "../constants/urlPaths";
 import { getPayloadFromToken } from "./authorise";
 import { createJWT } from "./jwt";
+import { request } from "./request";
+
 
 export const exchangeCodeForToken = async (options, sdkConfig) => {
-
     const { authorizationCode, codeVerifier, contractDetails } = options;
     const { contractId, privateKey, redirectUri } = contractDetails;
 
@@ -13,8 +15,9 @@ export const exchangeCodeForToken = async (options, sdkConfig) => {
     if (!isNonEmptyString(codeVerifier)) {
         throw new TypeValidationError("Code verifier must be empty or a string");
     }
+    */
 
-    const jwt = createJWT(
+    const jwt = await createJWT(
         {
             client_id: `${sdkConfig.applicationId}_${contractId}`,
             code: authorizationCode,
@@ -37,28 +40,33 @@ export const exchangeCodeForToken = async (options, sdkConfig) => {
                 Authorization: `Bearer ${jwt}`
             });
 
-        const payload = await getPayloadFromToken(body?.token);
-        const response = await net.post(`${sdkConfig.baseUrl}oauth/token`, {
-            headers: {
-                Authorization: `Bearer ${jwt}`,
-            },
-        });
+        const {
+            access_token,
+            refresh_token
+        } = await getPayloadFromToken(body?.token);
 
-        console.log(payload)
-        console.log(response)
-        return 123
+        const getParam = (obj) => {
+            const {
+                expires_on: expires,
+                value,
+            } = obj;
+            return {
+                expires,
+                value
+            };
+          }
 
         return {
             accessToken: {
-                value: get(payload, ["access_token", "value"]),
-                expiry: get(payload, ["access_token", "expires_on"]),
+                ...getParam(access_token),
             },
             refreshToken: {
-                value: get(payload, ["refresh_token", "value"]),
-                expiry: get(payload, ["refresh_token", "expires_on"]),
+                ...getParam(refresh_token),
             },
         };
     } catch (error) {
+        console.log("error")
+        throw new (error)
         //throw new AccessTokenExchangeError("Failed to exchange authorization code to access token.");
     }
 };
