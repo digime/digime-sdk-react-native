@@ -1,4 +1,4 @@
-import { getServiceOnboard as getServiceOnboardURL, getTokenReferenceURL } from '../constants/urlPaths';
+import { getServiceOnboardURL, getTokenReferenceURL } from '../constants/urlPaths';
 import {createJWT} from './jwt'
 import { request } from './request';
 
