@@ -1,6 +1,7 @@
 
 import DeepLinking from 'react-native-deep-linking';
 import {Linking} from 'react-native';
+import {URL, URLSearchParams} from 'react-native-url-polyfill';
 
 const handleUrl = (obj) => {
     console.log('APP OPENED, WAS IN THE BACKGROUND')
@@ -16,16 +17,20 @@ const handleUrl = (obj) => {
 }
 const addRoute = (scheme, route, callback) => {
     console.log("*****", route)
-    DeepLinking.addRoute(route, callback);
+    console.log(new RegExp(route+"\/*", 'g'))
 
-    /*
-    DeepLinking.addRoute(route, (asd) => {
-        console.log('have route')
-        console.log(asd)
-        console.log('end')
-        callback('as')
+    DeepLinking.addRoute(new RegExp(route+"\/*", 'g'), ({path, scheme}) => {
+        const urls = new URL(scheme+path)
+        const params = new URLSearchParams(urls.search);
+
+        const searchprops = {}
+        params.forEach((value, key) => {
+            searchprops[key] = value;
+        });
+
+        callback(searchprops);
     });
-    */
+
     const callbackUrl = `${scheme}${removeStartingSlash(route)}`;
     return callbackUrl;
 }
