@@ -68,39 +68,17 @@ export const init = config => {
     console.log("sdk config ", sdkConfig)
 
     return {
-        getAuthorizeUrl: (props) => (
-            getAuthorizeUrl(props, sdkConfig)
-        ),
-        getOnboardServiceUrl: (props) => (
-            getOnboardServiceUrl(props, sdkConfig)
-        ),
-        exchangeCodeForToken: (props) => (
-            exchangeCodeForToken(props, sdkConfig)
-        ),
-        write: (props) => (
-            write(props, sdkConfig)
-        ),
-        readSession: (props) => (
-            readSession(props, sdkConfig)
-        ),
-        deleteUser: (props) => (
-            deleteUser(props, sdkConfig)
-        ),
-        getAvailableServices: (contractId) => (
-            getAvailableServices(sdkConfig, contractId)
-        ),
-        readFile: (props) => (
-            readFile(props, sdkConfig)
-        ),
-        readFileList: (props) => (
-            readFileList(props, sdkConfig)
-        ),
-        readAllFiles: (props) => (
-            readAllFiles(props, sdkConfig)
-        ),
-        readAccounts: (props) => (
-            readAccounts(props, sdkConfig)
-        ),
+        getAuthorizeUrl: (props) => getAuthorizeUrl(props, sdkConfig),
+        getOnboardServiceUrl: (props) => getOnboardServiceUrl(props, sdkConfig),
+        exchangeCodeForToken: (props) => exchangeCodeForToken(props, sdkConfig),
+        write: (props) => write(props, sdkConfig),
+        readSession: (props) => readSession(props, sdkConfig),
+        deleteUser: (props) => deleteUser(props, sdkConfig),
+        getAvailableServices: (contractId) => getAvailableServices(sdkConfig, contractId),
+        readFile: (props) => readFile(props, sdkConfig),
+        readFileList: (props) => readFileList(props, sdkConfig),
+        readAllFiles: (props) => readAllFiles(props, sdkConfig),
+        readAccounts: (props) => readAccounts(props, sdkConfig),
     }
 
 }
