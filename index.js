@@ -57,6 +57,7 @@ export const init = config => {
 
     // overlay defaults
     const sdkConfig = {
+        autoRedirect: true,
         baseUrl: "https://api.digi.me/v1.6/",
         onboardUrl: "https://api.digi.me/apps/saas/",
         retryOptions: {

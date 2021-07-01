@@ -15,13 +15,18 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
     }
     */
 
+    const {
+        onboardUrl,
+        applicationId,
+        autoRedirect
+    } = sdkConfig;
     const { userAccessToken, contractDetails } = props;
     const { contractId, privateKey, redirectUri } = contractDetails;
 
     const jwt = await createJWT(
         {
             access_token: userAccessToken.accessToken.value,
-            client_id: `${sdkConfig.applicationId}_${contractId}`,
+            client_id: `${applicationId}_${contractId}`,
             redirect_uri: redirectUri,
         },
         privateKey
@@ -40,11 +45,12 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
 
     const session = body?.session;
 
-    const result = new URL(getServiceOnboardURL(sdkConfig.onboardUrl));
+    const result = new URL(getServiceOnboardURL(onboardUrl));
     result.search = new URLSearchParams({
         code,
         callback: props.callback,
         service: props.serviceId.toString(),
+        autoRedirect,
     }).toString();
 
     return {

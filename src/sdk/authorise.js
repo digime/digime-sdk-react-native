@@ -116,8 +116,6 @@ const authorise = async (props, sdkConfig) => {
 
     const session = body?.session;
 
-
-
     return {
         codeVerifier,
         code,
@@ -126,17 +124,24 @@ const authorise = async (props, sdkConfig) => {
 }
 
 export const getAuthorizeUrl = async (props, sdkConfig) => {
+    const {autoRedirect} = sdkConfig;
     const {
         codeVerifier,
         code,
-        session
+        session,
     } = await authorise(props, sdkConfig);
 
     const result = new URL(getAuthURL(sdkConfig.onboardUrl));
+
+    // rename serviceId -> service
+    // add to searchParams
+    const {serviceId: service} = props;
+
     result.search = new URLSearchParams({
         code,
         callback: props.callback,
-        service: props.serviceId?.toString(),
+        ...(service && {service}),
+        autoRedirect,
     }).toString();
 
     return {
