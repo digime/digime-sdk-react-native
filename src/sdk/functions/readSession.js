@@ -1,7 +1,8 @@
-import {getTriggerURL} from "../constants/urlPaths";
-import {createJWT} from "./jwt";
+import {getTriggerURL} from "../../constants/urlPaths";
+import {createJWT} from "../jwt";
 import {refreshToken} from "./refreshTokens";
-import {request} from "./request";
+import {request} from "../request";
+import { getAuthHeader } from "../../utils/url";
 
 export const readSession = async (props, sdkConfig) => {
     const {contractDetails, userAccessToken, scope} = props;
@@ -52,7 +53,7 @@ const triggerDataQuery = async (props, sdkConfig) => {
             scope
         },
         {
-            Authorization: `Bearer ${jwt}`
+            ...getAuthHeader(jwt)
         }
     );
 

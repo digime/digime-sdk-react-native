@@ -4,30 +4,14 @@
 import { Buffer } from 'buffer';
 global.Buffer = Buffer;
 
-import {getSessionURL} from './src/constants/urlPaths';
-import {getAuthorizeUrl} from './src/sdk/authorise';
-import {request} from './src/sdk/request';
+import {getAuthorizeUrl} from './src/sdk/functions/authorise';
 import * as DL from './src/sdk/deepLinking';
-import { getAvailableServices } from './src/sdk/getAvailableServices';
+import { getAvailableServices } from './src/sdk/functions/getAvailableServices';
 
-import * as JWT from './src/sdk/jwt'
-import { readSession } from './src/sdk/readSession';
-import { exchangeCodeForToken } from './src/sdk/exchangeCode';
-import { getOnboardServiceUrl } from './src/sdk/getOnboardServices';
-
-export const establishSession = async ({applicationId: appId, contractId, baseUrl}) => {
-    baseUrl = addTrailingSlash(baseUrl);
-    return await request.func.post(getSessionURL, {baseUrl}, {appId, contractId});
-}
-
-export const testSign = (...args) => JWT.testSign(args);
-
-const addTrailingSlash = url => {
-    if (url.slice(-1) != '/') {
-        return url+'/';
-    }
-    return url;
-};
+import { readSession } from './src/sdk/functions/readSession';
+import { exchangeCodeForToken } from './src/sdk/functions/exchangeCode';
+import { getOnboardServiceUrl } from './src/sdk/functions/getOnboardServices';
+import { addTrailingSlash } from './src/utils/url';
 
 export const appLinking = {
     init: DL.init,
@@ -55,7 +39,7 @@ export const init = config => {
         }
     }
 
-    // overlay defaults
+    // underlay defaults
     const sdkConfig = {
         autoRedirect: true,
         baseUrl: "https://api.digi.me/v1.6/",

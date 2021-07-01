@@ -1,9 +1,10 @@
-import {hashSha256, getRandomAlphaNumeric} from './crypto';
+import {hashSha256, getRandomAlphaNumeric} from '../../utils/crypto';
 import base64url from 'base64url';
-import {request} from './request';
-import {getOauthURL, getAuthURL} from '../constants/urlPaths';
-import {sign, decode, verify, createJWT} from './jwt';
+import {request} from '../request';
+import {getOauthURL, getAuthURL} from '../../constants/urlPaths';
+import {sign, decode, verify, createJWT} from '../jwt';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
+import { getAuthHeader } from '../../utils/url';
 
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
     const codeVerifier = base64url(getRandomAlphaNumeric(32));
@@ -112,7 +113,7 @@ const authorise = async (props, sdkConfig) => {
             }
         },
         {
-            Authorization: `Bearer ${jwt}`
+            ...getAuthHeader(jwt)
         });
 
     console.log(body)
@@ -131,14 +132,14 @@ const authorise = async (props, sdkConfig) => {
 }
 
 export const getAuthorizeUrl = async (props, sdkConfig) => {
-    const {autoRedirect} = sdkConfig;
+    const {autoRedirect, onboardUrl} = sdkConfig;
     const {
         codeVerifier,
         code,
         session,
     } = await authorise(props, sdkConfig);
 
-    const result = new URL(getAuthURL(sdkConfig.onboardUrl));
+    const result = new URL(getAuthURL({baseUrl: onboardUrl}));
 
     // rename serviceId -> service
     // add to searchParams

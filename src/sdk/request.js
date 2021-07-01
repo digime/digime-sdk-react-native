@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const callURLFunction = async (method, sdkConfig, urlFunction, data, headers) => {
-    const url = urlFunction(sdkConfig?.baseUrl);
+const callURLFunction = async (method, urlProps, urlFunction, data, headers) => {
+    const url = urlFunction(urlProps);
     return await callUrl(method, url, data, headers);
 }
 
@@ -34,11 +34,15 @@ const METHOD = {
 
 export const request = {
     direct: {
-        post: async (url, data, headers) => await callUrl(METHOD.POST, url, data, headers),
-        get: async (url, data, headers) => await callUrl(METHOD.GET, url, data, headers),
+        post: (url, data, headers) =>
+            callUrl(METHOD.POST, url, data, headers),
+        get: (url, data, headers) =>
+            callUrl(METHOD.GET, url, data, headers),
     },
     func: {
-        post: async (urlFunction, sdkConfig, data, headers) => await callURLFunction(METHOD.POST, sdkConfig, urlFunction, data, headers),
-        get: async (urlFunction, sdkConfig, data, headers) => await callURLFunction(METHOD.GET, sdkConfig, urlFunction, data, headers),
+        post: (urlFunction, urlProps, data, headers) =>
+            callURLFunction(METHOD.POST, urlProps, urlFunction, data, headers),
+        get: (urlFunction, urlProps, data, headers) =>
+            callURLFunction(METHOD.GET, urlProps, urlFunction, data, headers),
     }
 }

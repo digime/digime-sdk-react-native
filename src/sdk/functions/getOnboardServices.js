@@ -1,10 +1,11 @@
-import { getServiceOnboardURL, getTokenReferenceURL } from '../constants/urlPaths';
-import {createJWT} from './jwt'
-import { request } from './request';
+import { getServiceOnboardURL, getTokenReferenceURL } from '../../constants/urlPaths';
+import {createJWT} from '../jwt'
+import { request } from '../request';
 
 import { getPayloadFromToken } from "./authorise";
 import { URL, URLSearchParams } from 'react-native-url-polyfill';
 import { refreshTokenWrapper } from './refreshTokenWrapper';
+import { getAuthHeader } from '../../utils/url';
 
 const getOnboardServiceFn = async (props, sdkConfig) => {
 
@@ -36,7 +37,7 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
         sdkConfig,
         {},
         {
-            Authorization: `Bearer ${jwt}`,
+            ...getAuthHeader(jwt)
         });
 
     const {
@@ -45,7 +46,7 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
 
     const session = body?.session;
 
-    const result = new URL(getServiceOnboardURL(onboardUrl));
+    const result = new URL(getServiceOnboardURL({baseUrl:onboardUrl}));
     result.search = new URLSearchParams({
         code,
         callback: props.callback,

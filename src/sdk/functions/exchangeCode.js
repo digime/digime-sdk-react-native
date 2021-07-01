@@ -1,7 +1,8 @@
-import { getOauthTokenURL } from "../constants/urlPaths";
+import { getOauthTokenURL } from "../../constants/urlPaths";
 import { getPayloadFromToken } from "./authorise";
-import { createJWT } from "./jwt";
-import { request } from "./request";
+import { createJWT } from "../jwt";
+import { request } from "../request";
+import { getAuthHeader } from "../../utils/url";
 
 
 export const exchangeCodeForToken = async (props, sdkConfig) => {
@@ -41,7 +42,7 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
                 retry: sdkConfig.retryOptions,
             },
             {
-                Authorization: `Bearer ${jwt}`
+                ...getAuthHeader(jwt)
             });
 
         const {

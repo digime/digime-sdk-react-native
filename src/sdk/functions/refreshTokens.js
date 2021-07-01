@@ -1,6 +1,8 @@
-import { getOauthTokenURL } from "../constants/urlPaths";
+import { getOauthTokenURL } from "../../constants/urlPaths";
 import { getPayloadFromToken } from "./authorise";
-import { createJWT } from "./jwt";
+import { createJWT } from "../jwt";
+import { request } from "../request";
+import { getAuthHeader } from "../../utils/url";
 
 export const refreshToken = async (props, sdkConfig) => {
     const { contractDetails, userAccessToken } = props;
@@ -22,7 +24,7 @@ export const refreshToken = async (props, sdkConfig) => {
             sdkConfig,
             {},
             {
-                Authorization: `Bearer ${jwt}`
+                ...getAuthHeader(jwt)
             });
 
         const {

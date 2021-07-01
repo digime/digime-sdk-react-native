@@ -1,5 +1,5 @@
 import * as JSR from 'jsrsasign';
-import { getRandomAlphaNumeric } from './crypto';
+import { getRandomAlphaNumeric } from '../utils/crypto';
 const JWS = JSR.jws.JWS;
 
 export const createJWT = async (payload, privateKey) => {

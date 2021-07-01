@@ -1,5 +1,5 @@
-import {getServicesURL} from "../constants/urlPaths"
-import {request} from "./request"
+import {getServicesURL} from "../../constants/urlPaths"
+import {request} from "../request"
 import {omit} from "lodash";
 
 const formatAvailableServices = data => {

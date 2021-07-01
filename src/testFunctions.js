@@ -1,5 +1,5 @@
 import {ToastAndroid} from "react-native"
 
-export const log = status => {
-    ToastAndroid.show(status, ToastAndroid.SHORT)
+export const Toast = (message, duration=ToastAndroid.SHORT) => {
+    ToastAndroid.show(message, duration);
 }
