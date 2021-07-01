@@ -9,3 +9,4 @@ export const getServicesURL = ({baseUrl}) => `${baseUrl}discovery/services`;
 export const getTokenReferenceURL = ({baseUrl}) => `${baseUrl}oauth/token/reference`;
 export const getServiceOnboardURL = ({baseUrl}) => `${baseUrl}onboard`;
 export const getFileURL = ({baseUrl, sessionKey, fileName}) => `${baseUrl}permission-access/query/${sessionKey}/${fileName}`;
+export const getFileListURL = ({baseUrl, sessionKey}) => `${baseUrl}permission-access/query/${sessionKey}`

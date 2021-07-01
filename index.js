@@ -7,11 +7,11 @@ global.Buffer = Buffer;
 import {getAuthorizeUrl} from './src/sdk/functions/authorise';
 import * as DL from './src/sdk/deepLinking';
 import { getAvailableServices } from './src/sdk/functions/getAvailableServices';
-
 import { readSession } from './src/sdk/functions/readSession';
 import { exchangeCodeForToken } from './src/sdk/functions/exchangeCode';
 import { getOnboardServiceUrl } from './src/sdk/functions/getOnboardServices';
 import { addTrailingSlash } from './src/utils/url';
+import { readAllFiles } from './src/sdk/functions/readAllFiles';
 
 export const appLinking = {
     init: DL.init,

@@ -1,5 +1,7 @@
-import { readFile } from "../readFile";
-import { sleep } from "../utils/sleep";
+import { readFile } from "../functions/readFile";
+import { sleep } from "../../utils/sleep";
+import { readFileList } from "./readFileList";
+import { get } from "lodash";
 
 const STATE = {
     PENDING: "pending",
@@ -8,8 +10,8 @@ const STATE = {
     RUNNING: 'running'
 }
 
-export const readAllFiles = async (options, sdkConfig) => {
-    const { sessionKey, privateKey, onFileData, onFileError } = options;
+export const readAllFiles = async (props, sdkConfig) => {
+    const { sessionKey, privateKey, onFileData, onFileError } = props;
 
     // TODO: add validation
     /*
@@ -27,7 +29,7 @@ export const readAllFiles = async (options, sdkConfig) => {
         let state = STATE.PENDING;
 
         while (allowPollingToContinue && state !== STATE.PARTIAL && state !== STATE.COMPLETED) {
-            const { status, fileList } = await readFileList({ sessionKey }, sdkConfig);
+            const {status, fileList} = await readFileList(props, sdkConfig);
             state = status.state;
 
             if (state === STATE.PENDING) {
