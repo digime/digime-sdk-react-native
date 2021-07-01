@@ -21,6 +21,7 @@
     "buffer": "^6.0.3",
     "hash.js": "^1.1.7",
     "jsrsasign": "^10.2.0",
+    "lodash": "^4.17.21",
     "react-native-deep-linking": "^2.2.0",
     "react-native-get-random-values": "^1.7.0",
     "react-native-randombytes": "^3.6.1",

@@ -116,7 +116,7 @@ const authorise = async (props, sdkConfig) => {
 
     const session = body?.session;
 
-    
+
 
     return {
         codeVerifier,
