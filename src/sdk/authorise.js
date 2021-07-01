@@ -81,7 +81,8 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
 const authorise = async (props, sdkConfig) => {
     const {
         contractDetails,
-        state
+        state,
+        scope
     } = props;
 
     const {applicationId} = sdkConfig;
@@ -103,7 +104,13 @@ const authorise = async (props, sdkConfig) => {
     const body = await request.func.post(
         getOauthURL,
         sdkConfig,
-        {},
+        {
+            actions: {
+                pull: {
+                    scope,
+                }
+            }
+        },
         {
             Authorization: `Bearer ${jwt}`
         });
