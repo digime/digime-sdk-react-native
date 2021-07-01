@@ -65,6 +65,7 @@ export const refreshToken = async (props, sdkConfig) => {
         };
 
     } catch (error) {
+        /*
         if (!(error instanceof HTTPError)) {
             throw error;
         }
@@ -82,7 +83,9 @@ export const refreshToken = async (props, sdkConfig) => {
         ) {
             throw new OAuthError(get(error, "body.error.message"));
         }
+        */
 
-        throw error;
+        //throw error;
+        throw new Error(error)
     }
 };
