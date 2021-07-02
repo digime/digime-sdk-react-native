@@ -5,8 +5,11 @@ import { request } from "../request";
 import { getAuthHeader } from "../../utils/url";
 
 export const refreshToken = async (props, sdkConfig) => {
+    console.log("refresh token")
     const { contractDetails, userAccessToken } = props;
     const { contractId, privateKey, redirectUri } = contractDetails;
+
+    console.log(userAccessToken)
 
     const jwt = await createJWT(
         {
@@ -19,7 +22,7 @@ export const refreshToken = async (props, sdkConfig) => {
     );
 
     try {
-        const body = await request.func.post(
+        const {data:body} = await request.func.post(
             getOauthTokenURL,
             sdkConfig,
             {},

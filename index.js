@@ -12,6 +12,8 @@ import { exchangeCodeForToken } from './src/sdk/functions/exchangeCode';
 import { getOnboardServiceUrl } from './src/sdk/functions/getOnboardServices';
 import { addTrailingSlash } from './src/utils/url';
 import { readAllFiles } from './src/sdk/functions/readAllFiles';
+import { readFile } from './src/sdk/functions/readFile';
+import { readFileList } from './src/sdk/functions/readFileList';
 
 export const appLinking = {
     init: DL.init,

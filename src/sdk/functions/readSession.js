@@ -46,7 +46,7 @@ const triggerDataQuery = async (props, sdkConfig) => {
         redirect_uri
     }, privateKey);
 
-    const body = await request.func.post(
+    const {data:body} = await request.func.post(
         getTriggerURL,
         sdkConfig,
         {

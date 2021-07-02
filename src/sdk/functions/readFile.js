@@ -1,12 +1,13 @@
 import { getFileURL } from "../../constants/urlPaths";
 import { request } from "../request";
+import base64url from 'base64url';
 
 const fetchFile = async (props, sdkConfig) => {
+    console.log('fetch file')
+    console.log(props)
+
     const { sessionKey, fileName } = props;
-
-    let response;
-
-    const {baseUrl} = sdkConfig;
+    const { baseUrl } = sdkConfig;
 
     const urlProps = {
         baseUrl,
@@ -15,41 +16,38 @@ const fetchFile = async (props, sdkConfig) => {
     }
 
     try {
-        response = await request.func.get(
+        const {data:fileContent, responseHeaders} = await request.func.get(
             getFileURL,
             urlProps,
             {
                 responseType: "buffer"
+            },
+            {
+                Accept: "application/octet-stream"
             }
         )
-    } catch (error) {
+
+        const base64Meta = responseHeaders["x-metadata"] // as string;
+        const decodedMeta = JSON.parse(base64url.decode(base64Meta));
+
+        //isDecodedCAFileHeaderResponse(decodedMeta);
+
+        return {
+            compression: decodedMeta.compression,
+            fileContent,
+            fileMetadata: decodedMeta.metadata,
+        };
+    }
+    catch (error) {
         handleServerResponse(error);
         throw error;
     }
-
-    /*
-    const fileContent: Buffer = response.body as Buffer;
-    const base64Meta: string = response.headers["x-metadata"] as string;
-    const decodedMeta: any = JSON.parse(base64url.decode(base64Meta));
-
-    isDecodedCAFileHeaderResponse(decodedMeta);
-
-    return {
-        compression: decodedMeta.compression,
-        fileContent,
-        fileMetadata: decodedMeta.metadata,
-    };
-    */
-
-    return {
-        compression: "tbc",
-        fileContent: 'tbc',
-        fileMetadata: 'tbc'
-    };
 };
 
 export const readFile = async (props, sdkConfig) => {
-    const {fileName, privateKey } = props;
+    console.log('readFile')
+    console.log(props)
+    const {fileName, privateKey} = props;
 
     /*
     if (!isNonEmptyString(sessionKey)) {
@@ -57,10 +55,20 @@ export const readFile = async (props, sdkConfig) => {
     }
     */
 
-    const response = await fetchFile(props, sdkConfig);
-    const { compression, fileContent, fileMetadata } = response;
+    const {
+        compression,
+        fileContent,
+        fileMetadata
+    } = await fetchFile(props, sdkConfig);
+
+    console.log({
+        compression,
+        fileContent,
+        fileMetadata
+    })
 
     /*
+
     const key = new NodeRSA(privateKey, "pkcs1-private-pem");
     let data = decryptData(key, fileContent);
 

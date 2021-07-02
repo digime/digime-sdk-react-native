@@ -34,7 +34,7 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
     );
 
     try {
-        const body = await request.func.post(
+        const {data:body} = await request.func.post(
             getOauthTokenURL,
             sdkConfig,
             {

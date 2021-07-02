@@ -29,7 +29,7 @@ export const readAllFiles = async (props, sdkConfig) => {
         let state = STATE.PENDING;
 
         while (allowPollingToContinue && state !== STATE.PARTIAL && state !== STATE.COMPLETED) {
-            const {status, fileList} = await readFileList(props, sdkConfig);
+            const {status, fileList=[]} = await readFileList(props, sdkConfig);
             state = status.state;
 
             if (state === STATE.PENDING) {
@@ -37,10 +37,15 @@ export const readAllFiles = async (props, sdkConfig) => {
                 continue;
             }
 
-            const newFiles = (fileList || [])
+
+            // todo = what's the purpose of this?
+            const newFiles = fileList
                 .reduce((accumulator, file) => {
                     const { name, updatedDate } = file;
 
+                    console.log("H files")
+                    console.log(handledFiles)
+                    console.log(file)
                     if (get(handledFiles, name, 0) < updatedDate) {
                         accumulator.push(name);
                         handledFiles[name] = updatedDate;
@@ -49,26 +54,26 @@ export const readAllFiles = async (props, sdkConfig) => {
             }, []);
 
             const newPromises = newFiles
-                .map((fileName) => {
-                    return readFile({ sessionKey, fileName, privateKey }, sdkConfig)
-                        .then((fileMeta) => {
-                            /*
-                            if (isFunction(onFileData)) {
+                .map(async (fileName) => {
+                    try {
+                        const fileMeta = await readFile({fileName, ...props}, sdkConfig);
+
+
+
+                            //if (isFunction(onFileData)) {
                                 onFileData({ ...fileMeta, fileList });
-                            }
-                            */
-                            return;
-                        })
-                        .catch((error) => {
+                            //}
+                    }
+                    catch(error) {
                             // Failed all attempts
-                            /*
-                            if (isFunction(onFileError)) {
+                            ///*
+                            //if (isFunction(onFileError)) {
                                 onFileError({ error, fileName, fileList });
-                            }
-                            */
-                            return;
-                        });
-            });
+                            //}
+                            //*/
+                    }
+                    return;
+                })
 
             filePromises.push(...newPromises);
 

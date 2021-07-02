@@ -6,7 +6,7 @@ export const readFileList = async (props, sdkConfig) => {
     const {baseUrl} = sdkConfig;
 
     // TODO: check retry options
-    const response = await request.func.get(
+    const {data:response} = await request.func.get(
         getFileListURL,
         {
             sessionKey,

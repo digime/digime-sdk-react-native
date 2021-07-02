@@ -33,7 +33,7 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
         privateKey
     );
 
-    const body = await request.func.post(getTokenReferenceURL,
+    const {data:body} = await request.func.post(getTokenReferenceURL,
         sdkConfig,
         {},
         {

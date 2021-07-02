@@ -31,6 +31,6 @@ const removeRedundantProps = service => {
 };
 
 export const getAvailableServices = async (sdkConfig, contractId) => {
-    const data = await request.func.get(getServicesURL, sdkConfig, {}, contractId);
+    const {data} = await request.func.get(getServicesURL, sdkConfig, {}, contractId);
     return formatAvailableServices(data);
 }

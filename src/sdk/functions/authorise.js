@@ -59,7 +59,7 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
     const jku = decodedToken?.header?.jku;
     const kid = decodedToken?.header?.kid;
 
-    const jkuResponse = await request.direct.get(jku);
+    const {data:jkuResponse} = await request.direct.get(jku);
 
     if(!jkuResponse) {
         throw new Error("Server returned non-JWKS response");
@@ -102,7 +102,7 @@ const authorise = async (props, sdkConfig) => {
         state
     );
 
-    const body = await request.func.post(
+    const {data:body} = await request.func.post(
         getOauthURL,
         sdkConfig,
         {
