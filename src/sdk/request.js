@@ -6,6 +6,15 @@ const callURLFunction = async (method, urlProps, urlFunction, data, headers) => 
 }
 
 const callUrl = async (method, url, data, headers) => {
+    const defaultHeaders = {
+        Accept:  "application/json"
+    }
+
+    headers = {
+        ...defaultHeaders,
+        ...headers,
+    }
+
     return new Promise((resolve, reject) => {
         axios
             .request({
