@@ -4,10 +4,8 @@ import {omit} from "lodash";
 
 const formatAvailableServices = data => {
     const {
-        data: {
-            services,
-            ...rest
-        }
+        services,
+        ...rest
     } = data;
 
     return {
@@ -31,6 +29,8 @@ const removeRedundantProps = service => {
 };
 
 export const getAvailableServices = async (sdkConfig, contractId) => {
-    const {data} = await request.func.get(getServicesURL, sdkConfig, {}, contractId);
+    // 'data:{services, ...}' is return from the api
+    // extract the data node and pass through
+    const {data:{data}} = await request.func.get(getServicesURL, sdkConfig, {}, contractId);
     return formatAvailableServices(data);
 }
