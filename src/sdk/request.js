@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-const callURLFunction = async (method, urlProps, urlFunction, data, headers) => {
+const callURLFunction = async (method, urlProps, urlFunction, data, headers, options) => {
     const url = urlFunction(urlProps);
-    return await callUrl(method, url, data, headers);
+    return await callUrl(method, url, data, headers, options);
 }
 
-const callUrl = async (method, url, data, headers) => {
+const callUrl = async (method, url, data, headers, options={}) => {
     const defaultHeaders = {
         Accept:  "application/json",
         //'Content-Type': 'application/json'
@@ -22,12 +22,14 @@ const callUrl = async (method, url, data, headers) => {
                 method,
                 url,
                 data,
-                headers
+                headers,
+                ...options
             })
             .then(res => {
                 const {status, data, headers: responseHeaders} = res;
 
-                console.log("status: ", res.status)
+                console.log("status: ")
+                console.log(JSON.stringify(res.config, null, 4))
                 //console.log(JSON.stringify(res, null, 4))
                 resolve({
                     data,
@@ -36,7 +38,7 @@ const callUrl = async (method, url, data, headers) => {
                 })
             })
             .catch(error => {
-                console.log(JSON.stringify(error.response.data, null, 2))
+                console.log(JSON.stringify(error.response.config, null, 2))
                 reject(error)
             })
     })
@@ -49,15 +51,15 @@ const METHOD = {
 
 export const request = {
     direct: {
-        post: (url, data, headers) =>
-            callUrl(METHOD.POST, url, data, headers),
-        get: (url, data, headers) =>
-            callUrl(METHOD.GET, url, data, headers),
+        post: (url, data, headers, options) =>
+            callUrl(METHOD.POST, url, data, headers, options),
+        get: (url, data, headers, options) =>
+            callUrl(METHOD.GET, url, data, headers, options),
     },
     func: {
-        post: (urlFunction, urlProps, data, headers) =>
-            callURLFunction(METHOD.POST, urlProps, urlFunction, data, headers),
-        get: (urlFunction, urlProps, data, headers) =>
-            callURLFunction(METHOD.GET, urlProps, urlFunction, data, headers),
+        post: (urlFunction, urlProps, data, headers, options) =>
+            callURLFunction(METHOD.POST, urlProps, urlFunction, data, headers, options),
+        get: (urlFunction, urlProps, data, headers, options) =>
+            callURLFunction(METHOD.GET, urlProps, urlFunction, data, headers, options),
     }
 }

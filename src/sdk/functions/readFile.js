@@ -1,6 +1,8 @@
 import { getFileURL } from "../../constants/urlPaths";
 import { request } from "../request";
 import base64url from 'base64url';
+import { ReadFile } from "../../utils/readFile";
+import { decryptData } from "../../utils/crypto";
 
 const fetchFile = async (props, sdkConfig) => {
     console.log('fetch file')
@@ -16,17 +18,19 @@ const fetchFile = async (props, sdkConfig) => {
     }
 
     try {
-        const {data:fileContent, responseHeaders} = await request.func.get(
+        const {data, responseHeaders} = await request.func.get(
             getFileURL,
             urlProps,
-            {
-                responseType: "buffer"
-            },
+            {},
             {
                 Accept: "application/octet-stream"
+            },
+            {
+                responseType: 'blob'
             }
         )
 
+        const fileContent = await ReadFile(data);
         const base64Meta = responseHeaders["x-metadata"] // as string;
         const decodedMeta = JSON.parse(base64url.decode(base64Meta));
 
@@ -61,22 +65,14 @@ export const readFile = async (props, sdkConfig) => {
         fileMetadata
     } = await fetchFile(props, sdkConfig);
 
-    console.log({
-        compression,
-        fileContent,
-        fileMetadata
-    })
+   let data = decryptData(privateKey, fileContent);
 
-    /*
-
-    const key = new NodeRSA(privateKey, "pkcs1-private-pem");
-    let data = decryptData(key, fileContent);
-
-    if (compression === "brotli") {
-        data = zlib.brotliDecompressSync(data);
+   if (compression === "brotli") {
+       data = zlib.brotliDecompressSync(data);
     } else if (compression === "gzip") {
         data = zlib.gunzipSync(data);
     }
+    /*
 
     return {
         fileData: data,
