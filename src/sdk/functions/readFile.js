@@ -1,15 +1,11 @@
-import { getFileURL } from "../../constants/urlPaths";
-import { request } from "../request";
-import base64url from 'base64url';
-import { ReadBlob } from "../../utils/readBlob";
-import { decryptData } from "../../utils/crypto";
+import {getFileURL} from "../../constants/urlPaths";
+import {request} from "../request";
+import {ReadBlob} from "../../utils/readBlob";
+import {decryptData} from "../../utils/crypto";
 
 const fetchFile = async (props, sdkConfig) => {
-    console.log('fetch file')
-    console.log(props)
-
-    const { sessionKey, fileName } = props;
-    const { baseUrl } = sdkConfig;
+    const {sessionKey, fileName} = props;
+    const {baseUrl} = sdkConfig;
 
     const urlProps = {
         baseUrl,
@@ -27,22 +23,24 @@ const fetchFile = async (props, sdkConfig) => {
             },
             {
                 responseType: 'blob'
-            }
-        )
+            })
 
         const fileContent = await ReadBlob(data);
-        const base64Meta = responseHeaders["x-metadata"] // as string;
-        const decodedMeta = JSON.parse(base64url.decode(base64Meta));
+        const base64Meta = responseHeaders["x-metadata"]
+        const decodedMeta = JSON.parse(decode(base64Meta));
 
-        //isDecodedCAFileHeaderResponse(decodedMeta);
+        const {metadata: fileMetadata, compression} = decodedMeta;
+
+        // isDecodedCAFileHeaderResponse(decodedMeta);
 
         return {
-            compression: decodedMeta.compression,
+            compression,
             fileContent,
-            fileMetadata: decodedMeta.metadata,
+            fileMetadata,
         };
-    }
-    catch (error) {
+
+    } catch (error) {
+        console.log(error)
         handleServerResponse(error);
         throw error;
     }
@@ -59,32 +57,25 @@ export const readFile = async (props, sdkConfig) => {
     }
     */
 
-    const {
-        compression,
-        fileContent,
-        fileMetadata
-    } = await fetchFile(props, sdkConfig);
+    const {compression, fileContent, fileMetadata} = await fetchFile(props, sdkConfig);
 
-   let data = decryptData(privateKey, fileContent);
+    let fileData = decryptData(privateKey, fileContent);
 
-   if (compression === "brotli") {
-       data = zlib.brotliDecompressSync(data);
-    } else if (compression === "gzip") {
-        data = zlib.gunzipSync(data);
+    if (!!decodedMeta.compression) {
+        throw new Error("Compression not supported")
+
+        if (compression === "brotli"){
+            fileData = zlib.brotliDecompressSync(fileData);
+        }
+        else if (compression === "gzip") {
+            fileData = zlib.gunzipSync(fileData);
+        }
     }
-    /*
+
 
     return {
-        fileData: data,
+        fileData,
         fileMetadata,
-        fileName,
+        fileName
     };
-    */
-    return {
-        fileData: "tbc",
-        fileMetadata: 'tbc',
-        fileName: 'tbc',
-    };
-
 };
-
