@@ -52,30 +52,33 @@ export const decryptData = async (privateKeyString, encryptedArrayBuffer) => {
         console.log("IS VALID")
     }
 
-
-    const privateKey = pki.privateKeyFromPem(privateKeyString);
-
     const encryptedDsk = encryptedArrayBuffer.slice(...BYTES.DSK);
-    const dsk = privateKey.decrypt(encryptedDsk, "RSA-OAEP")
+    const dsk = decryptUsingKey(privateKeyString, encryptedDsk);
 
     const iv = util.createBuffer(encryptedArrayBuffer.slice(...BYTES.DIV))
     const encryptedData = util.createBuffer(encryptedArrayBuffer.slice(...BYTES.HASH_DATA))
 
-    const decipher = cipher.createDecipher("AES-CBC", dsk)
+    const jfsHashAndData = decipherData(encryptedData, dsk, iv)
 
+    const jfsHash = jfsHashAndData.slice(...BYTES.HASH).toString();
+    const jfsData = jfsHashAndData.slice(...BYTES.DATA).toString();
+
+    // TODO -- compare hash here.
+
+
+    return jfsData;
+};
+
+const decryptUsingKey = (privateKeyString, data) => {
+    const privateKey = pki.privateKeyFromPem(privateKeyString);
+    return privateKey.decrypt(encryptedDsk, "RSA-OAEP");
+}
+
+const decipherData = (encryptedData, dsk, iv) => {
+    const decipher = cipher.createDecipher("AES-CBC", dsk)
     decipher.start({iv})
     decipher.update(encryptedData)
     decipher.finish();
-
     const {output} = decipher;
-    const jfsHashAndData = output.getBytes();
-
-    const jfsHash = jfsHashAndData.slice(...BYTES.HASH).toString()
-    const jfsData = jfsHashAndData.slice(...BYTES.DATA).toString()
-
-    const jfsObject = JSON.parse(jfsData);
-    console.log(JSON.stringify(jfsObject, null, 4))
-
-    return "is ret"
-
-};
+    return output.getBytes();
+}
