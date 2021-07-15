@@ -1,11 +1,12 @@
+import { util } from "node-forge";
 
-export const ReadFile = data => {
+export const ReadBlob = data => {
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.onloadend = () => {
             const {result} = fileReader;
             const base64String = result.split(",").pop().trim();
-            const binaryContent = toByteArray(base64String);
+            const binaryContent = util.binary.base64.decode(base64String)
             resolve(binaryContent)
         }
 

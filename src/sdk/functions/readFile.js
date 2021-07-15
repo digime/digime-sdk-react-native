@@ -1,7 +1,7 @@
 import { getFileURL } from "../../constants/urlPaths";
 import { request } from "../request";
 import base64url from 'base64url';
-import { ReadFile } from "../../utils/readFile";
+import { ReadBlob } from "../../utils/readBlob";
 import { decryptData } from "../../utils/crypto";
 
 const fetchFile = async (props, sdkConfig) => {
@@ -30,7 +30,7 @@ const fetchFile = async (props, sdkConfig) => {
             }
         )
 
-        const fileContent = await ReadFile(data);
+        const fileContent = await ReadBlob(data);
         const base64Meta = responseHeaders["x-metadata"] // as string;
         const decodedMeta = JSON.parse(base64url.decode(base64Meta));
 
