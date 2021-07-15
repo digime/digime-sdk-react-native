@@ -1,7 +1,8 @@
 // import NodeRSA from 'node-rsa';
 const {cipher, util, pki} = require('node-forge');
 const {randomBytes} = require('react-native-randombytes');
-const hash = require('hash.js');
+import { sha256, sha512 } from 'hash.js';
+import base64url from 'base64url';
 
 const BYTES = {
     DSK: [0, 256],
@@ -29,9 +30,13 @@ export const getRandomAlphaNumeric = (size) => {
     return value.join("");
 };
 
-export const hashSha256 = (data) => hash.sha256().update(data).digest();
-export const hashSha512 = (data) => hash.sha512().update(data).digest();
+export const hashSHA256 = data => createHash(data, sha256);
+export const hashSHA512 = data => createHash(data, sha512);
 
+const createHash = (data, hashFunction) => {
+    const digest = hashFunction().update(data).digest();
+    return base64url(digest)
+}
 
 const isValidSize = (data) => {
     const bytes = data.length;

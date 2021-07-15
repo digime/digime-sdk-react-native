@@ -33,6 +33,8 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
         privateKey,
     );
 
+    
+
     try {
         const {data:body} = await request.func.post(
             getOauthTokenURL,

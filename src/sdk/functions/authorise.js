@@ -1,8 +1,8 @@
-import {hashSha256, getRandomAlphaNumeric} from '../../utils/crypto';
+import {hashSHA256, getRandomAlphaNumeric} from '../../utils/crypto';
 import base64url from 'base64url';
 import {request} from '../request';
 import {getOauthURL, getAuthURL} from '../../constants/urlPaths';
-import {sign, decode, verify, createJWT} from '../jwt';
+import {decode, createJWT} from '../jwt';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
 import { getAuthHeader } from '../../utils/url';
 
@@ -12,7 +12,7 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
     const jwt = await createJWT(
         {
             client_id: `${applicationId}_${contractId}`,
-            code_challenge: base64url(hashSha256(codeVerifier)),
+            code_challenge: hashSHA256(codeVerifier),
             code_challenge_method: "S256",
             redirect_uri: redirectUri,
             response_mode: "query",
