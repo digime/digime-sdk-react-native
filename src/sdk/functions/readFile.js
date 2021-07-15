@@ -2,6 +2,7 @@ import {getFileURL} from "../../constants/urlPaths";
 import {request} from "../request";
 import {ReadBlob} from "../../utils/readBlob";
 import {decryptData} from "../../utils/crypto";
+import {decode} from 'base64url'
 
 const fetchFile = async (props, sdkConfig) => {
     const {sessionKey, fileName} = props;
@@ -40,6 +41,7 @@ const fetchFile = async (props, sdkConfig) => {
         };
 
     } catch (error) {
+        // TODO: Add error
         console.log(error)
         handleServerResponse(error);
         throw error;
@@ -47,8 +49,6 @@ const fetchFile = async (props, sdkConfig) => {
 };
 
 export const readFile = async (props, sdkConfig) => {
-    console.log('readFile')
-    console.log(props)
     const {fileName, privateKey} = props;
 
     /*
@@ -64,12 +64,14 @@ export const readFile = async (props, sdkConfig) => {
     if (!!decodedMeta.compression) {
         throw new Error("Compression not supported")
 
+        /*
         if (compression === "brotli"){
             fileData = zlib.brotliDecompressSync(fileData);
         }
         else if (compression === "gzip") {
             fileData = zlib.gunzipSync(fileData);
         }
+        */
     }
 
 

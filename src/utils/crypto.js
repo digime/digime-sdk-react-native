@@ -46,10 +46,7 @@ const isValidSize = (data) => {
 export const decryptData = async (privateKeyString, encryptedArrayBuffer) => {
     // Verify file data is of correct length
     if (!isValidSize(encryptedArrayBuffer)) {
-        console.log("IS NOT VALID NOW")
         //throw new FileDecryptionError("File size not valid");
-    } else {
-        console.log("IS VALID")
     }
 
     const encryptedDsk = encryptedArrayBuffer.slice(...BYTES.DSK);
@@ -71,7 +68,7 @@ export const decryptData = async (privateKeyString, encryptedArrayBuffer) => {
 
 const decryptUsingKey = (privateKeyString, data) => {
     const privateKey = pki.privateKeyFromPem(privateKeyString);
-    return privateKey.decrypt(encryptedDsk, "RSA-OAEP");
+    return privateKey.decrypt(data, "RSA-OAEP");
 }
 
 const decipherData = (encryptedData, dsk, iv) => {

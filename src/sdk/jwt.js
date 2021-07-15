@@ -1,4 +1,4 @@
-import * as JSR from 'jsrsasign';
+import JSR from 'jsrsasign';
 import { getRandomAlphaNumeric } from '../utils/crypto';
 const JWS = JSR.jws.JWS;
 
@@ -38,18 +38,6 @@ const sign = (header, payload, privateKey) => {
     });
 }
 
-export const testSign = (pri, pub) => {
-    console.log('running test')
-    console.log(pri)
-    const alg = 'RS256'
-    const sJWS = JWS.sign(null, {alg, cty: "JWT"}, {age: 21}, pri);
-    const isValid = JWS.verify(sJWS, 'digime', [alg]);
-
-    console.log(sJWS)
-    console.log(isValid)
-    console.log('test complete')
-}
-
 export const decode = (token) => {
     const asoArray = JWS.parse(token);
 
@@ -69,6 +57,5 @@ export const verify = (signature, key, alg) => {
         }
     )
 
-    console.log(args)
     return JWS.verifyJWT(...args);
 }

@@ -8,7 +8,6 @@ const callURLFunction = async (method, urlProps, urlFunction, data, headers, opt
 const callUrl = async (method, url, data, headers, options={}) => {
     const defaultHeaders = {
         Accept:  "application/json",
-        //'Content-Type': 'application/json'
     }
 
     headers = {
@@ -27,10 +26,6 @@ const callUrl = async (method, url, data, headers, options={}) => {
             })
             .then(res => {
                 const {status, data, headers: responseHeaders} = res;
-
-                console.log("status: ")
-                console.log(JSON.stringify(res.config, null, 4))
-                //console.log(JSON.stringify(res, null, 4))
                 resolve({
                     data,
                     responseHeaders,
@@ -38,7 +33,7 @@ const callUrl = async (method, url, data, headers, options={}) => {
                 })
             })
             .catch(error => {
-                console.log(JSON.stringify(error.response.config, null, 2))
+                console.log(JSON.stringify(error.response, null, 2))
                 reject(error)
             })
     })

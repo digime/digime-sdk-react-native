@@ -22,7 +22,6 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
         privateKey
     );
 
-
     return {
         jwt,
         codeVerifier
@@ -47,8 +46,6 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
         payload,
         header
     } = decode(token);
-
-    console.log(payload)
 
     return {
         ...payload
@@ -115,8 +112,6 @@ const authorise = async (props, sdkConfig) => {
         {
             ...getAuthHeader(jwt)
         });
-
-    console.log(body)
 
     const {
         preauthorization_code: code

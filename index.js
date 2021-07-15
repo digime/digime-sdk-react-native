@@ -5,7 +5,7 @@ import { Buffer } from 'buffer';
 global.Buffer = Buffer;
 
 import {getAuthorizeUrl} from './src/sdk/functions/authorise';
-import * as DL from './src/sdk/deepLinking';
+import * as NativeDeepLinking from './src/sdk/deepLinking';
 import { getAvailableServices } from './src/sdk/functions/getAvailableServices';
 import { readSession } from './src/sdk/functions/readSession';
 import { exchangeCodeForToken } from './src/sdk/functions/exchangeCode';
@@ -16,8 +16,8 @@ import { readFile } from './src/sdk/functions/readFile';
 import { readFileList } from './src/sdk/functions/readFileList';
 
 export const appLinking = {
-    init: DL.init,
-    openUrl: DL.openUrl
+    init: NativeDeepLinking.init,
+    openUrl: NativeDeepLinking.openUrl
 }
 
 export const init = config => {
@@ -44,6 +44,7 @@ export const init = config => {
     // underlay defaults
     const sdkConfig = {
         autoRedirect: true,
+        sleepPollingMS: 3000,
         baseUrl: "https://api.digi.me/v1.6/",
         onboardUrl: "https://api.digi.me/apps/saas/",
         retryOptions: {
@@ -51,8 +52,6 @@ export const init = config => {
         },
         ...formatted,
     };
-
-    console.log("sdk config ", sdkConfig)
 
     return {
         getAuthorizeUrl: (props) => getAuthorizeUrl(props, sdkConfig),

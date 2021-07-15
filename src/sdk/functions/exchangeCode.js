@@ -4,12 +4,9 @@ import { createJWT } from "../jwt";
 import { request } from "../request";
 import { getAuthHeader } from "../../utils/url";
 
-
 export const exchangeCodeForToken = async (props, sdkConfig) => {
     const { authorizationCode, codeVerifier, contractDetails } = props;
     const { contractId, privateKey, redirectUri } = contractDetails;
-
-    console.log("exchange code")
 
     /*
     // TODO: Add string validation here...
@@ -32,8 +29,6 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
         },
         privateKey,
     );
-
-    
 
     try {
         const {data:body} = await request.func.post(
@@ -72,6 +67,7 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
             },
         };
     } catch (error) {
+        // TODO: Add error
         console.log("error")
         throw new (error)
         //throw new AccessTokenExchangeError("Failed to exchange authorization code to access token.");

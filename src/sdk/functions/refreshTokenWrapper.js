@@ -19,9 +19,6 @@ export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
 
     const {contractDetails, userAccessToken} = props;
 
-    console.log("in refresh token wrapper >>>>>>>")
-    console.log(userAccessToken)
-
     const newTokens = await refreshToken({
             contractDetails,
             userAccessToken

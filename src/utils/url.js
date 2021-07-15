@@ -10,3 +10,12 @@ export const getAuthHeader = jwt => {
         Authorization: `Bearer ${jwt}`
     }
 }
+
+export const removeStartingSlash = url => {
+    url = url || '';
+
+    if (url.slice(0,1) === '/') {
+        return url.slice(1);
+    }
+    return url;
+}

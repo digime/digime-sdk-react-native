@@ -2,10 +2,9 @@
 import DeepLinking from 'react-native-deep-linking';
 import {Linking} from 'react-native';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
+import { removeStartingSlash } from '../utils/url';
 
 const handleUrl = (obj) => {
-    console.log('APP OPENED, WAS IN THE BACKGROUND')
-    console.log('handleurl ', obj)
     const {url} = obj;
     Linking
         .canOpenURL(url)
@@ -17,6 +16,8 @@ const handleUrl = (obj) => {
 }
 
 const addRoute = (scheme, route, callback) => {
+    // append '*' to the end of of the route
+    // so that all sub domains are captured
     DeepLinking.addRoute(new RegExp(route+"\/*", 'g'), ({path, scheme}) => {
         const urls = new URL(scheme+path)
         const params = new URLSearchParams(urls.search);
@@ -29,17 +30,7 @@ const addRoute = (scheme, route, callback) => {
         callback(searchProps);
     });
 
-    const callbackUrl = `${scheme}${removeStartingSlash(route)}`;
-    return callbackUrl;
-}
-
-const removeStartingSlash = url => {
-    url = url || '';
-
-    if (url.slice(0,1) === '/') {
-        return url.slice(1);
-    }
-    return url;
+    return `${scheme}${removeStartingSlash(route)}`;
 }
 
 const unload = () => {
@@ -47,7 +38,6 @@ const unload = () => {
 }
 
 export const openUrl = async (url) => {
-    console.log('opn url', url)
     const canOpen = await Linking.canOpenURL(url)
 
     if (!canOpen) {
@@ -58,12 +48,12 @@ export const openUrl = async (url) => {
       return await Linking.openURL(url);
     }
     catch (e) {
-      console.log(e)
+        // TODO : throw error
+        console.log(e)
     }
 }
 
 export const init = (scheme) => {
-    console.log('init deeplinking ', scheme)
     DeepLinking.addScheme(scheme);
 
     // there are two wats to handle the URLs to open your app;
@@ -79,13 +69,12 @@ export const init = (scheme) => {
     Linking
         .getInitialURL()
         .then((url) => {
-            console.log('APP OPENED, WASN`T RUNNING')
-            console.log(url)
             if (url) {
                 Linking.openURL(url);
             }
         })
         .catch(err = () => {
+            // TODO: Add erroring
             console.error('An error occurred', err);
         });
 

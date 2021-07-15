@@ -8,7 +8,6 @@ import { refreshTokenWrapper } from './refreshTokenWrapper';
 import { getAuthHeader } from '../../utils/url';
 
 const getOnboardServiceFn = async (props, sdkConfig) => {
-
     // TODO: add validation
     /*
     if (!GetOnboardServiceUrlCodec.is(props) || isNaN(props.serviceId) || !isNonEmptyString(props.callback)) {

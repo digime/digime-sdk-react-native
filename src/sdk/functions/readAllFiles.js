@@ -33,23 +33,20 @@ export const readAllFiles = async (props, sdkConfig) => {
             state = status.state;
 
             if (state === STATE.PENDING) {
-                await sleep(3000);
+                await sleep(sdkConfig.sleepPollingMS);
                 continue;
             }
-
 
             // todo = what's the purpose of this?
             const newFiles = fileList
                 .reduce((accumulator, file) => {
                     const { name, updatedDate } = file;
 
-                    console.log("H files")
-                    console.log(handledFiles)
-                    console.log(file)
                     if (get(handledFiles, name, 0) < updatedDate) {
                         accumulator.push(name);
                         handledFiles[name] = updatedDate;
                     }
+
                 return accumulator;
             }, []);
 
@@ -57,9 +54,6 @@ export const readAllFiles = async (props, sdkConfig) => {
                 .map(async (fileName) => {
                     try {
                         const fileMeta = await readFile({fileName, ...props}, sdkConfig);
-
-
-
                             //if (isFunction(onFileData)) {
                                 onFileData({ ...fileMeta, fileList });
                             //}
@@ -78,7 +72,7 @@ export const readAllFiles = async (props, sdkConfig) => {
             filePromises.push(...newPromises);
 
             if (state === STATE.RUNNING) {
-                await sleep(3000);
+                await sleep(sdkConfig.sleepPollingMS);
             }
         }
 
