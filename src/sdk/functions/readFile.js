@@ -61,7 +61,7 @@ export const readFile = async (props, sdkConfig) => {
 
     let fileData = decryptData(privateKey, fileContent);
 
-    if (!!decodedMeta.compression) {
+    if (compression) {
         throw new Error("Compression not supported")
 
         /*
