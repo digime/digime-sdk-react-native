@@ -57,7 +57,7 @@ export const readFile = async (props, sdkConfig) => {
 
     const {compression, fileContent, fileMetadata} = await fetchFile(props, sdkConfig);
 
-    let fileData = decryptData(privateKey, fileContent);
+    const fileData = decryptData(privateKey, fileContent);
 
     if (compression) {
         throw new DecompressionError(`Compression (${compression}) not implemented`)

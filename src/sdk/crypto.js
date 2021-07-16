@@ -15,7 +15,7 @@ const isValidSize = (data) => {
     return bytes >= 352 && bytes % 16 === 0;
 };
 
-export const decryptData = async (privateKeyString, encryptedArrayBuffer) => {
+export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
     // Verify file data is of correct length
     if (!isValidSize(encryptedArrayBuffer)) {
         throw new FileDecryptionError("File size not valid");
