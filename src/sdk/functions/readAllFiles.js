@@ -1,7 +1,9 @@
 import { readFile } from "../functions/readFile";
 import { sleep } from "../../utils/sleep";
 import { readFileList } from "./readFileList";
-import { get } from "lodash";
+import { get, isFunction } from "lodash";
+import { isNonEmptyString } from "../../utils/stringUtils";
+import { TypeValidationError } from "../errors/errors";
 
 const STATE = {
     PENDING: "pending",
@@ -13,12 +15,9 @@ const STATE = {
 export const readAllFiles = (props, sdkConfig) => {
     const { sessionKey, privateKey, onFileData, onFileError } = props;
 
-    // TODO: add validation
-    /*
     if (!isNonEmptyString(sessionKey)) {
         throw new TypeValidationError("Parameter sessionKey should be a non empty string");
     }
-    */
 
     let allowPollingToContinue = true;
 
@@ -53,18 +52,16 @@ export const readAllFiles = (props, sdkConfig) => {
             const newPromises = newFiles
                 .map(async (fileName) => {
                     try {
-                        const fileMeta = await readFile({fileName, ...props}, sdkConfig);
-                            //if (isFunction(onFileData)) {
-                                onFileData({ ...fileMeta, fileList });
-                            //}
+                        const fileContents = await readFile({fileName, ...props}, sdkConfig);
+                        if (isFunction(onFileData)) {
+                            onFileData({ ...fileContents, fileList });
+                        }
                     }
                     catch(error) {
-                            // Failed all attempts
-                            ///*
-                            //if (isFunction(onFileError)) {
-                                onFileError({ error, fileName, fileList });
-                            //}
-                            //*/
+                        // Failed all attempts
+                        if (isFunction(onFileError)) {
+                            onFileError({ error, fileName, fileList });
+                        }
                     }
                     return;
                 })

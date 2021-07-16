@@ -3,6 +3,7 @@ import DeepLinking from 'react-native-deep-linking';
 import {Linking} from 'react-native';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
 import { removeStartingSlash } from '../utils/url';
+import { AppLinkingError } from './errors/errors';
 
 const handleUrl = (obj) => {
     const {url} = obj;
@@ -57,9 +58,8 @@ export const init = (scheme) => {
                 Linking.openURL(url);
             }
         })
-        .catch(err = () => {
-            // TODO: Add erroring
-            console.error('An error occurred', err);
+        .catch(error => {
+            throw new AppLinkingError(error)
         });
 
     return {

@@ -1,5 +1,6 @@
 import {InAppBrowser} from 'react-native-inappbrowser-reborn'
 import {Linking} from 'react-native';
+import { BrowserError, ExternalBrowserError, InternalBrowserError } from './errors/errors';
 
 const getIosOptions = {
     // iOS Properties
@@ -60,8 +61,7 @@ const openInternalBrowser = async (url) => {
             Linking.openURL(url)
 
     } catch (error) {
-        // TODO add erroring here
-        console.log(error)
+        throw new InternalBrowserError(error)
     }
 }
 
@@ -80,9 +80,8 @@ const openExternalBrowser = async (url) => {
     try {
       return await Linking.openURL(url);
     }
-    catch (e) {
-        // TODO : throw error
-        console.log(e)
+    catch (error) {
+        throw new ExternalBrowserError(error)
     }
 }
 

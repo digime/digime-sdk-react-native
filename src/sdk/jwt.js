@@ -1,5 +1,6 @@
 import JSR from 'jsrsasign';
-import { getRandomAlphaNumeric } from '../utils/crypto';
+import { getRandomAlphaNumeric } from '../utils/hash';
+import { ServerError } from './errors/errors';
 const JWS = JSR.jws.JWS;
 
 export const createJWT = async (payload, privateKey) => {
@@ -22,7 +23,7 @@ export const createJWT = async (payload, privateKey) => {
 };
 
 const sign = (header, payload, privateKey) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         try {
             const sig = JWS.sign(
                 null,
@@ -32,9 +33,9 @@ const sign = (header, payload, privateKey) => {
             );
             resolve(sig);
         }
-        catch (err) {
-            // TODO ERROR
-            reject(err)
+        catch (error) {
+            // todo handle server response
+            throw new ServerError(error)
         }
     });
 }

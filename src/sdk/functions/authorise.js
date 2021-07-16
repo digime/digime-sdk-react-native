@@ -1,10 +1,12 @@
-import {hashSHA256, getRandomAlphaNumeric} from '../../utils/crypto';
 import base64url from 'base64url';
 import {request} from '../request';
 import {getOauthURL, getAuthURL} from '../../constants/urlPaths';
-import {decode, createJWT} from '../jwt';
+import {decode, createJWT, verify} from '../jwt';
 import {URL, URLSearchParams} from 'react-native-url-polyfill';
 import { getAuthHeader } from '../../utils/url';
+import { DigiMeSDKError, ServerError } from '../errors/errors';
+import { isString } from 'lodash';
+import { getRandomAlphaNumeric, hashSHA256 } from '../../utils/hash';
 
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
     const codeVerifier = base64url(getRandomAlphaNumeric(32));
@@ -28,38 +30,23 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
     };
 }
 
-const getParam = (obj, name) => {
-    const {
-        [name]: {
-            expires_on: expires,
-            value,
-        }
-    } = obj;
-    return {
-        expires,
-        value
-    };
-  }
-
 export const getPayloadFromToken = async (token, sdkConfig) => {
     const {
         payload,
         header
     } = decode(token);
 
-    return {
-        ...payload
-    };
+    const jku = header?.jku;
+    const kid = header?.kid;
 
-    /*
-    // TODO: Add token validation from response
-    const jku = decodedToken?.header?.jku;
-    const kid = decodedToken?.header?.kid;
+    if (!isString(jku) || !isString(kid)) {
+        throw new DigiMeSDKError("Unexpected JWT payload in token. No jku or kid found.");
+    }
 
     const {data:jkuResponse} = await request.direct.get(jku);
 
     if(!jkuResponse) {
-        throw new Error("Server returned non-JWKS response");
+        throw new DigiMeSDKError("Server returned non-JWKS response");
     }
 
     const pem = jkuResponse
@@ -67,13 +54,20 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
         .filter((key) => key.kid === kid)
         .map((key) => key.pem);
 
-    verify(token, pem[0], ["PS512"]);
+    // TODO implement this function
+    // currently erroring somewhere
+    //verify(token, pem[0], ["PS512"]);
 
-    // todo: add validation.. .
+    // todo: add token validation validation.. .
+    /*
     return {
         code: decodedToken.payload
     };
     */
+
+    return {
+        ...payload
+    };
 }
 
 const authorise = async (props, sdkConfig) => {
@@ -136,7 +130,7 @@ export const getAuthorizeUrl = async (props, sdkConfig) => {
 
     const result = new URL(getAuthURL({baseUrl: onboardUrl}));
 
-    // rename serviceId -> service
+    // rename serviceId -> service (id)
     // add to searchParams
     const {serviceId: service} = props;
 

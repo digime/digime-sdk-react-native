@@ -3,7 +3,7 @@ import { request } from "../request";
 
 export const readFileList = async (props, sdkConfig) => {
     const {sessionKey} = props;
-    const {baseUrl} = sdkConfig;
+    const {baseUrl, retryOptions:{retries}} = sdkConfig;
 
     // TODO: check retry options
     const {data:response} = await request.func.get(
@@ -11,6 +11,9 @@ export const readFileList = async (props, sdkConfig) => {
         {
             sessionKey,
             baseUrl
+        },
+        {
+            retries
         }
     )
 

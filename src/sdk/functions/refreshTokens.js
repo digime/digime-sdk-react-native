@@ -3,6 +3,7 @@ import { getPayloadFromToken } from "./authorise";
 import { createJWT } from "../jwt";
 import { request } from "../request";
 import { getAuthHeader } from "../../utils/url";
+import { DigiMeSDKError } from "../errors/errors";
 
 export const refreshToken = async (props, sdkConfig) => {
     const { contractDetails, userAccessToken } = props;
@@ -88,6 +89,6 @@ export const refreshToken = async (props, sdkConfig) => {
         */
 
         //throw error;
-        throw new Error(error)
+        throw new DigiMeSDKError(error)
     }
 };

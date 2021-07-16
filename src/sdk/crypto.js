@@ -1,8 +1,6 @@
-// import NodeRSA from 'node-rsa';
 const {cipher, util, pki} = require('node-forge');
-const {randomBytes} = require('react-native-randombytes');
-import { sha256, sha512 } from 'hash.js';
-import base64url from 'base64url';
+import { FileDecryptionError } from './errors/errors';
+import { hashSHA512 } from '../utils/hash';
 
 const BYTES = {
     DSK: [0, 256],
@@ -12,32 +10,6 @@ const BYTES = {
     DATA: [64],
 };
 
-const ALPHA_LOWER = `abcdefghijklmnopqrstuvwxyz`;
-const ALPHA_UPPER = ALPHA_LOWER.toUpperCase();
-const NUMERIC = `0123456789`;
-const ALPHA_NUMERIC = `${ALPHA_LOWER}${ALPHA_UPPER}${NUMERIC}`;
-
-export const getRandomAlphaNumeric = (size) => {
-    const charsLength = ALPHA_NUMERIC.length;
-    const value = new Array(size);
-    for (let i = 0; i < size; i++) {
-        let random;
-        do {
-            random = randomBytes(1).readUInt8(0);
-        } while (random > (256 - (256 % charsLength)));
-        value[i] = ALPHA_NUMERIC[random % charsLength];
-    }
-    return value.join("");
-};
-
-export const hashSHA256 = data => createHash(data, sha256);
-export const hashSHA512 = data => createHash(data, sha512);
-
-const createHash = (data, hashFunction) => {
-    const digest = hashFunction().update(data).digest();
-    return base64url(digest)
-}
-
 const isValidSize = (data) => {
     const bytes = data.length;
     return bytes >= 352 && bytes % 16 === 0;
@@ -46,7 +18,7 @@ const isValidSize = (data) => {
 export const decryptData = async (privateKeyString, encryptedArrayBuffer) => {
     // Verify file data is of correct length
     if (!isValidSize(encryptedArrayBuffer)) {
-        //throw new FileDecryptionError("File size not valid");
+        throw new FileDecryptionError("File size not valid");
     }
 
     const encryptedDsk = encryptedArrayBuffer.slice(...BYTES.DSK);
@@ -60,11 +32,17 @@ export const decryptData = async (privateKeyString, encryptedArrayBuffer) => {
     const jfsHash = jfsHashAndData.slice(...BYTES.HASH).toString();
     const jfsData = jfsHashAndData.slice(...BYTES.DATA).toString();
 
-    // TODO -- compare hash here.
-
+    if (compareDataHash(jfsData, jfsHash)) {
+        throw new FileDecryptionError("Hash is not valid");
+    }
 
     return jfsData;
 };
+
+const compareDataHash = (data, hash) => {
+    const dataHash = hashSHA512(data);
+    return dataHash === hash;
+}
 
 const decryptUsingKey = (privateKeyString, data) => {
     const privateKey = pki.privateKeyFromPem(privateKeyString);

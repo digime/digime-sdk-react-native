@@ -1,8 +1,10 @@
 import {getFileURL} from "../../constants/urlPaths";
 import {request} from "../request";
 import {ReadBlob} from "../../utils/readBlob";
-import {decryptData} from "../../utils/crypto";
+import {decryptData} from "../crypto";
 import {decode} from 'base64url'
+import { DecompressionError, TypeValidationError } from "../errors/errors";
+import { isNonEmptyString } from "../../utils/stringUtils";
 
 const fetchFile = async (props, sdkConfig) => {
     const {sessionKey, fileName} = props;
@@ -29,9 +31,7 @@ const fetchFile = async (props, sdkConfig) => {
 
         const fileContent = await ReadBlob(data);
         const base64Meta = responseHeaders["x-metadata"]
-        console.log({base64Meta})
         const decodedMeta = JSON.parse(decode(base64Meta));
-
         const {metadata: fileMetadata, compression} = decodedMeta;
 
         // isDecodedCAFileHeaderResponse(decodedMeta);
@@ -43,28 +43,24 @@ const fetchFile = async (props, sdkConfig) => {
         };
 
     } catch (error) {
-        // TODO: Add error
-        console.log(error)
         handleServerResponse(error);
         throw error;
     }
 };
 
 export const readFile = async (props, sdkConfig) => {
-    const {fileName, privateKey} = props;
+    const {fileName, privateKey, sessionKey} = props;
 
-    /*
     if (!isNonEmptyString(sessionKey)) {
         throw new TypeValidationError("Parameter sessionKey should be a non empty string");
     }
-    */
 
     const {compression, fileContent, fileMetadata} = await fetchFile(props, sdkConfig);
 
     let fileData = decryptData(privateKey, fileContent);
 
     if (compression) {
-        throw new Error("Compression not supported")
+        throw new DecompressionError(`Compression (${compression}) not implemented`)
 
         /*
         if (compression === "brotli"){
@@ -75,7 +71,6 @@ export const readFile = async (props, sdkConfig) => {
         }
         */
     }
-
 
     return {
         fileData,
