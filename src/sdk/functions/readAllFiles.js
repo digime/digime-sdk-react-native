@@ -10,7 +10,7 @@ const STATE = {
     RUNNING: 'running'
 }
 
-export const readAllFiles = async (props, sdkConfig) => {
+export const readAllFiles = (props, sdkConfig) => {
     const { sessionKey, privateKey, onFileData, onFileError } = props;
 
     // TODO: add validation

@@ -43,4 +43,5 @@ dependencies {
 
     // todo: add here
     implementation project(':randombytes')
+    implementation project(':react-native-inappbrowser-reborn')
 }

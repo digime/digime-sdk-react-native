@@ -33,6 +33,7 @@ const sign = (header, payload, privateKey) => {
             resolve(sig);
         }
         catch (err) {
+            // TODO ERROR
             reject(err)
         }
     });

@@ -26,8 +26,10 @@ const fetchFile = async (props, sdkConfig) => {
                 responseType: 'blob'
             })
 
+
         const fileContent = await ReadBlob(data);
         const base64Meta = responseHeaders["x-metadata"]
+        console.log({base64Meta})
         const decodedMeta = JSON.parse(decode(base64Meta));
 
         const {metadata: fileMetadata, compression} = decodedMeta;

@@ -1,43 +1,47 @@
 /**
  * digi.me React-Native SDK
  */
-import { Buffer } from 'buffer';
+import {Buffer} from 'buffer';
 global.Buffer = Buffer;
 
 import {getAuthorizeUrl} from './src/sdk/functions/authorise';
 import * as NativeDeepLinking from './src/sdk/deepLinking';
-import { getAvailableServices } from './src/sdk/functions/getAvailableServices';
-import { readSession } from './src/sdk/functions/readSession';
-import { exchangeCodeForToken } from './src/sdk/functions/exchangeCode';
-import { getOnboardServiceUrl } from './src/sdk/functions/getOnboardServices';
-import { addTrailingSlash } from './src/utils/url';
-import { readAllFiles } from './src/sdk/functions/readAllFiles';
-import { readFile } from './src/sdk/functions/readFile';
-import { readFileList } from './src/sdk/functions/readFileList';
+import * as WebBrowser from './src/sdk/webBrowser'
+import {getAvailableServices} from './src/sdk/functions/getAvailableServices';
+import {readSession} from './src/sdk/functions/readSession';
+import {exchangeCodeForToken} from './src/sdk/functions/exchangeCode';
+import {getOnboardServiceUrl} from './src/sdk/functions/getOnboardServices';
+import {addTrailingSlash} from './src/utils/url';
+import {readAllFiles} from './src/sdk/functions/readAllFiles';
+import {readFile} from './src/sdk/functions/readFile';
+import {readFileList} from './src/sdk/functions/readFileList';
 
-export const appLinking = {
-    init: NativeDeepLinking.init,
-    openUrl: NativeDeepLinking.openUrl
+export const AppLinking = {
+    ...NativeDeepLinking
+}
+
+export const Browser = {
+    ...WebBrowser
 }
 
 export const init = config => {
     config = config || {};
 
     let formatted = {
-        ...config,
+        ...config
     };
 
     if (config.baseUrl) {
         formatted = {
-            ...formatted,
-            baseUrl: addTrailingSlash(config.baseUrl),
+            ... formatted,
+            baseUrl: addTrailingSlash(config.baseUrl)
         }
     }
 
     if (config.onboardUrl) {
         formatted = {
-            ...formatted,
-            onboardUrl: addTrailingSlash(config.onboardUrl),
+            ... formatted,
+            onboardUrl: addTrailingSlash(config.onboardUrl)
         }
     }
 
@@ -48,9 +52,9 @@ export const init = config => {
         baseUrl: "https://api.digi.me/v1.6/",
         onboardUrl: "https://api.digi.me/apps/saas/",
         retryOptions: {
-            retries: 5,
+            retries: 5
         },
-        ...formatted,
+        ... formatted
     };
 
     return {
@@ -64,7 +68,7 @@ export const init = config => {
         readFile: (props) => readFile(props, sdkConfig),
         readFileList: (props) => readFileList(props, sdkConfig),
         readAllFiles: (props) => readAllFiles(props, sdkConfig),
-        readAccounts: (props) => readAccounts(props, sdkConfig),
+        readAccounts: (props) => readAccounts(props, sdkConfig)
     }
 
 }

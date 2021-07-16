@@ -37,22 +37,6 @@ const unload = () => {
     Linking.removeEventListener('url', handleUrl);
 }
 
-export const openUrl = async (url) => {
-    const canOpen = await Linking.canOpenURL(url)
-
-    if (!canOpen) {
-        return false;
-    }
-
-    try {
-      return await Linking.openURL(url);
-    }
-    catch (e) {
-        // TODO : throw error
-        console.log(e)
-    }
-}
-
 export const init = (scheme) => {
     DeepLinking.addScheme(scheme);
 
