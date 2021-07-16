@@ -1,4 +1,5 @@
-import { find } from "lodash";
+import { compact, find } from "lodash";
+import { URLError } from "../sdk/errors/errors";
 
 export const getPrivateShareGuestURL = (baseUrl, sessionKey, callbackUrl) => `${baseUrl}/apps/quark/v1/direct-onboarding?sessionExchangeToken=${sessionKey}&callbackUrl=${callbackUrl}`
 
@@ -39,13 +40,10 @@ export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, ses
  * @returns Boolean
  */
 const validate = props => {
-    return true;
     if (hasEmptyProps(props)) {
-        throw new Error('Missing URL props in request')
-        //return false;
+        throw new URLError('Missing URL props in request');
     }
     return true;
 }
 
-const hasEmptyProps = props => find(props, emptyTest)
-const emptyTest = prop => !!prop;
+const hasEmptyProps = props => compact(props).length !== props.length;
