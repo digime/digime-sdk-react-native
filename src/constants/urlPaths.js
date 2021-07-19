@@ -1,7 +1,7 @@
-import { compact, find } from "lodash";
+import { compact } from "lodash";
 import { URLError } from "../sdk/errors/errors";
 
-export const getPrivateShareGuestURL = (baseUrl, sessionKey, callbackUrl) => `${baseUrl}/apps/quark/v1/direct-onboarding?sessionExchangeToken=${sessionKey}&callbackUrl=${callbackUrl}`
+export const getPrivateShareGuestURL = (baseUrl, sessionKey, callbackUrl) => `${baseUrl}/apps/quark/v1/direct-onboarding?sessionExchangeToken=${sessionKey}&callbackUrl=${callbackUrl}`;
 
 export const getSessionURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}permission-access/session`;
@@ -31,7 +31,7 @@ export const getFileURL = ({baseUrl, sessionKey, fileName}) => validate([baseUrl
     `${baseUrl}permission-access/query/${sessionKey}/${fileName}`;
 
 export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, sessionKey]) &&
-    `${baseUrl}permission-access/query/${sessionKey}`
+    `${baseUrl}permission-access/query/${sessionKey}`;
 
 
 /**
@@ -40,10 +40,10 @@ export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, ses
  * @returns Boolean
  */
 const validate = props => {
-    if (hasEmptyProps(props)) {
-        throw new URLError('Missing URL props in request');
-    }
-    return true;
-}
+	if (hasEmptyProps(props)) {
+		throw new URLError("Missing URL props in request");
+	}
+	return true;
+};
 
 const hasEmptyProps = props => compact(props).length !== props.length;

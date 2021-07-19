@@ -1,149 +1,149 @@
-import base64url from 'base64url';
-import {request} from '../request';
-import {getOauthURL, getAuthURL} from '../../constants/urlPaths';
-import {decode, createJWT, verify} from '../jwt';
-import {URL, URLSearchParams} from 'react-native-url-polyfill';
-import { getAuthHeader } from '../../utils/url';
-import { DigiMeSDKError, ServerError } from '../errors/errors';
-import { isString } from 'lodash';
-import { getRandomAlphaNumeric, hashSHA256 } from '../../utils/hash';
+import base64url from "base64url";
+import {request} from "../request";
+import {getOauthURL, getAuthURL} from "../../constants/urlPaths";
+import {decode, createJWT, verify} from "../jwt";
+import {URL, URLSearchParams} from "react-native-url-polyfill";
+import { getAuthHeader } from "../../utils/url";
+import { DigiMeSDKError, ServerError } from "../errors/errors";
+import { isString } from "lodash";
+import { getRandomAlphaNumeric, hashSHA256 } from "../../utils/hash";
 
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
-    const codeVerifier = base64url(getRandomAlphaNumeric(32));
+	const codeVerifier = base64url(getRandomAlphaNumeric(32));
 
-    const jwt = await createJWT(
-        {
-            client_id: `${applicationId}_${contractId}`,
-            code_challenge: hashSHA256(codeVerifier),
-            code_challenge_method: "S256",
-            redirect_uri: redirectUri,
-            response_mode: "query",
-            response_type: "code",
-            state,
-        },
-        privateKey
-    );
+	const jwt = await createJWT(
+		{
+			client_id: `${applicationId}_${contractId}`,
+			code_challenge: hashSHA256(codeVerifier),
+			code_challenge_method: "S256",
+			redirect_uri: redirectUri,
+			response_mode: "query",
+			response_type: "code",
+			state,
+		},
+		privateKey
+	);
 
-    return {
-        jwt,
-        codeVerifier
-    };
-}
+	return {
+		jwt,
+		codeVerifier
+	};
+};
 
 export const getPayloadFromToken = async (token, sdkConfig) => {
-    const {
-        payload,
-        header
-    } = decode(token);
+	const {
+		payload,
+		header
+	} = decode(token);
 
-    const jku = header?.jku;
-    const kid = header?.kid;
+	const jku = header?.jku;
+	const kid = header?.kid;
 
-    if (!isString(jku) || !isString(kid)) {
-        throw new DigiMeSDKError("Unexpected JWT payload in token. No jku or kid found.");
-    }
+	if (!isString(jku) || !isString(kid)) {
+		throw new DigiMeSDKError("Unexpected JWT payload in token. No jku or kid found.");
+	}
 
-    const {data:jkuResponse} = await request.direct.get(jku);
+	const {data:jkuResponse} = await request.direct.get(jku);
 
-    if(!jkuResponse) {
-        throw new DigiMeSDKError("Server returned non-JWKS response");
-    }
+	if(!jkuResponse) {
+		throw new DigiMeSDKError("Server returned non-JWKS response");
+	}
 
-    const pem = jkuResponse
-        .keys
-        .filter((key) => key.kid === kid)
-        .map((key) => key.pem);
+	const pem = jkuResponse
+		.keys
+		.filter((key) => key.kid === kid)
+		.map((key) => key.pem);
 
-    // TODO implement this function
-    // currently erroring somewhere
-    //verify(token, pem[0], ["PS512"]);
+	// TODO implement this function
+	// currently erroring somewhere
+	//verify(token, pem[0], ["PS512"]);
 
-    // todo: add token validation validation.. .
-    /*
+	// todo: add token validation validation.. .
+	/*
     return {
         code: decodedToken.payload
     };
     */
 
-    return {
-        ...payload
-    };
-}
+	return {
+		...payload
+	};
+};
 
 const authorise = async (props, sdkConfig) => {
-    const {
-        contractDetails,
-        state,
-        scope
-    } = props;
+	const {
+		contractDetails,
+		state,
+		scope
+	} = props;
 
-    const {applicationId} = sdkConfig;
+	const {applicationId} = sdkConfig;
 
-    const {
-        contractId,
-        privateKey,
-        redirectUri
-    } = contractDetails;
+	const {
+		contractId,
+		privateKey,
+		redirectUri
+	} = contractDetails;
 
-    const {jwt, codeVerifier} = await generateToken(
-        applicationId,
-        contractId,
-        privateKey,
-        redirectUri,
-        state
-    );
+	const {jwt, codeVerifier} = await generateToken(
+		applicationId,
+		contractId,
+		privateKey,
+		redirectUri,
+		state
+	);
 
-    const {data:body} = await request.func.post(
-        getOauthURL,
-        sdkConfig,
-        {
-            actions: {
-                pull: {
-                    scope,
-                }
-            }
-        },
-        {
-            ...getAuthHeader(jwt)
-        });
+	const {data:body} = await request.func.post(
+		getOauthURL,
+		sdkConfig,
+		{
+			actions: {
+				pull: {
+					scope,
+				}
+			}
+		},
+		{
+			...getAuthHeader(jwt)
+		});
 
-    const {
-        preauthorization_code: code
-    } = await getPayloadFromToken(body?.token, sdkConfig);
+	const {
+		preauthorization_code: code
+	} = await getPayloadFromToken(body?.token, sdkConfig);
 
-    const session = body?.session;
+	const session = body?.session;
 
-    return {
-        codeVerifier,
-        code,
-        session
-    }
-}
+	return {
+		codeVerifier,
+		code,
+		session
+	};
+};
 
 export const getAuthorizeUrl = async (props, sdkConfig) => {
-    const {autoRedirect, onboardUrl} = sdkConfig;
-    const {
-        codeVerifier,
-        code,
-        session,
-    } = await authorise(props, sdkConfig);
+	const {autoRedirect, onboardUrl} = sdkConfig;
+	const {
+		codeVerifier,
+		code,
+		session,
+	} = await authorise(props, sdkConfig);
 
-    const result = new URL(getAuthURL({baseUrl: onboardUrl}));
+	const result = new URL(getAuthURL({baseUrl: onboardUrl}));
 
-    // rename serviceId -> service (id)
-    // add to searchParams
-    const {serviceId: service} = props;
+	// rename serviceId -> service (id)
+	// add to searchParams
+	const {serviceId: service} = props;
 
-    result.search = new URLSearchParams({
-        code,
-        callback: props.callback,
-        ...(service && {service}),
-        autoRedirect,
-    }).toString();
+	result.search = new URLSearchParams({
+		code,
+		callback: props.callback,
+		...(service && {service}),
+		autoRedirect,
+	}).toString();
 
-    return {
-        url: result.toString(),
-        codeVerifier,
-        session
-    }
-}
+	return {
+		url: result.toString(),
+		codeVerifier,
+		session
+	};
+};

@@ -6,34 +6,34 @@ import { getAuthHeader } from "../../utils/url";
 import { DigiMeSDKError } from "../errors/errors";
 
 export const refreshToken = async (props, sdkConfig) => {
-    const { contractDetails, userAccessToken } = props;
-    const { contractId, privateKey, redirectUri } = contractDetails;
+	const { contractDetails, userAccessToken } = props;
+	const { contractId, privateKey, redirectUri } = contractDetails;
 
-    const jwt = await createJWT(
-        {
-            client_id: `${sdkConfig.applicationId}_${contractId}`,
-            grant_type: "refresh_token",
-            redirect_uri: redirectUri,
-            refresh_token: userAccessToken.refreshToken.value,
-        },
-        privateKey
-    );
+	const jwt = await createJWT(
+		{
+			client_id: `${sdkConfig.applicationId}_${contractId}`,
+			grant_type: "refresh_token",
+			redirect_uri: redirectUri,
+			refresh_token: userAccessToken.refreshToken.value,
+		},
+		privateKey
+	);
 
-    try {
-        const {data:body} = await request.func.post(
-            getOauthTokenURL,
-            sdkConfig,
-            {},
-            {
-                ...getAuthHeader(jwt)
-            });
+	try {
+		const {data:body} = await request.func.post(
+			getOauthTokenURL,
+			sdkConfig,
+			{},
+			{
+				...getAuthHeader(jwt)
+			});
 
-        const {
-            access_token,
-            refresh_token
-        } = await getPayloadFromToken(body?.token, sdkConfig);
+		const {
+			access_token,
+			refresh_token
+		} = await getPayloadFromToken(body?.token, sdkConfig);
 
-        /*
+		/*
         // original
         return {
             accessToken: {
@@ -47,28 +47,28 @@ export const refreshToken = async (props, sdkConfig) => {
         };
         */
 
-        const getParam = (obj) => {
-            const {
-                expires_on: expires,
-                value,
-            } = obj;
-            return {
-                expires,
-                value
-            };
-          }
+		const getParam = (obj) => {
+			const {
+				expires_on: expires,
+				value,
+			} = obj;
+			return {
+				expires,
+				value
+			};
+		};
 
-        return {
-            accessToken: {
-                ...getParam(access_token),
-            },
-            refreshToken: {
-                ...getParam(refresh_token),
-            },
-        };
+		return {
+			accessToken: {
+				...getParam(access_token),
+			},
+			refreshToken: {
+				...getParam(refresh_token),
+			},
+		};
 
-    } catch (error) {
-        /*
+	} catch (error) {
+		/*
         if (!(error instanceof HTTPError)) {
             throw error;
         }
@@ -88,7 +88,7 @@ export const refreshToken = async (props, sdkConfig) => {
         }
         */
 
-        //throw error;
-        throw new DigiMeSDKError(error)
-    }
+		//throw error;
+		throw new DigiMeSDKError(error);
+	}
 };

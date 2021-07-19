@@ -1,11 +1,11 @@
 import { refreshToken } from "./refreshTokens";
 
 export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
-    try {
-        return await operationFn(props, sdkConfig);
-    } catch (error) {
-        // TODO: handle the status errors
-        /*
+	try {
+		return await operationFn(props, sdkConfig);
+	} catch (error) {
+		// TODO: handle the status errors
+		/*
         if (!(error instanceof HTTPError)) {
             throw error;
         }
@@ -15,22 +15,22 @@ export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
             throw error;
         }
         */
-    }
+	}
 
-    const {contractDetails, userAccessToken} = props;
+	const {contractDetails, userAccessToken} = props;
 
-    const newTokens = await refreshToken({
-            contractDetails,
-            userAccessToken
-        },
-        sdkConfig
-    );
+	const newTokens = await refreshToken({
+		contractDetails,
+		userAccessToken
+	},
+	sdkConfig
+	);
 
-    return await operationFn(
-        {
-            ...props,
-            userAccessToken: newTokens,
-        },
-        sdkConfig
-    );
+	return await operationFn(
+		{
+			...props,
+			userAccessToken: newTokens,
+		},
+		sdkConfig
+	);
 };
