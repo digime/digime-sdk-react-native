@@ -1,6 +1,7 @@
 const {cipher, util, pki} = require("node-forge");
 import { FileDecryptionError } from "./errors/errors";
 import { hashSHA512 } from "../utils/hash";
+import { isEqual } from "lodash";
 
 const BYTES = {
 	DSK: [0, 256],
@@ -41,7 +42,7 @@ export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
 
 const compareDataHash = (data, hash) => {
 	const dataHash = hashSHA512(data);
-	return dataHash === hash;
+	return isEqual(dataHash, hash);
 };
 
 const decryptUsingKey = (privateKeyString, data) => {
