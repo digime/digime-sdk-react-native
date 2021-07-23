@@ -6,11 +6,11 @@
   "typings": "./types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/.bin/eslint index.js src/ --fix",
+    "lint": "./node_modules/.bin/eslint src/ --fix",
     "clean": "rimraf ./dist && rimraf ./types",
     "build:all": "npm run clean && npm run build:types && npm pack",
     "build": "npx tsc ./src/*.js --allowJs --outDir ./dist",
-    "build:types": "npx tsc ./src/*.js --allowJs --declaration --emitDeclarationOnly --declarationDir ./types --declarationMap --importsNotUsedAsValues preserve"
+    "build:types": "npx tsc ./src/*.js --allowJs --declaration --emitDeclarationOnly --declarationDir ./types --importsNotUsedAsValues preserve"
   },
   "keywords": [
     "react-native"

@@ -2,8 +2,8 @@ import "../definitions/defs";
 
 /**
  * Adds slash to end of url (if required)
- * @param {String} url
- * @returns {String} result
+ * @param {string} url
+ * @returns {string} result
  *
  * @example
  * addTrailingSlash("https://digi.me")
@@ -17,7 +17,7 @@ export const addTrailingSlash = url => {
 
 /**
  * Gets Key/Value pair for auth header for JWT auth request
- * @param {String} jwt
+ * @param {string} jwt
  * @returns {Object}
  */
 export const getAuthHeader = jwt => {
@@ -28,8 +28,8 @@ export const getAuthHeader = jwt => {
 
 /**
  *
- * @param {String} url
- * @returns {String}
+ * @param {string} url
+ * @returns {string}
  *
  * @example remoteStartingSlash("/test")
  */

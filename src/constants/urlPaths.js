@@ -3,17 +3,17 @@ import { URLError } from "../sdk/errors/errors";
 
 /**
  * @function getPrivateShareGuestURL
- * @param {String} baseUrl
- * @param {String} sessionKey
- * @param {String} callbackUrl
- * @returns {String}
+ * @param {string} baseUrl
+ * @param {string} sessionKey
+ * @param {string} callbackUrl
+ * @returns {string}
  */
 export const getPrivateShareGuestURL = (baseUrl, sessionKey, callbackUrl) => `${baseUrl}/apps/quark/v1/direct-onboarding?sessionExchangeToken=${sessionKey}&callbackUrl=${callbackUrl}`;
 
 /**
  * @function getSessionURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getSessionURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}permission-access/session`;
@@ -21,7 +21,7 @@ export const getSessionURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getOauthURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getOauthURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}oauth/authorize`;
@@ -29,7 +29,7 @@ export const getOauthURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getOauthTokenURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getOauthTokenURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}oauth/token`;
@@ -37,7 +37,7 @@ export const getOauthTokenURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getAuthURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getAuthURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}authorize`;
@@ -45,7 +45,7 @@ export const getAuthURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getTriggerURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getTriggerURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}permission-access/trigger`;
@@ -53,7 +53,7 @@ export const getTriggerURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getServicesURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getServicesURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}discovery/services`;
@@ -61,7 +61,7 @@ export const getServicesURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getTokenReferenceURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getTokenReferenceURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}oauth/token/reference`;
@@ -69,7 +69,7 @@ export const getTokenReferenceURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getServiceOnboardURL
  * @param {{baseUrl:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getServiceOnboardURL = ({baseUrl}) => validate([baseUrl]) &&
     `${baseUrl}onboard`;
@@ -77,7 +77,7 @@ export const getServiceOnboardURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * @function getFileURL
  * @param {{baseUrl:String, sessionKey:String, fileName:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getFileURL = ({baseUrl, sessionKey, fileName}) => validate([baseUrl, sessionKey, fileName]) &&
     `${baseUrl}permission-access/query/${sessionKey}/${fileName}`;
@@ -85,7 +85,7 @@ export const getFileURL = ({baseUrl, sessionKey, fileName}) => validate([baseUrl
 /**
  * @function getFileListURL
  * @param {{baseUrl:String, sessionKey:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, sessionKey]) &&
     `${baseUrl}permission-access/query/${sessionKey}`;
@@ -93,10 +93,19 @@ export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, ses
 /**
  * @function getPostboxURL
  * @param {{baseUrl:String, postboxId:String}}
- * @returns {String}
+ * @returns {string}
  */
 export const getPostboxURL = ({baseUrl, postboxId}) => validate([baseUrl, postboxId]) &&
     `${baseUrl}permission-access/postbox/${postboxId}`;
+
+
+/**
+ * @function get user
+ * @param {{baseUrl:String}}
+ * @returns {string}
+ */
+export const getUserURL = ({baseUrl}) => validate([baseUrl]) &&
+    `${baseUrl}user`;
 
 /**
  * Check that all the required url parts are supplied

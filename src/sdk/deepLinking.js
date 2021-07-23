@@ -40,7 +40,7 @@ const unload = () => {
 
 /**
  * Add
- * @param {String} scheme
+ * @param {string} scheme
  * @returns {{addRoute:(route:String, callback:()), unload:()}}
  */
 export const init = (scheme) => {

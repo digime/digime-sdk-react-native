@@ -3,7 +3,7 @@ import "../definitions/defs";
 
 /**
  * Checks if {@link data} is a non-empty string
- * @param {String} data
+ * @param {string} data
  * @returns {Boolean} result
  */
 export const isNonEmptyString = data /* (o: unknown): o is string  */=>

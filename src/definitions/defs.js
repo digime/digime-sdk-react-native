@@ -9,7 +9,7 @@
  * @typedef {Object} sdkConfig
  * @property {Boolean} [autoRedirect=false]
  * @property {number} [sleepPollingMS=5000]
- * @property {String} baseUrl
+ * @property {string} baseUrl
  * @property {string} onboardUrl
  * @property {RetryOptions} [retryOptions={retries:5}]
  */
@@ -18,9 +18,9 @@
 /**
  * Contract details
  * @typedef {Object} contractDetails
- * @property {String} contractId
- * @property {String} privateKey
- * @property {String} redirectUri
+ * @property {string} contractId
+ * @property {string} privateKey
+ * @property {string} redirectUri
  */
 
 
@@ -35,4 +35,7 @@
  * @property {function({props})} readFile
  * @property {function({props})} readFileList
  * @property {function({props})} readAllFiles
+ * @property {function({props})} write
+ * @property {function({props})} readAccount
+ * @property {function({props})} delete
  */

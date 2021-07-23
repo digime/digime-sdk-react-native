@@ -50,7 +50,7 @@ const BROWSER_STYLE_OPTIONS = {
 /**
  * Open url in app-internal webview
  * using custom chrome tabs
- * @param {String} url
+ * @param {string} url
  * @returns
  */
 const openInternalBrowser = async (url) => {
@@ -68,7 +68,7 @@ const openInternalBrowser = async (url) => {
 
 /**
  * Open url in external browser app
- * @param {String} url
+ * @param {string} url
  * @returns
  */
 const openExternalBrowser = async (url) => {
@@ -87,7 +87,7 @@ const openExternalBrowser = async (url) => {
 };
 
 /**
- * @typedef {String} BrowserType
+ * @typedef {string} BrowserType
  **/
 
 
@@ -104,7 +104,7 @@ const BROWSER_TYPE = {
  * defaults to using internal browser
  * @async
  * @function openUrl
- * @param {String} url
+ * @param {string} url
  * @param {BrowserType} type
  * @returns {Promise<any>}
  */

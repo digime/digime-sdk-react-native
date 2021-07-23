@@ -1,11 +1,45 @@
 import axios from "axios";
 import "../definitions/defs";
 
+/**
+ * HTTP Methods
+ * @readonly
+ * @enum {string}
+ * @property {string} POST
+ * @property {string} GET
+ * @property {string} DELETE
+ */
+const METHOD = {
+	POST: "post",
+	GET: "get",
+	DELETE: "delete"
+};
+
+/**
+ * Calls URL with parameters. Resolves url using {@link urlProps} and {@link urlFunction} before calling {@link callUrl}
+ * @param {METHOD} method
+ * @param {string[]} urlProps
+ * @param {function()} urlFunction
+ * @param {string} url
+ * @param {object} data
+ * @param {object} headers
+ * @param {object} [options]
+ * @returns {{data,responseHeaders,status}}
+ */
 const callURLFunction = async (method, urlProps, urlFunction, data, headers, options) => {
 	const url = urlFunction(urlProps);
 	return await callUrl(method, url, data, headers, options);
 };
 
+/**
+ * Calls URL with parameters.
+ * @param {METHOD} method
+ * @param {string} url
+ * @param {object} data
+ * @param {object} headers
+ * @param {object} [options]
+ * @returns {{data,responseHeaders,status}}
+ */
 const callUrl = async (method, url, data, headers, options={}) => {
 	const defaultHeaders = {
 		Accept:  "application/json",
@@ -40,25 +74,26 @@ const callUrl = async (method, url, data, headers, options={}) => {
 	});
 };
 
-/**
- * HTTP Methods
- */
-const METHOD = {
-	POST: "post",
-	GET: "get"
-};
-
 export const request = {
+	/**
+	 * Call url with given parameters directly
+	 */
 	direct: {
 		post: (url, data, headers, options) =>
 			callUrl(METHOD.POST, url, data, headers, options),
 		get: (url, data, headers, options) =>
 			callUrl(METHOD.GET, url, data, headers, options),
 	},
+
+	/**
+	 * Call url with given parameters, using url function and url props to resolve a url
+	 */
 	func: {
 		post: (urlFunction, urlProps, data, headers, options) =>
 			callURLFunction(METHOD.POST, urlProps, urlFunction, data, headers, options),
 		get: (urlFunction, urlProps, data, headers, options) =>
 			callURLFunction(METHOD.GET, urlProps, urlFunction, data, headers, options),
+		delete: (urlFunction, urlProps, data, headers, options) =>
+			callURLFunction(METHOD.DELETE, urlProps, urlFunction, data, headers, options),
 	}
 };

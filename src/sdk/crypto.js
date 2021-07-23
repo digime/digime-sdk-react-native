@@ -28,9 +28,9 @@ const isValidSize = (data) => {
 /**
  * Decrypt data Buffer using PEM string. Performs validations
  * @function decryptData
- * @param {String} privateKeyString
+ * @param {string} privateKeyString
  * @param {ArrayBuffer} encryptedArrayBuffer
- * @returns {String} decrypted data contents
+ * @returns {string} decrypted data contents
  */
 export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
 	// Verify file data is of correct length
@@ -58,14 +58,14 @@ export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
 
 /**
  * Creates RSA Class instance
- * @param {String} privateKeyPEM
+ * @param {string} privateKeyPEM
  * @returns
  */
 const createPrivateRSAKey = privateKeyPEM => pki.privateKeyFromPem(privateKeyPEM);
 
 /**
  * Creates RSA Class instance
- * @param {String} publicKeyPEM
+ * @param {string} publicKeyPEM
  * @returns
  */
 const createPublicRSAKey = publicKeyPEM => pki.publicKeyFromPem(publicKeyPEM);
@@ -77,7 +77,7 @@ const compareDataHash = (data, hash) => {
 
 /**
  *
- * @param {String} privateKeyString
+ * @param {string} privateKeyString
  * @param {ArrayBuffer} data
  * @returns
  */
@@ -88,9 +88,9 @@ const decryptUsingKey = (privateKeyString, data) => {
 
 /**
  *
- * @param {String} encryptedData
- * @param {String} dsk
- * @param {String} iv
+ * @param {string} encryptedData
+ * @param {string} dsk
+ * @param {string} iv
  * @returns
  */
 const decipherData = (encryptedData, dsk, iv) => {
@@ -104,9 +104,9 @@ const decipherData = (encryptedData, dsk, iv) => {
 
 /**
  *
- * @param {String} unEncryptedData
- * @param {String} dsk
- * @param {String} iv
+ * @param {string} unEncryptedData
+ * @param {string} dsk
+ * @param {string} iv
  * @returns String - base64
  */
 const cipherData = (unEncryptedData, dsk, iv) => {
@@ -121,8 +121,8 @@ const cipherData = (unEncryptedData, dsk, iv) => {
 
 /**
  * @function encryptData
- * @param {String} publicKey
- * @param {String} privateKey
+ * @param {string} publicKey
+ * @param {string} privateKey
  * @param {{fileData:String, fileName:String, fileDescriptor:String}} data
  * @returns {{iv:String, encryptedData:String, encryptedKey:String, encryptedMeta:String}} result
  */

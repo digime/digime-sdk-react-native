@@ -15,7 +15,8 @@ import {addTrailingSlash} from "./utils/url";
 import {readAllFiles} from "./sdk/functions/readAllFiles";
 import {readFile} from "./sdk/functions/readFile";
 import {readFileList} from "./sdk/functions/readFileList";
-//import { triggerPush } from "./src/sdk/write";
+import {deleteUser} from "./sdk/functions/deleteUser";
+import {write} from "./sdk/functions/write";
 
 /**
  * Functions to handle deep linking
@@ -79,7 +80,6 @@ export const init = config => {
 		readFile: (props) => readFile(props, sdkConfig),
 		readFileList: (props) => readFileList(props, sdkConfig),
 		readAllFiles: (props) => readAllFiles(props, sdkConfig),
-
 		write: (props) => write(props, sdkConfig),
 		deleteUser: (props) => deleteUser(props, sdkConfig),
 		readAccounts: (props) => readAccounts(props, sdkConfig)

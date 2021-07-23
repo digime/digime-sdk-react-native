@@ -36,7 +36,7 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
 
 /**
  *
- * @param {String} JWTtoken
+ * @param {string} JWTtoken
  * @param {sdkConfig} sdkConfig
  * @returns
  */

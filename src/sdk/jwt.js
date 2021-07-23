@@ -6,13 +6,14 @@ import "../definitions/defs";
 const JWS = JSR.jws.JWS;
 
 /**
- * Creates a JSON Web Token used for API requests using PS512 algorithm
+ * Creates a JSON Web Token used for API requests using PS512 algorithm.
+ * creates `nonce`, `timestamp`, `client_id`
  * @async
  * @function createJWT
  * @param {{}} payload - any data required to be added into the payload of the JWT
- * @param {{applicationId:String, contractId:String}} payloadOptions - additional options required for params in payload
- * @param {String} privateKey - PEM string
- * @returns
+ * @param {{applicationId:string, contractId:string}} payloadOptions - additional options required for params in payload
+ * @param {string} privateKey - PEM string
+ * @returns {string} JWT result
  */
 export const createJWT = async (payload, payloadOptions, privateKey) => {
 	const {applicationId, contractId} = payloadOptions;
@@ -42,7 +43,7 @@ export const createJWT = async (payload, payloadOptions, privateKey) => {
  * @function sign
  * @param {{}}} header
  * @param {{}} payload
- * @param {String} privateKey
+ * @param {string} privateKey
  * @returns {Promise<string>}
  */
 const sign = (header, payload, privateKey) => {
@@ -66,7 +67,7 @@ const sign = (header, payload, privateKey) => {
 /**
  * decodes JWT to header, payload, and signature components
  * @function decode
- * @param {String} token
+ * @param {string} token
  * @returns {{header:String, payload:String, signature:String}} result
  */
 export const decode = (token) => {
