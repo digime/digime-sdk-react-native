@@ -4,17 +4,28 @@ import { createJWT } from "../jwt";
 import { request } from "../request";
 import { getAuthHeader } from "../../utils/url";
 import { DigiMeSDKError } from "../errors/errors";
+import "../../definitions/defs";
 
+/**
+ * Refreshes the Access Token
+ * @param {{contractDetails, userAccessToken}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 export const refreshToken = async (props, sdkConfig) => {
 	const { contractDetails, userAccessToken } = props;
 	const { contractId, privateKey, redirectUri } = contractDetails;
+	const {applicationId} = sdkConfig;
 
 	const jwt = await createJWT(
 		{
-			client_id: `${sdkConfig.applicationId}_${contractId}`,
 			grant_type: "refresh_token",
 			redirect_uri: redirectUri,
 			refresh_token: userAccessToken.refreshToken.value,
+		},
+		{
+			applicationId,
+			contractId,
 		},
 		privateKey
 	);
@@ -59,12 +70,8 @@ export const refreshToken = async (props, sdkConfig) => {
 		};
 
 		return {
-			accessToken: {
-				...getParam(access_token),
-			},
-			refreshToken: {
-				...getParam(refresh_token),
-			},
+			accessToken: {...getParam(access_token)},
+			refreshToken: {...getParam(refresh_token)},
 		};
 
 	} catch (error) {

@@ -1,12 +1,27 @@
 import JSR from "jsrsasign";
 import { getRandomAlphaNumeric } from "../utils/hash";
 import { ServerError } from "./errors/errors";
+import "../definitions/defs";
+
 const JWS = JSR.jws.JWS;
 
-export const createJWT = async (payload, privateKey) => {
+/**
+ * Creates a JSON Web Token used for API requests using PS512 algorithm
+ * @async
+ * @function createJWT
+ * @param {{}} payload - any data required to be added into the payload of the JWT
+ * @param {{applicationId:String, contractId:String}} payloadOptions - additional options required for params in payload
+ * @param {String} privateKey - PEM string
+ * @returns
+ */
+export const createJWT = async (payload, payloadOptions, privateKey) => {
+	const {applicationId, contractId} = payloadOptions;
+	const client_id = `${applicationId}_${contractId}`;
+
 	payload = {
 		nonce: getRandomAlphaNumeric(32),
 		timestamp: new Date().getTime(),
+		client_id,
 		...payload
 	};
 
@@ -22,6 +37,14 @@ export const createJWT = async (payload, privateKey) => {
 	);
 };
 
+/**
+ * @async
+ * @function sign
+ * @param {{}}} header
+ * @param {{}} payload
+ * @param {String} privateKey
+ * @returns {Promise<string>}
+ */
 const sign = (header, payload, privateKey) => {
 	return new Promise((resolve) => {
 		try {
@@ -40,6 +63,12 @@ const sign = (header, payload, privateKey) => {
 	});
 };
 
+/**
+ * decodes JWT to header, payload, and signature components
+ * @function decode
+ * @param {String} token
+ * @returns {{header:String, payload:String, signature:String}} result
+ */
 export const decode = (token) => {
 	const asoArray = JWS.parse(token);
 
@@ -50,6 +79,7 @@ export const decode = (token) => {
 	};
 };
 
+// TODO implement verify JWT
 export const verify = (signature, key, alg) => {
 	const args = (
 		signature,

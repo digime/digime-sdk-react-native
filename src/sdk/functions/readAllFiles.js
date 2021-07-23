@@ -4,6 +4,7 @@ import { readFileList } from "./readFileList";
 import { get, isFunction } from "lodash";
 import { isNonEmptyString } from "../../utils/stringUtils";
 import { TypeValidationError } from "../errors/errors";
+import "../../definitions/defs";
 
 const STATE = {
 	PENDING: "pending",
@@ -12,8 +13,15 @@ const STATE = {
 	RUNNING: "running"
 };
 
+/**
+ * Retrieves and decrypts all files from the API
+ * @function readAllFiles
+ * @param {{sessionKey:string, privateKey:string, onFileData:(), onFileError:()}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 export const readAllFiles = (props, sdkConfig) => {
-	const { sessionKey, privateKey, onFileData, onFileError } = props;
+	const { sessionKey, onFileData, onFileError } = props;
 
 	if (!isNonEmptyString(sessionKey)) {
 		throw new TypeValidationError("Parameter sessionKey should be a non empty string");

@@ -5,7 +5,15 @@ import {decryptData} from "../crypto";
 import {decode} from "base64url";
 import { DecompressionError, TypeValidationError } from "../errors/errors";
 import { isNonEmptyString } from "../../utils/stringUtils";
+import "../../definitions/defs";
 
+/**
+ * Downloads the encrypted file from the API using the name
+ * and sessionKey
+ * @param {{sessionKey:string, fileName:string}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 const fetchFile = async (props, sdkConfig) => {
 	const {sessionKey, fileName} = props;
 	const {baseUrl} = sdkConfig;
@@ -48,6 +56,14 @@ const fetchFile = async (props, sdkConfig) => {
 	}
 };
 
+/**
+ * Retrives and decrypts a file from the API
+ * @async
+ * @function readFile
+ * @param {{fileName:string, privateKey:string, sessionKey:string}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 export const readFile = async (props, sdkConfig) => {
 	const {fileName, privateKey, sessionKey} = props;
 

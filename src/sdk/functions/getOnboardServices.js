@@ -1,6 +1,7 @@
 import { getServiceOnboardURL, getTokenReferenceURL } from "../../constants/urlPaths";
 import {createJWT} from "../jwt";
 import { request } from "../request";
+import "../../definitions/defs";
 
 import { getPayloadFromToken } from "./authorise";
 import { URL, URLSearchParams } from "react-native-url-polyfill";
@@ -26,8 +27,11 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
 	const jwt = await createJWT(
 		{
 			access_token: userAccessToken.accessToken.value,
-			client_id: `${applicationId}_${contractId}`,
 			redirect_uri: redirectUri,
+		},
+		{
+			applicationId,
+			contractId,
 		},
 		privateKey
 	);
@@ -60,6 +64,13 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
 	};
 };
 
-export const getOnboardServiceUrl = async (props, sdkConfiguration) => {
-	return refreshTokenWrapper(getOnboardServiceFn, props, sdkConfiguration);
+/**
+ *
+ * @async
+ * @param {*} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
+export const getOnboardServiceUrl = async (props, sdkConfig) => {
+	return refreshTokenWrapper(getOnboardServiceFn, props, sdkConfig);
 };

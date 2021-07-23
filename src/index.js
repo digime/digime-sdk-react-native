@@ -4,26 +4,39 @@
 import {Buffer} from "buffer";
 global.Buffer = Buffer;
 
-import {getAuthorizeUrl} from "./src/sdk/functions/authorise";
-import * as NativeDeepLinking from "./src/sdk/deepLinking";
-import * as WebBrowser from "./src/sdk/webBrowser";
-import {getAvailableServices} from "./src/sdk/functions/getAvailableServices";
-import {readSession} from "./src/sdk/functions/readSession";
-import {exchangeCodeForToken} from "./src/sdk/functions/exchangeCode";
-import {getOnboardServiceUrl} from "./src/sdk/functions/getOnboardServices";
-import {addTrailingSlash} from "./src/utils/url";
-import {readAllFiles} from "./src/sdk/functions/readAllFiles";
-import {readFile} from "./src/sdk/functions/readFile";
-import {readFileList} from "./src/sdk/functions/readFileList";
+import {getAuthorizeUrl} from "./sdk/functions/authorise";
+import * as NativeDeepLinking from "./sdk/deepLinking";
+import * as WebBrowser from "./sdk/webBrowser";
+import {getAvailableServices} from "./sdk/functions/getAvailableServices";
+import {readSession} from "./sdk/functions/readSession";
+import {exchangeCodeForToken} from "./sdk/functions/exchangeCode";
+import {getOnboardServiceUrl} from "./sdk/functions/getOnboardServices";
+import {addTrailingSlash} from "./utils/url";
+import {readAllFiles} from "./sdk/functions/readAllFiles";
+import {readFile} from "./sdk/functions/readFile";
+import {readFileList} from "./sdk/functions/readFileList";
+//import { triggerPush } from "./src/sdk/write";
 
+/**
+ * Functions to handle deep linking
+ */
 export const AppLinking = {
 	...NativeDeepLinking
 };
 
+/**
+ * Functions to open links from an internal
+ * or external browser
+ */
 export const Browser = {
 	...WebBrowser
 };
 
+/**
+ * Initialize the SDK
+ * @param {sdkConfig} config
+ * @returns {sdkInitReturn}
+ */
 export const init = config => {
 	config = config || {};
 
@@ -61,13 +74,14 @@ export const init = config => {
 		getAuthorizeUrl: (props) => getAuthorizeUrl(props, sdkConfig),
 		getOnboardServiceUrl: (props) => getOnboardServiceUrl(props, sdkConfig),
 		exchangeCodeForToken: (props) => exchangeCodeForToken(props, sdkConfig),
-		write: (props) => write(props, sdkConfig),
 		readSession: (props) => readSession(props, sdkConfig),
-		deleteUser: (props) => deleteUser(props, sdkConfig),
 		getAvailableServices: (contractId) => getAvailableServices(sdkConfig, contractId),
 		readFile: (props) => readFile(props, sdkConfig),
 		readFileList: (props) => readFileList(props, sdkConfig),
 		readAllFiles: (props) => readAllFiles(props, sdkConfig),
+
+		write: (props) => write(props, sdkConfig),
+		deleteUser: (props) => deleteUser(props, sdkConfig),
 		readAccounts: (props) => readAccounts(props, sdkConfig)
 	};
 

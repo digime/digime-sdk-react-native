@@ -1,6 +1,7 @@
 import {InAppBrowser} from "react-native-inappbrowser-reborn";
 import {Linking} from "react-native";
-import { BrowserError, ExternalBrowserError, InternalBrowserError } from "./errors/errors";
+import { ExternalBrowserError, InternalBrowserError } from "./errors/errors";
+import "../definitions/defs";
 
 const getIosOptions = {
 	// iOS Properties
@@ -49,7 +50,7 @@ const BROWSER_STYLE_OPTIONS = {
 /**
  * Open url in app-internal webview
  * using custom chrome tabs
- * @param {*} url
+ * @param {String} url
  * @returns
  */
 const openInternalBrowser = async (url) => {
@@ -67,7 +68,7 @@ const openInternalBrowser = async (url) => {
 
 /**
  * Open url in external browser app
- * @param {*} url
+ * @param {String} url
  * @returns
  */
 const openExternalBrowser = async (url) => {
@@ -85,11 +86,28 @@ const openExternalBrowser = async (url) => {
 	}
 };
 
+/**
+ * @typedef {String} BrowserType
+ **/
+
+
+/**
+ * @enum {BrowserType}
+ */
 const BROWSER_TYPE = {
 	INTERNAL: "internal",
 	EXTERNAL: "external",
 };
 
+/**
+ * Opens a URL either in an external web browser, or internal
+ * defaults to using internal browser
+ * @async
+ * @function openUrl
+ * @param {String} url
+ * @param {BrowserType} type
+ * @returns {Promise<any>}
+ */
 export const openUrl = async (url, type=BROWSER_TYPE.INTERNAL) => {
 	if (type === BROWSER_TYPE.INTERNAL) {
 		return await openInternalBrowser(url);

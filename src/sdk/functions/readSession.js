@@ -3,7 +3,16 @@ import {createJWT} from "../jwt";
 import {refreshToken} from "./refreshTokens";
 import {request} from "../request";
 import { getAuthHeader } from "../../utils/url";
+import "../../definitions/defs";
 
+/**
+ *
+ * @async
+ * @function readSession
+ * @param {{contractDetails, userAccessToken, scope}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 export const readSession = async (props, sdkConfig) => {
 	const {contractDetails, userAccessToken, scope} = props;
 	let session;
@@ -36,15 +45,28 @@ export const readSession = async (props, sdkConfig) => {
 	return {session, updatedAccessToken: newTokens};
 };
 
+/**
+ *
+ * @async
+ * @function triggerDataQuery
+ * @param {{accessToken: access_token, contractDetails, scope}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 const triggerDataQuery = async (props, sdkConfig) => {
 	const {accessToken: access_token, contractDetails, scope} = props;
 	const {contractId, privateKey, redirectUri: redirect_uri} = contractDetails;
+	const {applicationId} = sdkConfig;
 
 	const jwt = await createJWT({
 		access_token,
-		client_id: `${sdkConfig.applicationId}_${contractId}`,
 		redirect_uri
-	}, privateKey);
+	},
+	{
+		applicationId,
+		contractId,
+	},
+	privateKey);
 
 	const {data:body} = await request.func.post(
 		getTriggerURL,

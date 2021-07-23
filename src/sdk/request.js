@@ -1,4 +1,5 @@
 import axios from "axios";
+import "../definitions/defs";
 
 const callURLFunction = async (method, urlProps, urlFunction, data, headers, options) => {
 	const url = urlFunction(urlProps);
@@ -39,6 +40,9 @@ const callUrl = async (method, url, data, headers, options={}) => {
 	});
 };
 
+/**
+ * HTTP Methods
+ */
 const METHOD = {
 	POST: "post",
 	GET: "get"

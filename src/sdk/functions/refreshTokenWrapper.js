@@ -1,5 +1,13 @@
 import { refreshToken } from "./refreshTokens";
+import "../../definitions/defs";
 
+/**
+ *
+ * @param {*} operationFn
+ * @param {*} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
 	try {
 		return await operationFn(props, sdkConfig);

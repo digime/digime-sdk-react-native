@@ -5,10 +5,20 @@ import { request } from "../request";
 import { getAuthHeader } from "../../utils/url";
 import { TypeValidationError } from "../errors/errors";
 import { isNonEmptyString } from "../../utils/stringUtils";
+import "../../definitions/defs";
 
+/**
+ * Exchange Auth Code for Access Token
+ * @async
+ * @function exchangeCodeForToken
+ * @param {{authorizationCode:string, codeVerifier:string, contractDetails:contractDetails}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns
+ */
 export const exchangeCodeForToken = async (props, sdkConfig) => {
 	const { authorizationCode, codeVerifier, contractDetails } = props;
 	const { contractId, privateKey, redirectUri } = contractDetails;
+	const {applicationId} = sdkConfig;
 
 	if (!isNonEmptyString(authorizationCode)) {
 		throw new TypeValidationError("Authorization code cannot be empty");
@@ -20,11 +30,14 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
 
 	const jwt = await createJWT(
 		{
-			client_id: `${sdkConfig.applicationId}_${contractId}`,
 			code: authorizationCode,
 			code_verifier: codeVerifier,
 			grant_type: "authorization_code",
 			redirect_uri: redirectUri,
+		},
+		{
+			applicationId,
+			contractId,
 		},
 		privateKey,
 	);
@@ -58,12 +71,8 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
 		};
 
 		return {
-			accessToken: {
-				...getParam(access_token),
-			},
-			refreshToken: {
-				...getParam(refresh_token),
-			},
+			accessToken: {...getParam(access_token)},
+			refreshToken: {...getParam(refresh_token)},
 		};
 	} catch (error) {
 		// todo implement handleServerResponse

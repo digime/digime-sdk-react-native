@@ -3,6 +3,7 @@ import {Linking} from "react-native";
 import {URL, URLSearchParams} from "react-native-url-polyfill";
 import { removeStartingSlash } from "../utils/url";
 import { AppLinkingError } from "./errors/errors";
+import "../definitions/defs";
 
 const handleUrl = (obj) => {
 	const {url} = obj;
@@ -37,10 +38,15 @@ const unload = () => {
 	Linking.removeEventListener("url", handleUrl);
 };
 
+/**
+ * Add
+ * @param {String} scheme
+ * @returns {{addRoute:(route:String, callback:()), unload:()}}
+ */
 export const init = (scheme) => {
 	DeepLinking.addScheme(scheme);
 
-	// there are two wats to handle the URLs to open your app;
+	// there are two ways to handle the URLs to open your app;
 	// 1, if the app is already open, the app is put into the foreground and a linking event is fired
 	// this is handled through the addEventListener
 	// 2, if the app is not already open, then the app is opened and the url is passed in as the initialURL
