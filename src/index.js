@@ -17,6 +17,7 @@ import {readFile} from "./sdk/functions/readFile";
 import {readFileList} from "./sdk/functions/readFileList";
 import {deleteUser} from "./sdk/functions/deleteUser";
 import {write} from "./sdk/functions/write";
+import {readAccounts} from "./sdk/functions/readAccounts";
 
 /**
  * Functions to handle deep linking
@@ -80,6 +81,8 @@ export const init = config => {
 		readFile: (props) => readFile(props, sdkConfig),
 		readFileList: (props) => readFileList(props, sdkConfig),
 		readAllFiles: (props) => readAllFiles(props, sdkConfig),
+
+		// TODO: validate functions below
 		write: (props) => write(props, sdkConfig),
 		deleteUser: (props) => deleteUser(props, sdkConfig),
 		readAccounts: (props) => readAccounts(props, sdkConfig)
