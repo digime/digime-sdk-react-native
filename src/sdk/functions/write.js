@@ -1,16 +1,22 @@
 
 import {encryptData} from "../crypto";
 import { createJWT } from "../jwt";
-import { request } from "../request";
+import { request } from "../http/request";
 import "../../definitions/defs";
 import { TypeValidationError } from "../errors/errors";
 import {refreshToken} from "./refreshTokens";
+import { handleServerResponse } from "../http/handleServerResponse";
+import { getPostboxURL } from "../../constants/urlPaths";
+import { getAuthHeader } from "../../utils/url";
+
 
 /**
- *
- * @param {{contractDetails:contractDetails, userAccessToken:string, data:string, publicKey:string, postboxId:string}} props
+ * Write data to a users digi.me library
+ * @async
+ * @function write
+ * @param {writeProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<writeResponse>}
  */
 export const write = async (props, sdkConfig) => {
 	if (!WriteOptionsCodec.is(props)) {
@@ -71,7 +77,9 @@ export const write = async (props, sdkConfig) => {
 };
 
 /**
- * @param {{accessToken:string, contractDetails:contractDetails, postboxId:string, publicKey:string, data:string, accessToken?:string}} props
+ * @async
+ * @function triggerPush
+ * @param {{accessToken:string, contractDetails:contractDetails, postboxId:string, publicKey:string, data:{fileDescriptor:string, fileName:string}}} props
  * @param {sdkConfig} sdkConfig
  * @returns
  */
@@ -79,13 +87,13 @@ const triggerPush = async (props, sdkConfig) => {
 	const { accessToken: access_token, contractDetails, postboxId, publicKey, data } = props;
 	const { contractId, privateKey, redirectUri:redirect_uri } = contractDetails;
 	const {fileDescriptor, fileName} = data;
-	const {baseUrl} = sdkConfig;
+	const {applicationId, baseUrl} = sdkConfig;
 
 	const {
 		encryptedKey,
 		iv,
 		encryptedMeta
-	} = encryptData(publicKey, privateKey, fileDescriptor);
+	} = encryptData(publicKey, {fileDescriptor, fileName});
 
 
 	const form = new FormData();
@@ -131,6 +139,5 @@ const triggerPush = async (props, sdkConfig) => {
 		return body;
 	} catch (error) {
 		handleServerResponse(error);
-		throw error;
 	}
 };

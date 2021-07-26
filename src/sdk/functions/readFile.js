@@ -1,18 +1,21 @@
 import {getFileURL} from "../../constants/urlPaths";
-import {request} from "../request";
+import {request} from "../http/request";
 import {ReadBlob} from "../../utils/readBlob";
 import {decryptData} from "../crypto";
 import {decode} from "base64url";
 import { DecompressionError, TypeValidationError } from "../errors/errors";
 import { isNonEmptyString } from "../../utils/stringUtils";
 import "../../definitions/defs";
+import { handleServerResponse } from "../http/handleServerResponse";
 
 /**
  * Downloads the encrypted file from the API using the name
  * and sessionKey
+ * @async
+ * @function fetchFile
  * @param {{sessionKey:string, fileName:string}} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<{compression:string, fileContent:Uint8Array, fileMetadata:string}>}
  */
 const fetchFile = async (props, sdkConfig) => {
 	const {sessionKey, fileName} = props;
@@ -52,7 +55,6 @@ const fetchFile = async (props, sdkConfig) => {
 
 	} catch (error) {
 		handleServerResponse(error);
-		throw error;
 	}
 };
 
@@ -60,9 +62,9 @@ const fetchFile = async (props, sdkConfig) => {
  * Retrives and decrypts a file from the API
  * @async
  * @function readFile
- * @param {{fileName:string, privateKey:string, sessionKey:string}} props
+ * @param {readFileProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<readFileResponse>}
  */
 export const readFile = async (props, sdkConfig) => {
 	const {fileName, privateKey, sessionKey} = props;

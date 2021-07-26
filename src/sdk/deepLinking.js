@@ -16,6 +16,13 @@ const handleUrl = (obj) => {
 		});
 };
 
+/**
+ * Add route to watch
+ * @param {string} scheme
+ * @param {string} route
+ * @param {(searchParams:Object.<string, number | string>)=>void} callback
+ * @returns {string}
+ */
 const addRoute = (scheme, route, callback) => {
 	// append '*' to the end of of the route
 	// so that all sub domains are captured
@@ -23,7 +30,7 @@ const addRoute = (scheme, route, callback) => {
 		const urls = new URL(scheme+path);
 		const params = new URLSearchParams(urls.search);
 
-		const searchProps = {};
+		let searchProps = {};
 		params.forEach((value, key) => {
 			searchProps[key] = value;
 		});
@@ -34,14 +41,19 @@ const addRoute = (scheme, route, callback) => {
 	return `${scheme}${removeStartingSlash(route)}`;
 };
 
+/**
+ * Remove listener to handle URL
+ */
 const unload = () => {
 	Linking.removeEventListener("url", handleUrl);
 };
 
 /**
- * Add
+ * Add deep linking routes to the app.
+ * Required to also configure the native app component
+ * @function init
  * @param {string} scheme
- * @returns {{addRoute:(route:String, callback:()), unload:()}}
+ * @returns {{addRoute:(route:string, callback:(searchParams:Object.<string, number | string>)=>void)=>void, unload:()=>void}}
  */
 export const init = (scheme) => {
 	DeepLinking.addScheme(scheme);

@@ -50,6 +50,8 @@ const BROWSER_STYLE_OPTIONS = {
 /**
  * Open url in app-internal webview
  * using custom chrome tabs
+ * @async
+ * @function openInternalBrowser
  * @param {string} url
  * @returns
  */
@@ -58,9 +60,9 @@ const openInternalBrowser = async (url) => {
 		if (await InAppBrowser.isAvailable()) {
 			// TODO check iOS behaviour
 			return await InAppBrowser.openAuth(url, BROWSER_STYLE_OPTIONS);
-		} else
+		} else {
 			Linking.openURL(url);
-
+		}
 	} catch (error) {
 		throw new InternalBrowserError(error);
 	}
@@ -68,6 +70,8 @@ const openInternalBrowser = async (url) => {
 
 /**
  * Open url in external browser app
+ * @async
+ * @function openExternalBrowser
  * @param {string} url
  * @returns
  */
@@ -87,15 +91,19 @@ const openExternalBrowser = async (url) => {
 };
 
 /**
- * @typedef {string} BrowserType
- **/
-
+ * @typedef {Object} BrowserType
+ */
 
 /**
- * @enum {BrowserType}
+ * Open browser behaviour to use
+ * @readonly
+ * @enum {string}
  */
 const BROWSER_TYPE = {
+	/** Open a web browser for URL calls within the app */
 	INTERNAL: "internal",
+
+	/** Opens the url using an external web browser app on the device */
 	EXTERNAL: "external",
 };
 

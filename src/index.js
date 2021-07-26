@@ -61,6 +61,9 @@ export const init = config => {
 	}
 
 	// underlay defaults
+	/**
+	 * @type {sdkConfig}
+	 */
 	const sdkConfig = {
 		autoRedirect: true,
 		sleepPollingMS: 3000,
@@ -77,7 +80,7 @@ export const init = config => {
 		getOnboardServiceUrl: (props) => getOnboardServiceUrl(props, sdkConfig),
 		exchangeCodeForToken: (props) => exchangeCodeForToken(props, sdkConfig),
 		readSession: (props) => readSession(props, sdkConfig),
-		getAvailableServices: (contractId) => getAvailableServices(sdkConfig, contractId),
+		getAvailableServices: (props) => getAvailableServices(sdkConfig, props),
 		readFile: (props) => readFile(props, sdkConfig),
 		readFileList: (props) => readFileList(props, sdkConfig),
 		readAllFiles: (props) => readAllFiles(props, sdkConfig),
@@ -87,5 +90,4 @@ export const init = config => {
 		deleteUser: (props) => deleteUser(props, sdkConfig),
 		readAccounts: (props) => readAccounts(props, sdkConfig)
 	};
-
 };

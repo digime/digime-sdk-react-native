@@ -1,19 +1,20 @@
 import { getOauthTokenURL } from "../../constants/urlPaths";
 import { getPayloadFromToken } from "./authorise";
 import { createJWT } from "../jwt";
-import { request } from "../request";
+import { request } from "../http/request";
 import { getAuthHeader } from "../../utils/url";
 import { TypeValidationError } from "../errors/errors";
 import { isNonEmptyString } from "../../utils/stringUtils";
 import "../../definitions/defs";
+import { handleServerResponse } from "../http/handleServerResponse";
 
 /**
  * Exchange Auth Code for Access Token
  * @async
  * @function exchangeCodeForToken
- * @param {{authorizationCode:string, codeVerifier:string, contractDetails:contractDetails}} props
+ * @param {exchangeCodeForTokenProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<exchangeCodeForTokenResponse>}
  */
 export const exchangeCodeForToken = async (props, sdkConfig) => {
 	const { authorizationCode, codeVerifier, contractDetails } = props;
@@ -75,8 +76,6 @@ export const exchangeCodeForToken = async (props, sdkConfig) => {
 			refreshToken: {...getParam(refresh_token)},
 		};
 	} catch (error) {
-		// todo implement handleServerResponse
-		//handleServerResponse(error);
-		throw error;
+		handleServerResponse(error);
 	}
 };

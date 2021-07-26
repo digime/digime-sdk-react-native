@@ -1,5 +1,5 @@
 import base64url from "base64url";
-import {request} from "../request";
+import {request} from "../http/request";
 import {getOauthURL, getAuthURL} from "../../constants/urlPaths";
 import {decode, createJWT, verify} from "../jwt";
 import {URL, URLSearchParams} from "react-native-url-polyfill";
@@ -9,9 +9,19 @@ import { isString } from "lodash";
 import { getRandomAlphaNumeric, hashSHA256 } from "../../utils/hash";
 import "../../definitions/defs";
 
+/**
+ * Generates the JWT (JSON Web Token)
+ * @async
+ * @function generateToken
+ * @param {string} applicationId
+ * @param {string} contractId
+ * @param {string} privateKey
+ * @param {string} redirectUri
+ * @param {string} state
+ * @returns {Promise<{jwt:string, codeVerifier:string}>}
+ */
 const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
 	const codeVerifier = base64url(getRandomAlphaNumeric(32));
-
 	const jwt = await createJWT(
 		{
 			code_challenge: hashSHA256(codeVerifier),
@@ -35,10 +45,13 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
 };
 
 /**
- *
- * @param {string} JWTtoken
+ * Returns the payload from a given JWT
+ * @todo add validation
+ * @async
+ * @function getPayloadFromToken
+ * @param {string} token (JWT)
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<{any>}
  */
 export const getPayloadFromToken = async (token, sdkConfig) => {
 	const {
@@ -80,6 +93,13 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
 	};
 };
 
+/**
+ * @function authorise
+ * @async
+ * @param {{contractDetails:contractDetails, state:any, scope?:{}}} props
+ * @param {sdkConfig} sdkConfig
+ * @returns {Promise<{codeVerifier:string, code:string, session:string}>}
+ */
 const authorise = async (props, sdkConfig) => {
 	const {
 		contractDetails,
@@ -134,9 +154,9 @@ const authorise = async (props, sdkConfig) => {
  *
  * @async
  * @function getAuthorizeUrl
- * @param {{serviceId, callback}} props
+ * @param {getAuthorizeUrlProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<getAuthorizeUrlResponse>}
  */
 export const getAuthorizeUrl = async (props, sdkConfig) => {
 	// rename serviceId -> service (id)

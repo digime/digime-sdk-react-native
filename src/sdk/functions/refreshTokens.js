@@ -1,16 +1,18 @@
 import { getOauthTokenURL } from "../../constants/urlPaths";
 import { getPayloadFromToken } from "./authorise";
 import { createJWT } from "../jwt";
-import { request } from "../request";
+import { request } from "../http/request";
 import { getAuthHeader } from "../../utils/url";
 import { DigiMeSDKError } from "../errors/errors";
 import "../../definitions/defs";
 
 /**
  * Refreshes the Access Token
- * @param {{contractDetails, userAccessToken}} props
+ * @async
+ * @function refreshToken
+ * @param {{contractDetails:contractDetails, userAccessToken:userAccessToken}} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<userAccessToken>}
  */
 export const refreshToken = async (props, sdkConfig) => {
 	const { contractDetails, userAccessToken } = props;

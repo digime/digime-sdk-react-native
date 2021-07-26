@@ -1,7 +1,7 @@
 import {getTriggerURL} from "../../constants/urlPaths";
 import {createJWT} from "../jwt";
 import {refreshToken} from "./refreshTokens";
-import {request} from "../request";
+import {request} from "../http/request";
 import { getAuthHeader } from "../../utils/url";
 import "../../definitions/defs";
 
@@ -9,9 +9,9 @@ import "../../definitions/defs";
  *
  * @async
  * @function readSession
- * @param {{contractDetails, userAccessToken, scope}} props
+ * @param {readSessionProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<readSessionResponse>}
  */
 export const readSession = async (props, sdkConfig) => {
 	const {contractDetails, userAccessToken, scope} = props;
@@ -29,6 +29,7 @@ export const readSession = async (props, sdkConfig) => {
 	} catch (error) {
 		/* Invalid tokens */
 		// get and refresh
+		// by continuing in the flow below
 	}
 
 	const newTokens = await refreshToken({
@@ -42,16 +43,19 @@ export const readSession = async (props, sdkConfig) => {
 		scope
 	}, sdkConfig);
 
-	return {session, updatedAccessToken: newTokens};
+	return {
+		session,
+		updatedAccessToken: newTokens
+	};
 };
 
 /**
- *
+ * Trigger data
  * @async
  * @function triggerDataQuery
- * @param {{accessToken: access_token, contractDetails, scope}} props
+ * @param {{accessToken:string, contractDetails:contractDetails, scope}} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<string>}
  */
 const triggerDataQuery = async (props, sdkConfig) => {
 	const {accessToken: access_token, contractDetails, scope} = props;

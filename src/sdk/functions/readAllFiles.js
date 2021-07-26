@@ -6,6 +6,11 @@ import { isNonEmptyString } from "../../utils/stringUtils";
 import { TypeValidationError } from "../errors/errors";
 import "../../definitions/defs";
 
+/**
+ * Sync states from the API
+ * @readonly
+ * @enum {string}
+ */
 const STATE = {
 	PENDING: "pending",
 	PARTIAL: "partial",
@@ -16,9 +21,9 @@ const STATE = {
 /**
  * Retrieves and decrypts all files from the API
  * @function readAllFiles
- * @param {{sessionKey:string, privateKey:string, onFileData:(), onFileError:()}} props
+ * @param {readAllFilesProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {readAllFilesResponse}
  */
 export const readAllFiles = (props, sdkConfig) => {
 	const { sessionKey, onFileData, onFileError } = props;

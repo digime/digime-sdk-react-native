@@ -3,6 +3,7 @@ import { URLError } from "../sdk/errors/errors";
 
 /**
  * @function getPrivateShareGuestURL
+ * @throws Exception if missing parameters
  * @param {string} baseUrl
  * @param {string} sessionKey
  * @param {string} callbackUrl
@@ -12,7 +13,8 @@ export const getPrivateShareGuestURL = (baseUrl, sessionKey, callbackUrl) => `${
 
 /**
  * @function getSessionURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getSessionURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -20,7 +22,8 @@ export const getSessionURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getOauthURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getOauthURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -28,7 +31,8 @@ export const getOauthURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getOauthTokenURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getOauthTokenURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -36,7 +40,8 @@ export const getOauthTokenURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getAuthURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getAuthURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -44,7 +49,8 @@ export const getAuthURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getTriggerURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getTriggerURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -52,7 +58,8 @@ export const getTriggerURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getServicesURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getServicesURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -60,7 +67,8 @@ export const getServicesURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getTokenReferenceURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getTokenReferenceURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -68,7 +76,8 @@ export const getTokenReferenceURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getServiceOnboardURL
- * @param {{baseUrl:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getServiceOnboardURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -76,7 +85,8 @@ export const getServiceOnboardURL = ({baseUrl}) => validate([baseUrl]) &&
 
 /**
  * @function getFileURL
- * @param {{baseUrl:String, sessionKey:String, fileName:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string, sessionKey:string, fileName:string}} data
  * @returns {string}
  */
 export const getFileURL = ({baseUrl, sessionKey, fileName}) => validate([baseUrl, sessionKey, fileName]) &&
@@ -84,7 +94,8 @@ export const getFileURL = ({baseUrl, sessionKey, fileName}) => validate([baseUrl
 
 /**
  * @function getFileListURL
- * @param {{baseUrl:String, sessionKey:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string, sessionKey:string}} data
  * @returns {string}
  */
 export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, sessionKey]) &&
@@ -92,7 +103,8 @@ export const getFileListURL = ({baseUrl, sessionKey}) =>  validate([baseUrl, ses
 
 /**
  * @function getPostboxURL
- * @param {{baseUrl:String, postboxId:String}}
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string, postboxId:string}} data
  * @returns {string}
  */
 export const getPostboxURL = ({baseUrl, postboxId}) => validate([baseUrl, postboxId]) &&
@@ -100,8 +112,9 @@ export const getPostboxURL = ({baseUrl, postboxId}) => validate([baseUrl, postbo
 
 
 /**
- * @function get user
- * @param {{baseUrl:String}}
+ * @function getUserURL
+ * @throws Exception if missing parameters
+ * @param {{baseUrl:string}} data
  * @returns {string}
  */
 export const getUserURL = ({baseUrl}) => validate([baseUrl]) &&
@@ -110,6 +123,7 @@ export const getUserURL = ({baseUrl}) => validate([baseUrl]) &&
 /**
  * Check that all the required url parts are supplied
  * @function validate
+ * @throws Exception if missing parameters
  * @param {String[]} props[]
  * @returns {Boolean} all properties are valid
  */
@@ -120,4 +134,9 @@ const validate = props => {
 	return true;
 };
 
+/**
+ * Checks if the props array has any empty values
+ * @param {string[]} props
+ * @returns {Boolean}
+ */
 const hasEmptyProps = props => compact(props).length !== props.length;

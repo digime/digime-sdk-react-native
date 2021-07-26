@@ -2,6 +2,7 @@ import "../definitions/defs";
 
 /**
  * Adds slash to end of url (if required)
+ * @function addTrailingSlash
  * @param {string} url
  * @returns {string} result
  *
@@ -17,8 +18,9 @@ export const addTrailingSlash = url => {
 
 /**
  * Gets Key/Value pair for auth header for JWT auth request
+ * @function getAuthHeader
  * @param {string} jwt
- * @returns {Object}
+ * @returns {{Authorization:string}}
  */
 export const getAuthHeader = jwt => {
 	return {
@@ -27,7 +29,8 @@ export const getAuthHeader = jwt => {
 };
 
 /**
- *
+ * Remove any slash at the start of a given string
+ * @function removeStartingSlash
  * @param {string} url
  * @returns {string}
  *

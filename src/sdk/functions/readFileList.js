@@ -1,14 +1,14 @@
 import { getFileListURL } from "../../constants/urlPaths";
-import { request } from "../request";
+import { request } from "../http/request";
 import "../../definitions/defs";
 
 /**
  * Get file list from the session
  * @async
  * @function readFileList
- * @param {{sessionKey:string}} props
+ * @param {readFileListProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {Promise<readFileListResponse>}
  */
 export const readFileList = async (props, sdkConfig) => {
 	const {sessionKey} = props;

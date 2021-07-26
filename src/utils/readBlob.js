@@ -3,9 +3,10 @@ import "../definitions/defs";
 
 /**
  * Reads a blob data type returned from the API
- * into an ArrayBuffer
+ * into an Uint8Array
+ * @function ReadBlob
  * @param {Blob} data
- * @returns {Promise<ArrayBuffer>}
+ * @returns {Promise<Uint8Array>}
  */
 export const ReadBlob = data => {
 	return new Promise((resolve, reject) => {

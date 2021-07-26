@@ -1,10 +1,12 @@
 import { refreshToken } from "./refreshTokens";
 import "../../definitions/defs";
+import { handleServerResponse } from "../http/handleServerResponse";
 
 /**
- *
- * @param {*} operationFn
- * @param {*} props
+ * @async
+ * @function refreshTokenWrapper
+ * @param {function(props, sdkConfig):any} operationFn
+ * @param {{contractDetails:contractDetails, userAccessToken:userAccessToken}} props
  * @param {sdkConfig} sdkConfig
  * @returns
  */
@@ -17,12 +19,11 @@ export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
         if (!(error instanceof HTTPError)) {
             throw error;
         }
+		*/
 
-        if (error.response.statusCode !== 401) {
-            handleServerResponse(error);
-            throw error;
-        }
-        */
+		if (error.response.statusCode !== 401) {
+			handleServerResponse(error);
+		}
 	}
 
 	const {contractDetails, userAccessToken} = props;
@@ -34,11 +35,10 @@ export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
 	sdkConfig
 	);
 
-	return await operationFn(
-		{
-			...props,
-			userAccessToken: newTokens,
-		},
-		sdkConfig
+	return await operationFn({
+		...props,
+		userAccessToken: newTokens,
+	},
+	sdkConfig
 	);
 };

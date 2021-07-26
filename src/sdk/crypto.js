@@ -6,19 +6,31 @@ import "../definitions/defs";
 
 /**
  * Character offsets to use when accessing data
+ * @readonly
+ * @enum {number[]}
  */
 const BYTES = {
+	/** Data offset for (encrypted) DSK sector */
 	DSK: [0, 256],
+
+	/** Data offset for (non-encrypted) DIV sector */
 	DIV: [256, 272],
+
+	/** Data offset for (encrypted) hash&data sector */
 	HASH_DATA: [272],
+
+	/** Data offsets for (non-encrypted) hash within hash&data sector */
 	HASH: [0, 64],
+
+	/** Data offset for (encrypted) data within hash&data sector */
 	DATA: [64],
 };
 
 /**
- *
- * @param {ArrayBuffer} data - data to validate
- * @returns Boolean
+ * Checks that the data is the correct size
+ * @function isValidSize
+ * @param {Uint8Array} data - data to validate
+ * @returns {Boolean}
  */
 const isValidSize = (data) => {
 	const bytes = data.length;
@@ -29,7 +41,7 @@ const isValidSize = (data) => {
  * Decrypt data Buffer using PEM string. Performs validations
  * @function decryptData
  * @param {string} privateKeyString
- * @param {ArrayBuffer} encryptedArrayBuffer
+ * @param {string|Uint8Array} encryptedArrayBuffer
  * @returns {string} decrypted data contents
  */
 export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
@@ -58,28 +70,37 @@ export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
 
 /**
  * Creates RSA Class instance
+ * @function createPrivateRSAKey
  * @param {string} privateKeyPEM
- * @returns
+ * @returns {pki.rsa.PrivateKey}
  */
 const createPrivateRSAKey = privateKeyPEM => pki.privateKeyFromPem(privateKeyPEM);
 
 /**
  * Creates RSA Class instance
+ * @function createPublicRSAKey
  * @param {string} publicKeyPEM
- * @returns
+ * @returns {pki.rsa.PublicKey}
  */
 const createPublicRSAKey = publicKeyPEM => pki.publicKeyFromPem(publicKeyPEM);
 
+/**
+ * Computes a `hash` from the {@link data} and compares with the given (expected) {@link hash}
+ * @function compareDataHash
+ * @param {*} data
+ * @param {*} hash
+ * @returns {Boolean} sha512({@link data}) is equal to {@link hash}
+ */
 const compareDataHash = (data, hash) => {
 	const dataHash = hashSHA512(data);
 	return isEqual(dataHash, hash);
 };
 
 /**
- *
+ * @function decryptUsingKey
  * @param {string} privateKeyString
- * @param {ArrayBuffer} data
- * @returns
+ * @param {string} data
+ * @returns {string}
  */
 const decryptUsingKey = (privateKeyString, data) => {
 	return createPrivateRSAKey(privateKeyString)
@@ -87,11 +108,12 @@ const decryptUsingKey = (privateKeyString, data) => {
 };
 
 /**
- *
+ * decrypt data using {@link dsk} and {@link iv} parameters
+ * @function decipherData
  * @param {string} encryptedData
  * @param {string} dsk
  * @param {string} iv
- * @returns
+ * @returns {string} - base 64 result
  */
 const decipherData = (encryptedData, dsk, iv) => {
 	const blockCipher = cipher.createDecipher("AES-CBC", dsk);
@@ -103,11 +125,12 @@ const decipherData = (encryptedData, dsk, iv) => {
 };
 
 /**
- *
+ * Encrypt data using {@link dsk} and {@link iv} parameters
+ * @function cipherData
  * @param {string} unEncryptedData
  * @param {string} dsk
  * @param {string} iv
- * @returns String - base64
+ * @returns {string} - base64
  */
 const cipherData = (unEncryptedData, dsk, iv) => {
 	const blockCipher = cipher.createCipher("AES-CBC", dsk);
@@ -120,11 +143,14 @@ const cipherData = (unEncryptedData, dsk, iv) => {
 };
 
 /**
+ * Encrypts data using a given publicKey
  * @function encryptData
  * @param {string} publicKey
- * @param {string} privateKey
- * @param {{fileData:String, fileName:String, fileDescriptor:String}} data
- * @returns {{iv:String, encryptedData:String, encryptedKey:String, encryptedMeta:String}} result
+ * @param {Object} data
+ * @param {string} data.fileData
+ * @param {string} data.fileName
+ * @param {string} data.fileDescriptor
+ * @returns {{iv:string, encryptedData:string, encryptedKey:string, encryptedMeta:string}} result
  */
 export const encryptData = (publicKey, data) => {
 	// generate random keys
