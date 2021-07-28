@@ -11,13 +11,15 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 import com.facebook.react.bridge.JavaScriptModule;
 
-//import com.bitgo.randombytes.RandomBytesPackage;
+// not required to hook up
+//import com.bitgo.randombytes.RandomBytesModule;
 import com.proyecto26.inappbrowser.RNInAppBrowserModule;
 
 public class RNTesPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
       return Arrays.<NativeModule>asList(
+        //new RandomBytesModule(reactContext),
         new RNInAppBrowserModule(reactContext)
       );
     }
