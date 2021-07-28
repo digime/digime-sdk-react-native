@@ -11,7 +11,7 @@ export const isNonEmptyString = data /* (o: unknown): o is string  */=>
 
 /**
  * Checks if {@link data} has non-empty strings
- * @param {String[]} data
+ * @param {string[]} data
  * @returns {Boolean}
  */
 export const areNonEmptyStrings = data /* (o: unknown[]): o is string[] */ =>

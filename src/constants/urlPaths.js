@@ -124,7 +124,7 @@ export const getUserURL = ({baseUrl}) => validate([baseUrl]) &&
  * Check that all the required url parts are supplied
  * @function validate
  * @throws Exception if missing parameters
- * @param {String[]} props[]
+ * @param {string[]} props[]
  * @returns {Boolean} all properties are valid
  */
 const validate = props => {

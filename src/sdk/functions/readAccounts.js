@@ -1,5 +1,4 @@
 import { DigiMeSDKError } from "../errors/errors";
-import { readFile } from "../../../types/sdk/functions/readFile.d";
 
 /**
  * Retrieve the users accounts.json file. This file contains meta details about
