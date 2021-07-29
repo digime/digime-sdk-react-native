@@ -1,8 +1,7 @@
 /**
  * digi.me React-Native SDK
  */
-import {Buffer} from "buffer";
-global.Buffer = Buffer;
+var Buffer = require("buffer/").Buffer;
 
 import {getAuthorizeUrl} from "./sdk/functions/authorise";
 import * as NativeDeepLinking from "./sdk/deepLinking";
