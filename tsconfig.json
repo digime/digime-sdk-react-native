@@ -1,0 +1,11 @@
+{
+    "include": ["src/**/*.js"],
+    "exclude": ["node_modules", ],
+      "compilerOptions" : {
+          "outFile": "./dist/index.js",
+          "checkJs": false,
+          "allowJs": true,
+          "emitDeclarationOnly": true,
+          "declaration": true,
+      },
+  }

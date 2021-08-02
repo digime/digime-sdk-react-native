@@ -1,0 +1,16 @@
+const pkg = require('./package.json');
+
+import commonjs from '@rollup/plugin-commonjs';
+
+export default {
+    input: './src/index.js',
+    output: {
+        file: './dist/index.js',
+        format: 'es',
+        exports: 'named'
+    },
+    plugins: [
+        commonjs(),
+
+    ]
+}
