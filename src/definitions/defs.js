@@ -1,4 +1,8 @@
 /**
+ * @file defs.js
+ */
+
+/**
  * SDK Config Object
  * @typedef {Object} sdkConfig
  * @property {Boolean} [autoRedirect=false] - Redirect back to application from api digi.me on error
@@ -161,3 +165,5 @@
  * @typedef {Object} readAccountsResponse
  * @property {any} accounts
  */
+
+module.exports = {};

@@ -5,7 +5,8 @@ import {decryptData} from "../crypto";
 import {decode} from "base64url";
 import { DecompressionError, TypeValidationError } from "../errors/errors";
 import { isNonEmptyString } from "../../utils/stringUtils";
-import "../../definitions/defs";
+import { sdkConfig, readFileProps, readFileResponse } from "../../definitions/defs";
+
 import { handleServerResponse } from "../http/handleServerResponse";
 
 /**

@@ -3,7 +3,8 @@ import {createJWT} from "../jwt";
 import {refreshToken} from "./refreshTokens";
 import {request} from "../http/request";
 import { getAuthHeader } from "../../utils/url";
-import "../../definitions/defs";
+
+import { sdkConfig, readSessionResponse, readSessionProps, contractDetails } from "../../definitions/defs";
 
 /**
  *

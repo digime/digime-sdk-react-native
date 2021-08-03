@@ -1,5 +1,5 @@
 import axios from "axios";
-import "../../definitions/defs";
+
 
 /**
  * HTTP Methods

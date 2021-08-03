@@ -1,5 +1,3 @@
-import "../definitions/defs";
-
 /**
  * Wait function
  * @param {number} timeMS time in milliseconds before promise returns

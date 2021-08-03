@@ -1,6 +1,6 @@
 import { refreshToken } from "./refreshTokens";
-import "../../definitions/defs";
 import { handleServerResponse } from "../http/handleServerResponse";
+import { sdkConfig, userAccessToken, contractDetails } from "../../definitions/defs";
 
 /**
  * @async

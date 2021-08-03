@@ -1,5 +1,4 @@
 import { util } from "node-forge";
-import "../definitions/defs";
 
 /**
  * Reads a blob data type returned from the API

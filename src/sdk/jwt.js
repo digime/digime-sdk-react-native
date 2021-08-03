@@ -1,7 +1,6 @@
 import JSR from "jsrsasign";
 import { getRandomAlphaNumeric } from "../utils/hash";
 import { ServerError } from "./errors/errors";
-import "../definitions/defs";
 
 const JWS = JSR.jws.JWS;
 

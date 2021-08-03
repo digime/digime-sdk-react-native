@@ -1,7 +1,6 @@
 import base64url from "base64url";
 import { sha256, sha512 } from "hash.js";
 import { randomBytes } from "react-native-randombytes";
-import "../definitions/defs";
 
 const ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
 const ALPHA_UPPER = ALPHA_LOWER.toUpperCase();

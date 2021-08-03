@@ -5,9 +5,10 @@ import { request } from "../http/request";
 import { getAuthHeader } from "../../utils/url";
 import { TypeValidationError } from "../errors/errors";
 import { isNonEmptyString } from "../../utils/stringUtils";
-import "../../definitions/defs";
+
 import { handleServerResponse } from "../http/handleServerResponse";
 
+import { sdkConfig, exchangeCodeForTokenProps, exchangeCodeForTokenResponse } from "../../definitions/defs";
 /**
  * Exchange Auth Code for Access Token
  * @async

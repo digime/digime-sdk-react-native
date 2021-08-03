@@ -1,6 +1,7 @@
 import { getFileListURL } from "../../constants/urlPaths";
 import { request } from "../http/request";
-import "../../definitions/defs";
+
+import { sdkConfig, readFileListProps, readFileListResponse } from "../../definitions/defs";
 
 /**
  * Get file list from the session

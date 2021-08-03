@@ -1,5 +1,4 @@
 import {isString} from "lodash";
-import "../definitions/defs";
 
 /**
  * Checks if {@link data} is a non-empty string

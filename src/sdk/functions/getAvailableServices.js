@@ -1,7 +1,8 @@
 import {getServicesURL} from "../../constants/urlPaths";
 import {request} from "../http/request";
 import {omit} from "lodash";
-import "../../definitions/defs";
+import { sdkConfig, getAvailableServicesProps, getAvailableServicesResponse } from "../../definitions/defs";
+
 
 /**
  * Removes unused props from the available services api call

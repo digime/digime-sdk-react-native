@@ -4,6 +4,7 @@ import { request } from "../http/request";
 
 import { getAuthHeader } from "../../utils/url";
 import { handleServerResponse } from "../http/handleServerResponse";
+import { sdkConfig, deleteUserProps, deleteUserResponse } from "../../definitions/defs";
 
 /**
  * Remove a user from digi.me

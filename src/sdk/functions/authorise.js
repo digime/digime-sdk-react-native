@@ -7,7 +7,9 @@ import { getAuthHeader } from "../../utils/url";
 import { DigiMeSDKError, ServerError } from "../errors/errors";
 import { isString } from "lodash";
 import { getRandomAlphaNumeric, hashSHA256 } from "../../utils/hash";
-import "../../definitions/defs";
+
+import { sdkConfig, contractDetails, getAuthorizeUrlProps, getAuthorizeUrlResponse } from "../../definitions/defs";
+
 
 /**
  * Generates the JWT (JSON Web Token)
@@ -51,7 +53,7 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
  * @function getPayloadFromToken
  * @param {string} token (JWT)
  * @param {sdkConfig} sdkConfig
- * @returns {Promise<{any>}
+ * @returns {Promise<any>}
  */
 export const getPayloadFromToken = async (token, sdkConfig) => {
 	const {

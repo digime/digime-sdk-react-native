@@ -1,5 +1,3 @@
-import "../definitions/defs";
-
 /**
  * Adds slash to end of url (if required)
  * @function addTrailingSlash

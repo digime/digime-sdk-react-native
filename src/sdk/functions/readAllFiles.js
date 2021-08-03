@@ -4,7 +4,7 @@ import { readFileList } from "./readFileList";
 import { get, isFunction } from "lodash";
 import { isNonEmptyString } from "../../utils/stringUtils";
 import { TypeValidationError } from "../errors/errors";
-import "../../definitions/defs";
+import { sdkConfig, readAllFilesProps, readAllFilesResponse } from "../../definitions/defs";
 
 /**
  * Sync states from the API

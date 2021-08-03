@@ -1,11 +1,13 @@
 {
     "include": ["src/**/*.js"],
-    "exclude": ["node_modules", ],
       "compilerOptions" : {
-          "outFile": "./dist/index.js",
+          "outDir": "./dist/",
           "checkJs": false,
           "allowJs": true,
           "emitDeclarationOnly": true,
           "declaration": true,
+          "module": "commonjs",
+          "resolveJsonModule": true,
+          "esModuleInterop": true
       },
   }

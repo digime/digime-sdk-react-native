@@ -4,7 +4,8 @@ import { createJWT } from "../jwt";
 import { request } from "../http/request";
 import { getAuthHeader } from "../../utils/url";
 import { DigiMeSDKError } from "../errors/errors";
-import "../../definitions/defs";
+import { sdkConfig, contractDetails, userAccessToken } from "../../definitions/defs";
+
 
 /**
  * Refreshes the Access Token

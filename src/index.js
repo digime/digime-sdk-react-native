@@ -17,6 +17,7 @@ import {readFileList} from "./sdk/functions/readFileList";
 import {deleteUser} from "./sdk/functions/deleteUser";
 import {write} from "./sdk/functions/write";
 import {readAccounts} from "./sdk/functions/readAccounts";
+import {sdkConfig, sdkInitReturn} from "./definitions/defs";
 
 /**
  * Functions to handle deep linking

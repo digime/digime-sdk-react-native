@@ -1,12 +1,14 @@
 import { getServiceOnboardURL, getTokenReferenceURL } from "../../constants/urlPaths";
 import {createJWT} from "../jwt";
 import { request } from "../http/request";
-import "../../definitions/defs";
+
 
 import { getPayloadFromToken } from "./authorise";
 import { URL, URLSearchParams } from "react-native-url-polyfill";
 import { refreshTokenWrapper } from "./refreshTokenWrapper";
 import { getAuthHeader } from "../../utils/url";
+
+import { sdkConfig, getOnboardServiceUrlProps, getOnboardServiceUrlResponse, contractDetails, userAccessToken } from "../../definitions/defs";
 
 /**
  * @async

@@ -1,5 +1,6 @@
 import { DigiMeSDKError } from "../errors/errors";
 
+import { sdkConfig, readAccountsProps, readAccountsResponse } from "../../definitions/defs";
 /**
  * Retrieve the users accounts.json file. This file contains meta details about
  * the services onborded in the current users library

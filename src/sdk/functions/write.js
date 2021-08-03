@@ -2,13 +2,13 @@
 import {encryptData} from "../crypto";
 import { createJWT } from "../jwt";
 import { request } from "../http/request";
-import "../../definitions/defs";
+
 import { TypeValidationError } from "../errors/errors";
 import {refreshToken} from "./refreshTokens";
 import { handleServerResponse } from "../http/handleServerResponse";
 import { getPostboxURL } from "../../constants/urlPaths";
 import { getAuthHeader } from "../../utils/url";
-
+import {writeResponse, sdkConfig} from "../../definitions/defs";
 
 /**
  * Write data to a users digi.me library
