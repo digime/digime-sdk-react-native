@@ -91,37 +91,22 @@ const openExternalBrowser = async (url) => {
 };
 
 /**
- * @typedef {Object} BrowserType
- */
-
-/**
- * Open browser behaviour to use
- * @readonly
- * @enum {string}
- */
-const BROWSER_TYPE = {
-	/** Open a web browser for URL calls within the app */
-	INTERNAL: "internal",
-
-	/** Opens the url using an external web browser app on the device */
-	EXTERNAL: "external",
-};
-
-/**
  * Opens a URL either in an external web browser, or internal
  * defaults to using internal browser
  * @async
  * @function openUrl
  * @param {string} url
- * @param {BrowserType} type
+ * @param {"internal"|"external"} type
  * @returns {Promise<any>}
  */
-export const openUrl = async (url, type=BROWSER_TYPE.INTERNAL) => {
-	if (type === BROWSER_TYPE.INTERNAL) {
-		return await openInternalBrowser(url);
-	}
+export const openUrl = async (url, type="internal") => {
+	switch(type) {
+		case "internal": {
+			return await openInternalBrowser(url);
+		}
 
-	if (type === BROWSER_TYPE.EXTERNAL) {
-		return openExternalBrowser(url);
+		case "external": {
+			return await openExternalBrowser(url);
+		}
 	}
 };
