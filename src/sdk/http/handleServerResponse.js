@@ -26,9 +26,9 @@ export const handleServerResponse = error => {
 		}
 	}
 
-	if (!isApiErrorResponse(body)) {
-		return;
-	}
+	// if (!isApiErrorResponse(body)) {
+	// 	return;
+	// }
 
 	const { code, message } = body.error;
 

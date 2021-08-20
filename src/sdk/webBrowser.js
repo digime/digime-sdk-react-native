@@ -1,7 +1,7 @@
 import {InAppBrowser} from "react-native-inappbrowser-reborn";
 import {Linking} from "react-native";
 import { ExternalBrowserError, InternalBrowserError } from "./errors/errors";
-import "../definitions/defs";
+
 
 const getIosOptions = {
 	// iOS Properties

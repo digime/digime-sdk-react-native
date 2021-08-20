@@ -3,8 +3,9 @@ import { getPayloadFromToken } from "./authorise";
 import { createJWT } from "../jwt";
 import { request } from "../http/request";
 import { getAuthHeader } from "../../utils/url";
-import { DigiMeSDKError } from "../errors/errors";
+import { DigiMeSDKError, OAuthError } from "../errors/errors";
 import { sdkConfig, contractDetails, userAccessToken } from "../../definitions/defs";
+import { get } from 'lodash';
 
 
 /**
@@ -78,25 +79,28 @@ export const refreshToken = async (props, sdkConfig) => {
 		};
 
 	} catch (error) {
+		console.log("Handle error", error)
 		/*
         if (!(error instanceof HTTPError)) {
-            throw error;
+			throw error;
         }
+		*/
 
-        // TODO: check these error codes, and object paths are correct
         const errorCode = get(error, "body.error.code");
+		const errorMessage = get(error, "body.error.message");
 
-        if (
-            errorCode === "InvalidJWT" ||
-            errorCode === "InvalidRequest" ||
-            errorCode === "InvalidRedirectUri" ||
-            errorCode === "InvalidGrant" ||
-            errorCode === "InvalidToken" ||
-            errorCode === "InvalidTokenType"
-        ) {
-            throw new OAuthError(get(error, "body.error.message"));
+		const OAuthErrors = [
+			"InvalidJWT" ,
+			"InvalidRequest" ,
+			"InvalidRedirectUri" ,
+			"InvalidGrant" ,
+			"InvalidToken" ,
+			"InvalidTokenType"
+		]
+
+        if (OAuthErrors.includes(errorCode)) {
+            throw new OAuthError(errorMessage);
         }
-        */
 
 		//throw error;
 		throw new DigiMeSDKError(error);

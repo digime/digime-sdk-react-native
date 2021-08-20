@@ -15,6 +15,18 @@ export class DigiMeSDKError extends Error {
 }
 
 /**
+ * Errors from OAuth
+ */
+export class OAuthError extends Error {
+    /* public */ name = "OAuthError";
+
+    constructor(message/* : Error["message"] */) {
+        super(message);
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
+/**
  * Thrown when an error response is received from digi.me API.
  * Error field will be populated with the response from digi.me.
  */
