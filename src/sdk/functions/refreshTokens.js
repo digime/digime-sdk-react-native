@@ -25,7 +25,7 @@ export const refreshToken = async (props, sdkConfig) => {
 		{
 			grant_type: "refresh_token",
 			redirect_uri: redirectUri,
-			refresh_token: userAccessToken.refreshToken.value,
+			refresh_token: userAccessToken.refreshToken.value, 
 		},
 		{
 			applicationId,

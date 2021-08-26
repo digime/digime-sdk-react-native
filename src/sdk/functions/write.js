@@ -8,7 +8,7 @@ import {refreshToken} from "./refreshTokens";
 import { handleServerResponse } from "../http/handleServerResponse";
 import { getPostboxURL } from "../../constants/urlPaths";
 import { getAuthHeader } from "../../utils/url";
-import {writeResponse, sdkConfig} from "../../definitions/defs";
+import {writeResponse, sdkConfig, writeProps, triggerPushProps} from "../../definitions/defs";
 
 /**
  * Write data to a users digi.me library
@@ -79,7 +79,7 @@ export const write = async (props, sdkConfig) => {
 /**
  * @async
  * @function triggerPush
- * @param {{accessToken:string, contractDetails:contractDetails, postboxId:string, publicKey:string, data:{fileDescriptor:string, fileName:string}}} props
+ * @param {triggerPushProps} props
  * @param {sdkConfig} sdkConfig
  * @returns
  */

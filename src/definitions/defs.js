@@ -139,6 +139,7 @@
  * @property {Object} data
  * @property {string} data.fileDescriptor
  * @property {string} data.fileName
+ * @property {string} data.fileData
  * @property {string} publicKey
  * @property {string} postboxId
  */
@@ -165,5 +166,15 @@
  * @typedef {Object} readAccountsResponse
  * @property {any} accounts
  */
-
+/**
+ * @private
+ * @typedef {Object} triggerPushProps
+ * @property {string} accessToken
+ * @property {contractDetails} contractDetails
+ * @property {string} postboxId
+ * @property {string} publicKey
+ * @property {Object} data
+ * @property {string} data.fileDescriptor
+ * @property {string} data.fileName
+ */
 module.exports = {};
