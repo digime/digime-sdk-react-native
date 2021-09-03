@@ -68,7 +68,7 @@ const callUrl = async (method, url, data, headers, options={}) => {
 				});
 			})
 			.catch(error => {
-				console.log(JSON.stringify(error.response, null, 2));
+				//console.log(JSON.stringify(error.response, null, 2));
 				reject(error);
 			});
 	});

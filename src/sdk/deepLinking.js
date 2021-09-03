@@ -2,8 +2,9 @@ import DeepLinking from "react-native-deep-linking";
 import {Linking} from "react-native";
 import {URL, URLSearchParams} from "react-native-url-polyfill";
 import { removeStartingSlash } from "../utils/url";
-import { AppLinkingError } from "./errors/errors";
+import { AppLinkingError, TypeValidationError } from "./errors/errors";
 import "../definitions/defs";
+import { isString } from 'lodash';
 
 const handleUrl = (obj) => {
 	const {url} = obj;
@@ -56,6 +57,10 @@ const unload = () => {
  * @returns {{addRoute:(route:string, callback:(searchParams:Object.<string, number | string>)=>void)=>void, unload:()=>void}}
  */
 export const init = (scheme) => {
+	if (!isString(scheme) || scheme.length === 0) {
+		throw new TypeValidationError("init `scheme` requires a valid string");
+	}
+
 	DeepLinking.addScheme(scheme);
 
 	// there are two ways to handle the URLs to open your app;

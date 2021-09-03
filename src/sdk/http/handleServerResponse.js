@@ -7,9 +7,9 @@ import { isString } from "lodash";
  * @returns
  */
 export const handleServerResponse = error => {
-	if (!(error instanceof HTTPError)) {
-		return;
-	}
+	// if (!(error instanceof HTTPError)) {
+	// 	return;
+	// }
 
 	let body = error.response.body;
 
