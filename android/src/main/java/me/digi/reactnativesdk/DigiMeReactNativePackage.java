@@ -15,7 +15,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.proyecto26.inappbrowser.RNInAppBrowserModule;
 
-public class RNTesPackage implements ReactPackage {
+public class DigiMeReactNativePackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         // Add RandomBytes native modules - the RandomBytesModule isn't a public class

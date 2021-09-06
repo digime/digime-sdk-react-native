@@ -5,7 +5,6 @@
 #import <React/RCTBridgeModule.h>
 #endif
 
-@interface RNTes : NSObject <RCTBridgeModule>
+@interface DigiMeReactNative : NSObject <RCTBridgeModule>
 
 @end
-  

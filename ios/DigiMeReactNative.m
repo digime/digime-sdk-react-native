@@ -1,7 +1,7 @@
 
-#import "RNTes.h"
+#import "DigiMeReactNative.h"
 
-@implementation RNTes
+@implementation DigiMeReactNative
 
 - (dispatch_queue_t)methodQueue
 {
@@ -10,4 +10,3 @@
 RCT_EXPORT_MODULE()
 
 @end
-  
