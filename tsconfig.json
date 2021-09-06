@@ -1,13 +1,19 @@
 {
-    "include": ["src/**/*.js"],
-      "compilerOptions" : {
-          "outDir": "./dist/",
-          "checkJs": false,
-          "allowJs": true,
-          "emitDeclarationOnly": true,
-          "declaration": true,
-          "module": "commonjs",
-          "resolveJsonModule": true,
-          "esModuleInterop": true
-      },
-  }
+    "include": [
+        "src/**/*.js"
+    ],
+    "exclude": [
+        "tests",
+        "src/**/*.spec.js"
+    ],
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "checkJs": false,
+        "allowJs": true,
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "module": "commonjs",
+        "resolveJsonModule": true,
+        "esModuleInterop": true
+    }
+}
