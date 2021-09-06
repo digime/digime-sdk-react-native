@@ -10,7 +10,7 @@
  * @property {string} applicationId - Customised, and unique, Application ID from digi.me
  * @property {string} [baseUrl="https://api.digi.me/v1.6/"]
  * @property {string} [onboardUrl="https://api.digi.me/apps/saas/"]
- * @property {Object} retryOptions
+ * @property {Object} [retryOptions]
  * @property {number} [retryOptions.retries=5]
  */
 
