@@ -14,7 +14,6 @@
  * @property {number} [retryOptions.retries=5]
  */
 
-
 /**
  * Contract details
  * @typedef {Object} contractDetails
@@ -27,17 +26,17 @@
 /**
  * Init return object
  * @typedef {Object} sdkInitReturn
- * @property {function(getAuthorizeUrlProps):Promise<getAuthorizeUrlResponse>} getAuthorizeUrl
- * @property {function(getOnboardServiceUrlProps):Promise<getOnboardServiceUrlResponse>} getOnboardServiceUrl
- * @property {function(exchangeCodeForTokenProps):Promise<exchangeCodeForTokenResponse>} exchangeCodeForToken
- * @property {function(readSessionProps):Promise<readSessionResponse>} readSession
- * @property {function(getAvailableServicesProps):Promise<getAvailableServicesResponse>} getAvailableServices
- * @property {function(readFileProps):Promise<readFileResponse>} readFile
- * @property {function(readFileListProps):Promise<readFileListResponse>} readFileList
- * @property {function(readAllFilesProps):Promise<readAllFilesResponse>} readAllFiles
- * @property {function(writeProps):Promise<writeResponse>} write
- * @property {function(deleteUserProps):Promise<deleteUserResponse>} deleteUser
- * @property {function(readAccountsProps):Promise<readAccountsResponse>} readAccounts
+ * @property {getAuthCallback} getAuthorizeUrl
+ * @property {getOnboardingServiceCallback} getOnboardServiceUrl
+ * @property {exchangeCodeForTokenCallback} exchangeCodeForToken
+ * @property {readSessionCallback} readSession
+ * @property {getAvailableServicesCallback} getAvailableServices
+ * @property {readFileCallback} readFile
+ * @property {readFileListCallback} readFileList
+ * @property {readAllFilesCallback} readAllFiles
+ * @property {writeCallback} write
+ * @property {deleteUserCallback} deleteUser
+ * @property {readAccountsCallback} readAccounts
  */
 
 /**
@@ -49,6 +48,63 @@
  * @property {Object} refreshToken
  * @property {string} refreshToken.value
  * @property {number} refreshToken.expiry
+ */
+
+/**
+ * @callback getAuthCallback
+ * @param {getAuthorizeUrlProps} props
+ * @returns {Promise<getAuthorizeUrlResponse>}
+ */
+
+/**
+ * @callback getOnboardingServiceCallback
+ * @param {getOnboardServiceUrlProps} props
+ * @returns {Promise<getOnboardServiceUrlResponse>}
+ */
+/**
+ * @callback exchangeCodeForTokenCallback
+ * @param {getAuthorizeUrlProps} props
+ * @returns {Promise<exchangeCodeForTokenResponse>}
+ */
+/**
+ * @callback readSessionCallback
+ * @param {readSessionProps} props
+ * @returns {Promise<readSessionResponse>}
+ */
+/**
+ * @callback getAvailableServicesCallback
+ * @param {getAvailableServicesProps} props
+ * @returns {Promise<getAvailableServicesResponse>}
+ */
+/**
+ * @callback readFileCallback
+ * @param {readFileProps} props
+ * @returns {Promise<readFileResponse>}
+ */
+/**
+ * @callback readFileListCallback
+ * @param {readFileListProps} props
+ * @returns {Promise<readFileListResponse>}
+ */
+/**
+ * @callback readAllFilesCallback
+ * @param {readAllFilesProps} props
+ * @returns {Promise<readAllFilesResponse>}
+ */
+/**
+ * @callback writeCallback
+ * @param {writeProps} props
+ * @returns {Promise<writeResponse>}
+ */
+/**
+ * @callback deleteUserCallback
+ * @param {deleteUserProps} props
+ * @returns {Promise<deleteUserResponse>}
+ */
+/**
+ * @callback readAccountsCallback
+ * @param {readAccountsProps} props
+ * @returns {Promise<readAccountsResponse>}
  */
 
 /**
@@ -116,17 +172,44 @@
  * @typedef {Object} readFileListProps
  * @property {string} sessionKey
  */
+
 /**
  * @todo
  * @typedef {Object} readFileListResponse
  */
+
 /**
  * @typedef {Object} readAllFilesProps
  * @property {string} sessionKey
  * @property {string} privateKey
- * @property {(data:{fileName:string, fileData:string, fileList: string[]})=>void} onFileData,
- * @property {(data:{error:string, fileName:string, fileList: string[]})=>void} onFileError
+ * @property {onFileDataCallback} onFileData,
+ * @property {onFileErrorCallback} onFileError
  */
+
+/**
+ * @callback onFileErrorCallback
+ * @param {fileError} data
+ */
+
+/**
+ * @typedef {Object} fileError
+ * @property {string} error
+ * @property {string} fileName
+ * @property {string[]} fileList
+ */
+
+/**
+ * @callback onFileDataCallback
+ * @param {fileData} data
+ */
+
+/**
+ * @typedef {Object} fileData
+ * @property {string} fileName
+ * @property {string} fileData
+ * @property {string[]} fileList
+ */
+
 /**
  * @typedef {Object} readAllFilesResponse
  * @property {()=>any} stopPolling
@@ -177,4 +260,27 @@
  * @property {string} data.fileDescriptor
  * @property {string} data.fileName
  */
+
+/**
+ * @typedef {Object} appLinkingInitReturn
+ * @property {addRouteCallback} addRoute
+ * @property {function()} unload
+ */
+
+/**
+ * @callback addRouteCallback
+ * @param {string} route URL route to watch under the scheme, e.g, Scheme://${route}
+ * @param {callbackProps} callback function callback when scheme+route is called
+ * @returns {addRouteReturn}
+ */
+
+/**
+ * @callback callbackProps
+ * @param {Object.<string, number | string>} searchParams
+ */
+
+/**
+ * @typedef {string} addRouteReturn
+ */
+
 module.exports = {};

@@ -1,10 +1,10 @@
 import DeepLinking from "react-native-deep-linking";
 import {Linking} from "react-native";
 import {URL, URLSearchParams} from "react-native-url-polyfill";
-import { removeStartingSlash } from "../utils/url";
-import { AppLinkingError, TypeValidationError } from "./errors/errors";
-import "../definitions/defs";
-import { isString } from 'lodash';
+import {removeStartingSlash} from "../utils/url";
+import {AppLinkingError, TypeValidationError} from "./errors/errors";
+import {addRouteCallback, appLinkingInitReturn} from "../definitions/defs";
+import {isString } from 'lodash';
 
 const handleUrl = (obj) => {
 	const {url} = obj;
@@ -21,8 +21,8 @@ const handleUrl = (obj) => {
  * Add route to watch
  * @param {string} scheme
  * @param {string} route
- * @param {(searchParams:Object.<string, number | string>)=>void} callback
- * @returns {string}
+ * @param {addRouteCallback} callback
+ * @returns {addRouteReturn}
  */
 const addRoute = (scheme, route, callback) => {
 	// append '*' to the end of of the route
@@ -54,7 +54,7 @@ const unload = () => {
  * Required to also configure the native app component
  * @function init
  * @param {string} scheme
- * @returns {{addRoute:(route:string, callback:(searchParams:Object.<string, number | string>)=>void)=>void, unload:()=>void}}
+ * @returns {appLinkingInitReturn}
  */
 export const init = (scheme) => {
 	if (!isString(scheme) || scheme.length === 0) {
