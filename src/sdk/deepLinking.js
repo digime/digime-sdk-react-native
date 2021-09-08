@@ -4,7 +4,7 @@ import {URL, URLSearchParams} from "react-native-url-polyfill";
 import {removeStartingSlash} from "../utils/url";
 import {AppLinkingError, TypeValidationError} from "./errors/errors";
 import {addRouteCallback, appLinkingInitReturn} from "../definitions/defs";
-import {isString } from 'lodash';
+import {isString } from "lodash";
 
 const handleUrl = (obj) => {
 	const {url} = obj;

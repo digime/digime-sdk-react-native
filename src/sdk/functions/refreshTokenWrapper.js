@@ -22,7 +22,7 @@ export const refreshTokenWrapper = async(operationFn, props, sdkConfig) => {
 		*/
 
 		//if (error.response.statusCode !== 401) {
-			handleServerResponse(error);
+		handleServerResponse(error);
 		//}
 	}
 

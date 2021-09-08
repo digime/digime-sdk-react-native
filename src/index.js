@@ -4,7 +4,7 @@
 var Buffer = require("buffer/").Buffer;
 
 import {getAuthorizeUrl} from "./sdk/functions/authorise";
-import {isPlainObject} from 'lodash'
+import {isPlainObject} from "lodash";
 import * as NativeDeepLinking from "./sdk/deepLinking";
 import * as WebBrowser from "./sdk/webBrowser";
 import {getAvailableServices} from "./sdk/functions/getAvailableServices";
@@ -19,8 +19,8 @@ import {deleteUser} from "./sdk/functions/deleteUser";
 import {write} from "./sdk/functions/write";
 import {readAccounts} from "./sdk/functions/readAccounts";
 import {sdkConfig, sdkInitReturn} from "./definitions/defs";
-import { TypeValidationError } from './sdk/errors/errors';
-import { isString, has } from 'lodash';
+import { TypeValidationError } from "./sdk/errors/errors";
+import { isString, has } from "lodash";
 
 /**
  * Functions to handle deep linking
@@ -45,12 +45,12 @@ export const Browser = {
 export const init = config => {
 	config = config || {};
 
-	if (!isPlainObject(config) || !has(config, 'applicationId') || config.applicationId === null) {
-		throw new TypeValidationError("SDK options should be object that contains your application Id")
+	if (!isPlainObject(config) || !has(config, "applicationId") || config.applicationId === null) {
+		throw new TypeValidationError("SDK options should be object that contains your application Id");
 	}
 
 	if (!isString(config.applicationId) || config.applicationId.length === 0) {
-		throw new TypeValidationError("Application Id cannot be an empty string")
+		throw new TypeValidationError("Application Id cannot be an empty string");
 	}
 
 	let formatted = {

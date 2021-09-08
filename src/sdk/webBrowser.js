@@ -1,7 +1,7 @@
 import {InAppBrowser} from "react-native-inappbrowser-reborn";
 import {Linking} from "react-native";
 import { ExternalBrowserError, InternalBrowserError, TypeValidationError } from "./errors/errors";
-import { isString } from 'lodash';
+import { isString } from "lodash";
 
 
 const getIosOptions = {
@@ -83,7 +83,7 @@ const openExternalBrowser = async (url) => {
 	const canOpen = await Linking.canOpenURL(url);
 
 	if (!canOpen) {
-		throw new ExternalBrowserError("Unable to open URL in browser")
+		throw new ExternalBrowserError("Unable to open URL in browser");
 	}
 
 	try {
@@ -106,22 +106,22 @@ const openExternalBrowser = async (url) => {
  */
 export const openUrl = async (url, type="internal") => {
 	if (!isString(url) || url.length === 0) {
-		throw new TypeValidationError("OpenUrl requires a string `url` to be defined")
+		throw new TypeValidationError("OpenUrl requires a string `url` to be defined");
 	}
 
 	switch(type) {
-		case "internal": {
-			await openInternalBrowser(url);
-			return;
-		}
+	case "internal": {
+		await openInternalBrowser(url);
+		return;
+	}
 
-		case "external": {
-			await openExternalBrowser(url);
-			return;
-		}
+	case "external": {
+		await openExternalBrowser(url);
+		return;
+	}
 
-		default: {
-			throw new TypeValidationError("Unknown browser type option");
-		}
+	default: {
+		throw new TypeValidationError("Unknown browser type option");
+	}
 	}
 };

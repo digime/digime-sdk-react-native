@@ -5,7 +5,7 @@ import { request } from "../http/request";
 import { getAuthHeader } from "../../utils/url";
 import { DigiMeSDKError, OAuthError } from "../errors/errors";
 import { sdkConfig, contractDetails, userAccessToken } from "../../definitions/defs";
-import { get } from 'lodash';
+import { get } from "lodash";
 
 
 /**
@@ -79,14 +79,14 @@ export const refreshToken = async (props, sdkConfig) => {
 		};
 
 	} catch (error) {
-		console.log("Handle error", error)
+		console.log("Handle error", error);
 		/*
         if (!(error instanceof HTTPError)) {
 			throw error;
         }
 		*/
 
-        const errorCode = get(error, "body.error.code");
+		const errorCode = get(error, "body.error.code");
 		const errorMessage = get(error, "body.error.message");
 
 		const OAuthErrors = [
@@ -96,11 +96,11 @@ export const refreshToken = async (props, sdkConfig) => {
 			"InvalidGrant" ,
 			"InvalidToken" ,
 			"InvalidTokenType"
-		]
+		];
 
-        if (OAuthErrors.includes(errorCode)) {
-            throw new OAuthError(errorMessage);
-        }
+		if (OAuthErrors.includes(errorCode)) {
+			throw new OAuthError(errorMessage);
+		}
 
 		//throw error;
 		throw new DigiMeSDKError(error);
