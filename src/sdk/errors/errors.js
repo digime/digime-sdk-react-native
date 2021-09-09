@@ -10,7 +10,7 @@ export class DigiMeSDKError extends Error {
 
     constructor(message/* : Error["message"] */) {
         super(message);
-        Error.captureStackTrace(this, this.constructor);
+        // Error.captureStackTrace(this, this.constructor);
     }
 }
 
@@ -22,7 +22,7 @@ export class OAuthError extends Error {
 
     constructor(message/* : Error["message"] */) {
         super(message);
-        Error.captureStackTrace(this, this.constructor);
+        // Error.captureStackTrace(this, this.constructor);
     }
 }
 
