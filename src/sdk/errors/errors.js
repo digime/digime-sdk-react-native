@@ -1,16 +1,11 @@
-//import { ApiError } from "./types/api/api-error-response";
-
-// tslint:disable:max-classes-per-file
-
 /**
  * Generic Error thrown by the SDK.
  */
 export class DigiMeSDKError extends Error {
-    /* public */ name = "DigiMeSDKError";
+    name = "DigiMeSDKError";
 
-    constructor(message/* : Error["message"] */) {
+    constructor(message) {
         super(message);
-        // Error.captureStackTrace(this, this.constructor);
     }
 }
 
@@ -18,11 +13,10 @@ export class DigiMeSDKError extends Error {
  * Errors from OAuth
  */
 export class OAuthError extends Error {
-    /* public */ name = "OAuthError";
+    name = "OAuthError";
 
-    constructor(message/* : Error["message"] */) {
+    constructor(message) {
         super(message);
-        // Error.captureStackTrace(this, this.constructor);
     }
 }
 
@@ -31,10 +25,10 @@ export class OAuthError extends Error {
  * Error field will be populated with the response from digi.me.
  */
 export class ServerError extends DigiMeSDKError {
-    /* public */ name = "DigiMeServerError";
-    /* public */ error/* ?: ApiError; */
+    name = "DigiMeServerError";
+    error
 
-    constructor(message/* : Error["message"] */, error /* ?:ApiError */) {
+    constructor(message, error) {
         super(message);
         this.error = error;
     }
@@ -44,28 +38,28 @@ export class ServerError extends DigiMeSDKError {
  * Thrown if the current SDK or its version is invalid.
  */
 export class SDKInvalidError extends ServerError {
-    /* public */ name = "SDKInvalidError";
+    name = "SDKInvalidError";
 }
 
 /**
  * Thrown if the parameter passed in fails type check.
  */
 export class TypeValidationError extends DigiMeSDKError {
-    /* public */ name = "TypeValidationError";
+    name = "TypeValidationError";
 }
 
 /**
  * Thrown if there was an error decrypting a file.
  */
 export class FileDecryptionError extends DigiMeSDKError {
-    /* public */ name = "FileDecryptionError";
+    name = "FileDecryptionError";
 }
 
 /**
  * Thrown if there's a mismatch of certificates when communicating with our production server.
  */
 export class ServerIdentityError extends DigiMeSDKError {
-    /* public */ name = "ServerIdentityError";
+    name = "ServerIdentityError";
 }
 
 export class ExternalBrowserError extends DigiMeSDKError {
@@ -86,4 +80,11 @@ export class DecompressionError extends DigiMeSDKError {
 
 export class URLError extends DigiMeSDKError {
     name = "URLError"
+}
+
+/**
+ * Thrown during the JWT signing process
+ */
+export class SigningError extends DigiMeSDKError {
+    name = "SigningError"
 }

@@ -1,6 +1,7 @@
 import JSR from "jsrsasign";
 import { getRandomAlphaNumeric } from "../utils/hash";
-import { ServerError } from "./errors/errors";
+import { SigningError } from "./errors/errors";
+import {isNil} from "lodash";
 
 const JWS = JSR.jws.JWS;
 
@@ -41,13 +42,21 @@ export const createJWT = async (payload, payloadOptions, privateKey) => {
  * Creates JSON Web Token, using given parameters
  * @async
  * @function sign
- * @throws {ServerError}
  * @param {string|Object.<string, string>} header
  * @param {string|Object.<string, number | string>} payload
  * @param {string} privateKey
  * @returns {Promise<string>}
  */
 const sign = (header, payload, privateKey) => {
+	// double check required parameters are set
+	const missing = Object.entries({header, payload, privateKey})
+		.filter(([,value]) => isNil(value))
+		.map(([key]) => key);
+
+	if (missing.length > 0) {
+		throw new SigningError(`Missing parameter(s) required for signing: ${missing.join(",")}`);
+	}
+
 	return new Promise((resolve) => {
 		try {
 			const sig = JWS.sign(
@@ -60,7 +69,7 @@ const sign = (header, payload, privateKey) => {
 		}
 		catch (error) {
 			// todo handle server response
-			throw new ServerError(error);
+			throw new SigningError(error);
 		}
 	});
 };
