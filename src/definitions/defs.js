@@ -106,11 +106,13 @@
  * @param {readAccountsProps} props
  * @returns {Promise<readAccountsResponse>}
  */
-
 /**
  * @typedef {Object} getAuthorizeUrlProps
  * @property {string} callback
- * @property {string?} serviceId
+ * @property {contractDetails} contractDetails
+ * @property {string} [state]
+ * @property {scope} [scope]
+ * @property {string} [serviceId]
  */
 /**
  * @typedef {Object} getAuthorizeUrlResponse
@@ -140,7 +142,10 @@
  * @typedef {Object} readSessionProps
  * @property {contractDetails} contractDetails
  * @property {userAccessToken} userAccessToken
- * @property {Object.<string, string>} scope
+ * @property {scope} [scope]
+ */
+/**
+ * @typedef {Object.<string, string>} scope
  */
 /**
  * @typedef {Object} readSessionResponse
