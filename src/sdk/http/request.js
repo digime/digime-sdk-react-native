@@ -50,7 +50,7 @@ const callUrl = async (method, url, data, headers, options={}) => {
 		...headers,
 	};
 
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		axios
 			.request({
 				method,
@@ -68,8 +68,7 @@ const callUrl = async (method, url, data, headers, options={}) => {
 				});
 			})
 			.catch(error => {
-				//console.log(JSON.stringify(error.response, null, 2));
-				reject(error);
+				throw new ServerError(error);
 			});
 	});
 };
