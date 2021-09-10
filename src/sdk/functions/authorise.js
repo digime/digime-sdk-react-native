@@ -141,11 +141,13 @@ const authorise = async (props, sdkConfig) => {
 		getOauthURL,
 		sdkConfig,
 		{
-			actions: {
-				pull: {
-					scope,
+			...(scope && {
+				actions: {
+					pull: {
+						scope
+					}
 				}
-			}
+			})
 		},
 		{
 			...getAuthHeader(jwt)
