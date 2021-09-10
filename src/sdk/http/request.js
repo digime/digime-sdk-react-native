@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ServerError } from "../errors/errors";
 
 
 /**

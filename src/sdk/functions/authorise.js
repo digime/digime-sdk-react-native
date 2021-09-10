@@ -4,12 +4,11 @@ import {getOauthURL, getAuthURL} from "../../constants/urlPaths";
 import {decode, createJWT, verify} from "../jwt";
 import {URL, URLSearchParams} from "react-native-url-polyfill";
 import { getAuthHeader } from "../../utils/url";
-import { DigiMeSDKError, ServerError } from "../errors/errors";
+import { DigiMeSDKError } from "../errors/errors";
 import { isString } from "lodash";
 import { getRandomAlphaNumeric, hashSHA256 } from "../../utils/hash";
-
-import { sdkConfig, contractDetails, getAuthorizeUrlProps, getAuthorizeUrlResponse } from "../../definitions/defs";
-
+import { sdkConfig, authoriseProps, getAuthorizeUrlProps, getAuthorizeUrlResponse } from "../../definitions/defs";
+import { createObjectFrom } from "../../utils/objectUtils";
 
 /**
  * Generates the JWT (JSON Web Token)
@@ -19,10 +18,11 @@ import { sdkConfig, contractDetails, getAuthorizeUrlProps, getAuthorizeUrlRespon
  * @param {string} contractId
  * @param {string} privateKey
  * @param {string} redirectUri
- * @param {string} state
+ * @param {Object.<string, string>} [additionalData] additional props to add to signing e,g, 'access_token':"ACCESS_TOKEN_VALUE"
+ * @param {string} [state]
  * @returns {Promise<{jwt:string, codeVerifier:string}>}
  */
-const generateToken = async (applicationId, contractId, privateKey, redirectUri, state) => {
+const generateToken = async (applicationId, contractId, privateKey, redirectUri, additionalData=null, state=null) => {
 	const codeVerifier = base64url(getRandomAlphaNumeric(32));
 	const jwt = await createJWT(
 		{
@@ -31,7 +31,8 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
 			redirect_uri: redirectUri,
 			response_mode: "query",
 			response_type: "code",
-			state,
+			...(additionalData),
+			...(state),
 		},
 		{
 			applicationId,
@@ -98,7 +99,7 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
 /**
  * @function authorise
  * @async
- * @param {{contractDetails:contractDetails, state:any, scope?:{}}} props
+ * @param {authoriseProps} props
  * @param {sdkConfig} sdkConfig
  * @returns {Promise<{codeVerifier:string, code:string, session:string}>}
  */
@@ -106,7 +107,8 @@ const authorise = async (props, sdkConfig) => {
 	const {
 		contractDetails,
 		state,
-		scope
+		scope,
+		userAccessToken
 	} = props;
 
 	const {applicationId} = sdkConfig;
@@ -117,11 +119,21 @@ const authorise = async (props, sdkConfig) => {
 		redirectUri
 	} = contractDetails;
 
+	// add the userAccessToken if available
+	const additionalData = createObjectFrom([
+		{
+			lookupKey: "accessToken.value",
+			outputKey: "access_token",
+			source: userAccessToken
+		}
+	]);
+
 	const {jwt, codeVerifier} = await generateToken(
 		applicationId,
 		contractId,
 		privateKey,
 		redirectUri,
+		additionalData,
 		state
 	);
 

@@ -110,15 +110,19 @@
  * @typedef {Object} getAuthorizeUrlProps
  * @property {string} callback
  * @property {contractDetails} contractDetails
- * @property {string} [state]
+ * @property {state} [state]
  * @property {scope} [scope]
  * @property {string} [serviceId]
+ * @property {userAccessToken} [userAccessToken]
  */
 /**
  * @typedef {Object} getAuthorizeUrlResponse
  * @property {string} url
  * @property {string} codeVerifier
  * @property {string} session
+ */
+/**
+ * @typedef {string} state
  */
 /**
  * @todo
@@ -287,5 +291,11 @@
 /**
  * @typedef {string} addRouteReturn
  */
-
+/**
+ * @typedef {Object} authoriseProps
+ * @property {contractDetails} contractDetails
+ * @property {state} [state]
+ * @property {scope} [scope]
+ * @property {userAccessToken} [userAccessToken]
+ */
 module.exports = {};
