@@ -19,10 +19,10 @@ import { createObjectFrom } from "../../utils/objectUtils";
  * @param {string} privateKey
  * @param {string} redirectUri
  * @param {Object.<string, string>} [additionalData] additional props to add to signing e,g, 'access_token':"ACCESS_TOKEN_VALUE"
- * @param {string} [state]
+ * @param {string} [state=""]
  * @returns {Promise<{jwt:string, codeVerifier:string}>}
  */
-const generateToken = async (applicationId, contractId, privateKey, redirectUri, additionalData=null, state=null) => {
+const generateToken = async (applicationId, contractId, privateKey, redirectUri, additionalData=null, state="") => {
 	const codeVerifier = base64url(getRandomAlphaNumeric(32));
 	const jwt = await createJWT(
 		{
@@ -31,8 +31,8 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
 			redirect_uri: redirectUri,
 			response_mode: "query",
 			response_type: "code",
+			state,
 			...(additionalData),
-			...(state),
 		},
 		{
 			applicationId,
