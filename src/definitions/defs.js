@@ -63,7 +63,7 @@
  */
 /**
  * @callback exchangeCodeForTokenCallback
- * @param {getAuthorizeUrlProps} props
+ * @param {exchangeCodeForTokenProps} props
  * @returns {Promise<exchangeCodeForTokenResponse>}
  */
 /**
