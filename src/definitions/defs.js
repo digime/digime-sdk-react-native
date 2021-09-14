@@ -112,7 +112,7 @@
  * @property {contractDetails} contractDetails
  * @property {state} [state]
  * @property {scope} [scope]
- * @property {string} [serviceId]
+ * @property {number} [serviceId]
  * @property {userAccessToken} [userAccessToken]
  */
 /**
