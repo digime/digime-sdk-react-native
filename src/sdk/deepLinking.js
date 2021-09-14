@@ -4,7 +4,9 @@ import {URL, URLSearchParams} from "react-native-url-polyfill";
 import {removeStartingSlash} from "../utils/url";
 import {AppLinkingError, TypeValidationError} from "./errors/errors";
 import {addRouteCallback, appLinkingInitReturn} from "../definitions/defs";
-import {isString } from "lodash";
+import {isString, set, has} from "lodash";
+
+const appLinkedRoutes = {};
 
 const handleUrl = (obj) => {
 	const {url} = obj;
@@ -25,6 +27,10 @@ const handleUrl = (obj) => {
  * @returns {addRouteReturn}
  */
 const addRoute = (scheme, route, callback) => {
+	if (has(appLinkedRoutes, route)) {
+		return get(appLinkedRoutes, route);
+	}
+
 	// append '*' to the end of of the route
 	// so that all sub domains are captured
 	DeepLinking.addRoute(new RegExp(route+"/*", "g"), ({path, scheme}) => {
@@ -39,7 +45,9 @@ const addRoute = (scheme, route, callback) => {
 		callback(searchProps);
 	});
 
-	return `${scheme}${removeStartingSlash(route)}`;
+	const newScheme = `${scheme}${removeStartingSlash(route)}`;
+	set(appLinkedRoutes, route, newScheme);
+	return newScheme;
 };
 
 /**
