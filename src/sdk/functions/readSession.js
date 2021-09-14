@@ -77,7 +77,7 @@ const triggerDataQuery = async (props, sdkConfig) => {
 		getTriggerURL,
 		sdkConfig,
 		{
-			scope
+			...(scope)
 		},
 		{
 			...getAuthHeader(jwt)
