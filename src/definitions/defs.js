@@ -44,10 +44,10 @@
  * @typedef {Object} userAccessToken
  * @property {Object} accessToken
  * @property {string} accessToken.value
- * @property {number} accessToken.expiry
+ * @property {number} accessToken.expires
  * @property {Object} refreshToken
  * @property {string} refreshToken.value
- * @property {number} refreshToken.expiry
+ * @property {number} refreshToken.expires
  */
 
 /**
@@ -119,7 +119,12 @@
  * @typedef {Object} getAuthorizeUrlResponse
  * @property {string} url
  * @property {string} codeVerifier
- * @property {string} session
+ * @property {session} session
+ */
+/**
+ * @typedef {Object} session
+ * @property {string} expires
+ * @property {string} key
  */
 /**
  * @typedef {string} state
