@@ -1,6 +1,10 @@
 /**
  * digi.me React-Native SDK
  */
+
+/**
+ * @private
+ */
 var Buffer = require("buffer/").Buffer;
 
 import {getAuthorizeUrl} from "./sdk/functions/authorise";
@@ -22,9 +26,6 @@ import {sdkConfig, sdkInitReturn} from "./definitions/defs";
 import { TypeValidationError } from "./sdk/errors/errors";
 import { isString, has } from "lodash";
 
-/**
- * Functions to handle deep linking
- */
 export const AppLinking = {
 	...NativeDeepLinking
 };
@@ -38,7 +39,11 @@ export const Browser = {
 };
 
 /**
- * Initialize the SDK
+ * Initialize the SDK - returns API functions
+ * @example
+ * // init the sdk using just an applicationId
+ * // store the returned function references for later use
+ * const sdkFunctions = SDK.init({applicationId:YOUR_APPLICATION_ID});
  * @param {sdkConfig} config
  * @returns {sdkInitReturn}
  */

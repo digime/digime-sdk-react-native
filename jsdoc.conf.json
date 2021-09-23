@@ -1,1 +1,173 @@
-"plugins" : ["node_modules/jsdoc-tsimport-plugin/index.js"]
+{
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "recurseDepth": 10,
+    "source": {
+        "include": [
+            "src/",
+            "package.json"
+        ],
+        "includePattern": ".js$"
+    },
+    "opts": {
+        "encoding": "utf8",
+        "readme": "./README.md",
+        "destination": "site/",
+        "recurse": true,
+        "verbose": true,
+        "template": "./node_modules/clean-jsdoc-theme",
+        "theme_opts": {
+            "theme": "light",
+            "title": "clean-jsdoc-theme",
+            "footer": "",
+            "meta": [
+                {
+                    "name": "Author",
+                    "content": "digi.me"
+                },
+                {
+                    "name": "Description",
+                    "content": "React Native SDK for digi.me API"
+                }
+            ],
+            "headingRemapper": {
+                "Classes": "Errors",
+                "Global": "SDK API"
+            },
+            "menu": [
+                {
+                    "title": "Guides",
+                    "generateLocation": "./",
+                    "children": [
+                        {
+                            "title": "Getting Started",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "start.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Reading Data - Step by step",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "read-data-overview.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Writing Data - Step by step",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "write-data-overview.md"
+                            },
+                            "generateLink": true
+                        }
+                    ]
+                },
+                {
+                    "title": "Fundamentals",
+                    "generateLocation": "./",
+                    "children": [
+                        {
+                            "title": "Contracts",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "contracts.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Initalizing the SDK",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "initialise-sdk.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Getting Available Services",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "available-services.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Authorizing",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "authorize.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Onboarding Additional Services",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "initialise-sdk.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Reading Data",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "read.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Writing Data",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "write.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "User Access Tokens",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "access-token.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Handling Errors",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "handling-errors.md"
+                            },
+                            "generateLink": true
+                        },
+                        {
+                            "title": "Example Applications",
+                            "inFile": {
+                                "dir": "./guides/",
+                                "fileName": "example-applications.md"
+                            },
+                            "generateLink": true
+                        }
+                    ]
+                }
+            ],
+            "resizeable": {
+                "navbar": {
+                    "min": "300",
+                    "max": "600"
+                }
+            },
+            "codepen": {
+                "enable_for": [
+                    "examples"
+                ],
+                "options": {
+                    "js_external": "https://code.jquery.com/jquery-3.6.0.min.js",
+                    "js_pre_processor": "babel"
+                }
+            }
+        }
+    }
+}

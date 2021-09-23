@@ -7,7 +7,7 @@ import { handleServerResponse } from "../http/handleServerResponse";
 import { sdkConfig, deleteUserProps, deleteUserResponse } from "../../definitions/defs";
 
 /**
- * Remove a user from digi.me
+ * Deletes user data on digi.me
  * @async
  * @function deleteUser
  * @param {deleteUserProps} props

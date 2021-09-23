@@ -2,9 +2,10 @@ import {ServerError, SDKInvalidError} from "../errors/errors";
 import { isString } from "lodash";
 
 /**
+ * @private
  * @function handleServerResponse
  * @param {*} error
- * @returns
+ * @returns null
  */
 export const handleServerResponse = error => {
 	// if (!(error instanceof HTTPError)) {

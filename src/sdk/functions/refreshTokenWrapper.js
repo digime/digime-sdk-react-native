@@ -3,6 +3,7 @@ import { handleServerResponse } from "../http/handleServerResponse";
 import { sdkConfig, userAccessToken, contractDetails } from "../../definitions/defs";
 
 /**
+ * @private
  * @async
  * @function refreshTokenWrapper
  * @param {function(props, sdkConfig):any} operationFn

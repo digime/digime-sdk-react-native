@@ -7,7 +7,18 @@ import { getAuthHeader } from "../../utils/url";
 import { sdkConfig, readSessionResponse, readSessionProps, contractDetails } from "../../definitions/defs";
 
 /**
- *
+ * Obtain a session key, required to start reading user data.
+ * @example
+ * // obtain / update the sessionKey before we can read data
+ * const {
+ * 	session: {
+ * 		expiry,
+ * 		key
+ * 	}
+ * } = await sdkFunctions.readSession({
+ * 	contractDetails,
+ * 	userAccessToken
+ * });
  * @async
  * @function readSession
  * @param {readSessionProps} props
@@ -53,6 +64,7 @@ export const readSession = async (props, sdkConfig) => {
 /**
  * Trigger data
  * @async
+ * @private
  * @function triggerDataQuery
  * @param {{accessToken:string, contractDetails:contractDetails, scope}} props
  * @param {sdkConfig} sdkConfig

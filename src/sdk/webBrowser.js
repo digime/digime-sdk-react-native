@@ -52,9 +52,10 @@ const BROWSER_STYLE_OPTIONS = {
  * Open url in app-internal webview
  * using custom chrome tabs
  * @async
+ * @private
  * @function openInternalBrowser
  * @param {string} url
- * @returns
+ * @returns null
  */
 const openInternalBrowser = async (url) => {
 	try {
@@ -75,9 +76,10 @@ const openInternalBrowser = async (url) => {
 /**
  * Open url in external browser app
  * @async
+ * @private
  * @function openExternalBrowser
  * @param {string} url
- * @returns
+ * @returns null
  */
 const openExternalBrowser = async (url) => {
 	const canOpen = await Linking.canOpenURL(url);
@@ -98,11 +100,17 @@ const openExternalBrowser = async (url) => {
 /**
  * Opens a URL either in an external web browser, or internal
  * defaults to using internal browser
+ * @example
+ * // to redirect the user to open a link within the app
+ * await openUrl("https://developers.digi.me", "internal");
+ *
+ * // to redirect the user to open a link using their default browser app
+ * await openUrl("https://developers.digi.me", "example");
  * @async
  * @function openUrl
- * @param {string} url
- * @param {"internal"|"external"} type
- * @returns {Promise<any>}
+ * @param {string} url URL to open in the browser
+ * @param {"internal"|"external"} type open in the internal webbrowser, or external using the users default web browser
+ * @returns null
  */
 export const openUrl = async (url, type="internal") => {
 	if (!isString(url) || url.length === 0) {

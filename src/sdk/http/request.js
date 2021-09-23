@@ -4,6 +4,7 @@ import { ServerError } from "../errors/errors";
 
 /**
  * HTTP Methods
+ * @private
  * @readonly
  * @enum {string}
  */
@@ -16,6 +17,7 @@ const METHOD = {
 /**
  * Calls URL with parameters. Resolves url using {@link urlProps} and {@link urlFunction} before calling {@link callUrl}
  * @async
+ * @private
  * @function callURLFunction
  * @param {METHOD} method
  * @param {string[]} urlProps
@@ -33,6 +35,7 @@ const callURLFunction = async (method, urlProps, urlFunction, data, headers, opt
 /**
  * Calls URL with parameters.
  * @async
+ * @private
  * @function callUrl
  * @param {METHOD} method
  * @param {string} url

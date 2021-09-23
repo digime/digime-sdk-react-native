@@ -6,9 +6,10 @@ import { sdkConfig, getAvailableServicesProps, getAvailableServicesResponse } fr
 
 /**
  * Removes unused props from the available services api call
+ * @private
  * @function formatAvailableServices
  * @param {*} data
- * @returns
+ * @returns {Object}
  */
 const formatAvailableServices = data => {
 	const {
@@ -25,6 +26,7 @@ const formatAvailableServices = data => {
 /**
  * Remove redundant fields from service objects which aren't
  * required externally. Fields such as 'platform', 'serviceId' etc
+ * @private
  * @function removeRedundantProps
  * @param {Array} service
  * @returns {Array}
@@ -44,6 +46,9 @@ const removeRedundantProps = service => {
 
 /**
  * Returns all available services for a given contract id
+ * @example
+ * // returns a list of associated services
+ * const {services} = await sdkFunctions.getAvailableServices({contractId: YOUR_CONTRACT_ID});
  * @async
  * @function getAvailableServices
  * @param {sdkConfig} sdkConfig

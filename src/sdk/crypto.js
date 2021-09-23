@@ -6,6 +6,7 @@ import "../definitions/defs";
 
 /**
  * Character offsets to use when accessing data
+ * @private
  * @readonly
  * @enum {number[]}
  */
@@ -28,6 +29,7 @@ const BYTES = {
 
 /**
  * Checks that the data is the correct size
+ * @private
  * @function isValidSize
  * @param {Uint8Array} data - data to validate
  * @returns {Boolean}
@@ -39,6 +41,7 @@ const isValidSize = (data) => {
 
 /**
  * Decrypt data Buffer using PEM string. Performs validations
+ * @private
  * @function decryptData
  * @param {string} privateKeyString
  * @param {string|Uint8Array} encryptedArrayBuffer
@@ -70,6 +73,7 @@ export const decryptData = (privateKeyString, encryptedArrayBuffer) => {
 
 /**
  * Creates RSA Class instance
+ * @private
  * @function createPrivateRSAKey
  * @param {string} privateKeyPEM
  * @returns {pki.rsa.PrivateKey}
@@ -78,6 +82,7 @@ const createPrivateRSAKey = privateKeyPEM => pki.privateKeyFromPem(privateKeyPEM
 
 /**
  * Creates RSA Class instance
+ * @private
  * @function createPublicRSAKey
  * @param {string} publicKeyPEM
  * @returns {pki.rsa.PublicKey}
@@ -86,6 +91,7 @@ const createPublicRSAKey = publicKeyPEM => pki.publicKeyFromPem(publicKeyPEM);
 
 /**
  * Computes a `hash` from the {@link data} and compares with the given (expected) {@link hash}
+ * @private
  * @function compareDataHash
  * @param {*} data
  * @param {*} hash
@@ -97,6 +103,7 @@ const compareDataHash = (data, hash) => {
 };
 
 /**
+ * @private
  * @function decryptUsingKey
  * @param {string} privateKeyString
  * @param {string} data
@@ -109,6 +116,7 @@ const decryptUsingKey = (privateKeyString, data) => {
 
 /**
  * decrypt data using {@link dsk} and {@link iv} parameters
+ * @private
  * @function decipherData
  * @param {string} encryptedData
  * @param {string} dsk
@@ -126,6 +134,7 @@ const decipherData = (encryptedData, dsk, iv) => {
 
 /**
  * Encrypt data using {@link dsk} and {@link iv} parameters
+ * @private
  * @function cipherData
  * @param {string} unEncryptedData
  * @param {string} dsk
@@ -144,6 +153,7 @@ const cipherData = (unEncryptedData, dsk, iv) => {
 
 /**
  * Encrypts data using a given publicKey
+ * @private
  * @function encryptData
  * @param {string} publicKey
  * @param {Object} data

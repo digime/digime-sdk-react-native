@@ -31,7 +31,6 @@ This SDK is a client side library that allows seamless authentication with the d
 - react-native ^0.64.0
 
 ## Installation
-
 Using npm:
 ```shell
 $ npm i @digime/digime-sdk-react-native

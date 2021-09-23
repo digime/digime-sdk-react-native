@@ -8,6 +8,7 @@ import { sdkConfig, readAllFilesProps, readAllFilesResponse } from "../../defini
 
 /**
  * Sync states from the API
+ * @private
  * @readonly
  * @enum {string}
  */
@@ -20,6 +21,16 @@ const STATE = {
 
 /**
  * Retrieves and decrypts all files from the API
+ * @example
+ * // start query to retrieve file content from the users library
+ * // keep hold of the filePromise to check when completed, or
+ * // to stop polling for data
+ * const {filePromise} = sdkFunctions.readAllFiles({
+ *	privateKey, // pcks#8 string format
+ *	sessionKey, // obtained from `readSession()`
+ *	onFileError, // callback function per file error
+ *	onFileData, // callback function per file success
+ *});
  * @function readAllFiles
  * @param {readAllFilesProps} props
  * @param {sdkConfig} sdkConfig

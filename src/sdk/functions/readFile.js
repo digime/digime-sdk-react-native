@@ -13,6 +13,7 @@ import { handleServerResponse } from "../http/handleServerResponse";
  * Downloads the encrypted file from the API using the name
  * and sessionKey
  * @async
+ * @private
  * @function fetchFile
  * @param {{sessionKey:string, fileName:string}} props
  * @param {sdkConfig} sdkConfig
@@ -60,7 +61,7 @@ const fetchFile = async (props, sdkConfig) => {
 };
 
 /**
- * Retrives and decrypts a file from the API
+ * Retrieves and decrypts a given named file from the API
  * @async
  * @function readFile
  * @param {readFileProps} props

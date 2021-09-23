@@ -8,9 +8,18 @@ import { isNonEmptyString } from "../../utils/stringUtils";
 
 import { handleServerResponse } from "../http/handleServerResponse";
 
-import { sdkConfig, exchangeCodeForTokenProps, exchangeCodeForTokenResponse } from "../../definitions/defs";
+import { sdkConfig, exchangeCodeForTokenProps, exchangeCodeForTokenResponse, userAccessToken} from "../../definitions/defs";
+
 /**
- * Exchange Auth Code for Access Token
+ * Exchange Auth Code for a {@link userAccessToken}
+ * This is called when authorization flow successfully completed, and you have been given an authorization code. We can then use this function to exchange for an access token.
+ * @example
+ * // obtain the UserAccessToken
+ *  const userAccessToken = await sdkFunctions.exchangeCodeForToken({
+ *		codeVerifier, // from `getAuthUrl()`
+ *		authorizationCode: responseCode, // from `getAuthUrl()` callback
+ *		contractDetails
+ *	});
  * @async
  * @function exchangeCodeForToken
  * @param {exchangeCodeForTokenProps} props

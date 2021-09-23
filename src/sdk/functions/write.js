@@ -78,10 +78,11 @@ export const write = async (props, sdkConfig) => {
 
 /**
  * @async
+ * @private
  * @function triggerPush
  * @param {triggerPushProps} props
  * @param {sdkConfig} sdkConfig
- * @returns
+ * @returns {any} body
  */
 const triggerPush = async (props, sdkConfig) => {
 	const { accessToken: access_token, contractDetails, postboxId, publicKey, data } = props;

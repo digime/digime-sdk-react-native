@@ -3,28 +3,29 @@
  */
 
 /**
- * SDK Config Object
+ * @description SDK Config Object
  * @typedef {Object} sdkConfig
- * @property {Boolean} [autoRedirect=false] - Redirect back to application from api digi.me on error
- * @property {number} [sleepPollingMS=5000]
+ * @property {Boolean} [autoRedirect=false] - Redirect back to application from api digi.me when an error is encountered
+ * @property {number} [sleepPollingMS=5000] - default time to wait between subsequent calls on `STATE.Pending` from `readAllFiles()`
  * @property {string} applicationId - Customised, and unique, Application ID from digi.me
- * @property {string} [baseUrl="https://api.digi.me/v1.6/"]
- * @property {string} [onboardUrl="https://api.digi.me/apps/saas/"]
+ * @property {string} [baseUrl="https://api.digi.me/v1.6/"] Root URL for the digi.me API
+ * @property {string} [onboardUrl="https://api.digi.me/apps/saas/"] Root URL for the digi.me web onboard
  * @property {Object} [retryOptions]
- * @property {number} [retryOptions.retries=5]
+ * @property {number} [retryOptions.retries=5] Options to specify retry logic for failed API calls
  */
 
 /**
- * Contract details
+ * @description Contract details
  * @typedef {Object} contractDetails
- * @property {string} contractId
- * @property {string} privateKey
- * @property {string} redirectUri
+ * @property {string} contractId contract ID supplied from digi.me
+ * @property {string} privateKey The private key (in PKCS#8 format) for this contract.
+ * @property {string} redirectUri An accepted uri to redirect to after authorization The url must be whitelisted on the contract
  */
 
 
 /**
- * Init return object
+ * @description Init return object
+ * SDK functions returned back after the SDK has been initiated using `init()`
  * @typedef {Object} sdkInitReturn
  * @property {getAuthCallback} getAuthorizeUrl
  * @property {getOnboardingServiceCallback} getOnboardServiceUrl
@@ -40,7 +41,7 @@
  */
 
 /**
- * User AccessToken Object
+ * @description User AccessToken
  * @typedef {Object} userAccessToken
  * @property {Object} accessToken
  * @property {string} accessToken.value
@@ -131,13 +132,19 @@
  */
 /**
  * @todo
+ * @description Function arguments from `getOnboardServiceUrl()`
  * @typedef {Object} getOnboardServiceUrlProps
+ * @property {string} callback
+ * @property {number} serviceId
+ * @property {contractDetails} contractDetails
+ * @property {userAccessToken} userAccessToken
  */
 /**
  * @todo
  * @typedef {Object} getOnboardServiceUrlResponse
  */
 /**
+ * @description Function arguments from `exchangeCodeForToken()`
  * @typedef {Object} exchangeCodeForTokenProps
  * @property {string} authorizationCode
  * @property {string} codeVerifier
@@ -148,6 +155,7 @@
  * @property {userAccessToken} userAccessToken
  */
 /**
+ * @description Function arguments from `readSession()`
  * @typedef {Object} readSessionProps
  * @property {contractDetails} contractDetails
  * @property {userAccessToken} userAccessToken
@@ -162,14 +170,16 @@
  * @property {userAccessToken} [updatedAccessToken]
  */
 /**
+ * @description Function arguments from `getAvailableServices()`
  * @typedef {Object} getAvailableServicesProps
- * @property {string} contractId
+ * @property {string} contractId contract ID supplied from digi.me
  */
 /**
  * @todo
  * @typedef {Object} getAvailableServicesResponse
  */
 /**
+ * @description Function arguments from `readFile()`
  * @typedef {Object} readFileProps
  * @property {string} fileName
  * @property {string} privateKey
@@ -183,6 +193,7 @@
  */
 
 /**
+ * @description Function arguments from `readFileList()`
  * @typedef {Object} readFileListProps
  * @property {string} sessionKey
  */
@@ -193,6 +204,7 @@
  */
 
 /**
+ * @description Function arguments from `readAllFiles()`
  * @typedef {Object} readAllFilesProps
  * @property {string} sessionKey
  * @property {string} privateKey
@@ -230,21 +242,44 @@
  * @property {Promise<any>} filePromise
  */
 /**
+ * @description Function arguments from `write()`
  * @typedef {Object} writeProps
  * @property {contractDetails} contractDetails
  * @property {userAccessToken} userAccessToken
- * @property {Object} data
- * @property {string} data.fileDescriptor
- * @property {string} data.fileName
- * @property {string} data.fileData
+ * @property {fileData} data
  * @property {string} publicKey
  * @property {string} postboxId
  */
+
+/**
+ * @description file data definition
+ * @typedef {Object} fileData
+ * @property {fileDescriptor} fileDescriptor
+ * @property {string} fileName
+ * @property {string} fileData
+ */
+
+/**
+ * @typedef {Object} fileDescriptor
+ * @property {string} mimeType MimeType of the file that has been pushed in
+ * @property {string} accounts MimeType of the file that has been pushed in
+ * @property {Array<string>} [tags] Any tags you might want to attach with the file. Used when you want to retrieve it again.
+ * @property {Array<string>} [reference]
+ * @property {Array<account>} accounts An array of account objects used to identify the user in your system.
+ */
+
+/**
+ * @typedef {Object} account
+ * @property {string} accountId Account ID of the user in your system. Currently this is a required field for all data to be pushed in.
+ */
+
 /**
  * @todo
+ * @description Response from digi.me API on `write()`
  * @typedef {Object} writeResponse
  */
 /**
+ * @description Function arguments from `deleteUser()`
  * @typedef {Object} deleteUserProps
  * @property {userAccessToken} userAccessToken
  * @property {contractDetails} contractDetails
@@ -255,6 +290,7 @@
  * @property {any} response
  */
 /**
+ * @description Function arguments from `readAccount()`
  * @typedef {Object} readAccountsProps
  * @property {string} sessionKey
  * @property {string} privateKey
@@ -264,6 +300,7 @@
  * @property {any} accounts
  */
 /**
+ * @description Function arguments from `triggerPush()`
  * @private
  * @typedef {Object} triggerPushProps
  * @property {string} accessToken

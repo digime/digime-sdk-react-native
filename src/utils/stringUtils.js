@@ -2,6 +2,7 @@ import {isString} from "lodash";
 
 /**
  * Checks if {@link data} is a non-empty string
+ * @private
  * @param {string} data
  * @returns {Boolean} result
  */
@@ -10,6 +11,7 @@ export const isNonEmptyString = data /* (o: unknown): o is string  */=>
 
 /**
  * Checks if {@link data} has non-empty strings
+ * @private
  * @param {string[]} data
  * @returns {Boolean}
  */

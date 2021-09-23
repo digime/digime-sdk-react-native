@@ -9,6 +9,7 @@ const ALPHA_NUMERIC = `${ALPHA_LOWER}${ALPHA_UPPER}${NUMERIC}`;
 
 /**
  * Create hash using SHA 256
+ * @private
  * @function hashSHA256
  * @param {unknown} data data to hash
  * @returns {string} base64 result
@@ -17,6 +18,7 @@ export const hashSHA256 = data => createHash(data, sha256);
 
 /**
  * Create hash using SHA 512
+ * @private
  * @function hashSHA512
  * @param {unknown} data data to hash
  * @returns {string} base64 result
@@ -24,8 +26,8 @@ export const hashSHA256 = data => createHash(data, sha256);
 export const hashSHA512 = data => createHash(data, sha512);
 
 /**
- *
- * @function createHsh
+ * @function createHash
+ * @private
  * @param {unknown} data data to hash
  * @param {function} hashFunction
  * @returns {string} base64 result
@@ -37,6 +39,7 @@ const createHash = (data, hashFunction) => {
 
 /**
  * Returns a random hex of {@link size} characters
+ * @private
  * @function getRandomAlphaNumeric
  * @param {number} size
  * @returns {string} result
@@ -56,6 +59,7 @@ export const getRandomAlphaNumeric = size => {
 
 /**
  * Returns a random hex string
+ * @private
  * @function getRandomHex
  * @param {number} size
  * @returns {string} random hex of {@link size}

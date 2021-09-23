@@ -13,6 +13,7 @@ import { createObjectFrom } from "../../utils/objectUtils";
 /**
  * Generates the JWT (JSON Web Token)
  * @async
+ * @private
  * @function generateToken
  * @param {string} applicationId
  * @param {string} contractId
@@ -50,6 +51,7 @@ const generateToken = async (applicationId, contractId, privateKey, redirectUri,
 /**
  * Returns the payload from a given JWT
  * @todo add validation
+ * @private
  * @async
  * @function getPayloadFromToken
  * @param {string} token (JWT)
@@ -97,7 +99,6 @@ export const getPayloadFromToken = async (token, sdkConfig) => {
 };
 
 /**
- * @function authorise
  * @async
  * @param {authoriseProps} props
  * @param {sdkConfig} sdkConfig
@@ -167,7 +168,28 @@ const authorise = async (props, sdkConfig) => {
 };
 
 /**
- *
+ * Authorize a new user
+ * In order to write or read data from digi.me, we first need to create an access token. Access tokens are linked to a contract, and it is possible to create multiple access tokens that access to the same digi.me libary. This function is called when:
+ * - Authorize a new user. You have the option to also onboard a service during this process.
+ * - An existing user authorizing a new contract. Existing user’s refresh token has expired and we need to extend it.
+ * @example
+ * // call auth to return required params
+ * // pass serviceId if required, however only one service at a time is currently supported
+ * // use returned `url` to redirect the user to browser for auth
+ *  const {
+ *		codeVerifier:_codeVerifier,
+ *		session: {
+ *			expiry:_expiry,
+ *			key: session
+ *		},
+ *		url:_authUrl
+ *	} = await sdkFunctions.getAuthorizeUrl({
+ *		contractDetails,
+ *		state: "persisted-data",
+ *		serviceId: 9,
+ *		callback,
+ *		userAccessToken
+ *	});
  * @async
  * @function getAuthorizeUrl
  * @param {getAuthorizeUrlProps} props

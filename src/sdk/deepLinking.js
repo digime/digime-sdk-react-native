@@ -8,6 +8,12 @@ import {isString, set, has} from "lodash";
 
 const appLinkedRoutes = {};
 
+/**
+ * Opening the app - App was open in the background
+ * @private
+ * @function handleUrl
+ * @param {*} obj
+ */
 const handleUrl = (obj) => {
 	const {url} = obj;
 	Linking
@@ -21,6 +27,8 @@ const handleUrl = (obj) => {
 
 /**
  * Add route to watch
+ * @private
+ * @function addRoute
  * @param {string} scheme
  * @param {string} route
  * @param {addRouteCallback} callback
@@ -52,6 +60,8 @@ const addRoute = (scheme, route, callback) => {
 
 /**
  * Remove listener to handle URL
+ * @function unload
+ * @private
  */
 const unload = () => {
 	Linking.removeEventListener("url", handleUrl);
@@ -60,6 +70,11 @@ const unload = () => {
 /**
  * Add deep linking routes to the app.
  * Required to also configure the native app component
+ * ensure the scheme references for Android and iOS are also updated
+ * @example
+ * // initialise and register a scheme with the SDK for deeplinks
+ * // keep `addRoute` to add specific listeners
+ * const {addRoute, unload} = SDK.AppLinking.init("YOUR_APP_SCHEME://");
  * @function init
  * @param {string} scheme
  * @returns {appLinkingInitReturn}

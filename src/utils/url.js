@@ -1,11 +1,11 @@
 /**
  * Adds slash to end of url (if required)
+ * @private
  * @function addTrailingSlash
  * @param {string} url
  * @returns {string} result
- *
  * @example
- * addTrailingSlash("https://digi.me")
+ * addTrailingSlash("https://digi.me");
  */
 export const addTrailingSlash = url => {
 	if (url.slice(-1) != "/") {
@@ -16,6 +16,7 @@ export const addTrailingSlash = url => {
 
 /**
  * Gets Key/Value pair for auth header for JWT auth request
+ * @private
  * @function getAuthHeader
  * @param {string} jwt
  * @returns {{Authorization:string}}
@@ -28,11 +29,12 @@ export const getAuthHeader = jwt => {
 
 /**
  * Remove any slash at the start of a given string
+ * @private
  * @function removeStartingSlash
  * @param {string} url
  * @returns {string}
- *
- * @example remoteStartingSlash("/test")
+ * @example
+ * remoteStartingSlash("/test");
  */
 export const removeStartingSlash = url => {
 	url = url || "";

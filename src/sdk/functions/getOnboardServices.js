@@ -12,6 +12,7 @@ import { sdkConfig, getOnboardServiceUrlProps, getOnboardServiceUrlResponse, con
 
 /**
  * @async
+ * @private
  * @function getOnboardServiceFn
  * @param {{ userAccessToken:userAccessToken, contractDetails:contractDetails }} props
  * @param {sdkConfig} sdkConfig
@@ -75,7 +76,23 @@ const getOnboardServiceFn = async (props, sdkConfig) => {
 };
 
 /**
- *
+ * This is called when we already have a valid user access token for this user and we want to add more services to this user’s library.
+ * Similar to `getAuthorizationUrl()` - currently this only accepts one service at a time.
+ * @example
+ * // get the auth url to onboard more services
+ * const {
+ *		session:{
+ *			expiry: _expiry,
+ *			key: session,
+ *		},
+ *		url: _serviceUrl,
+ *		userAccessToken: _userAccessToken
+ *	} = await sdkState.sdkFunctions.getOnboardServiceUrl({
+ *		callback, // deeplink callback setup from `sdk.AppLlinking.init(YOUR_APP_SCHEME).addRoute(APP_ROUTE)`
+ *		contractDetails,
+ *		serviceId, // selected `serviceId` from `getAvailableServices()` to onboard
+ *		userAccessToken
+ *	});
  * @async
  * @function getOnboardServiceUrl
  * @param {getOnboardServiceUrlProps} props

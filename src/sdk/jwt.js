@@ -3,11 +3,15 @@ import { getRandomAlphaNumeric } from "../utils/hash";
 import { SigningError } from "./errors/errors";
 import {isNil} from "lodash";
 
+/**
+ * @private
+ */
 const JWS = JSR.jws.JWS;
 
 /**
  * Creates a JSON Web Token used for API requests using PS512 algorithm.
  * creates `nonce`, `timestamp`, `client_id`
+ * @private
  * @async
  * @function createJWT
  * @param {Object.<string, number | string>} payload - any data required to be added into the payload of the JWT
@@ -41,6 +45,7 @@ export const createJWT = async (payload, payloadOptions, privateKey) => {
 /**
  * Creates JSON Web Token, using given parameters
  * @async
+ * @private
  * @function sign
  * @param {string|Object.<string, string>} header
  * @param {string|Object.<string, number | string>} payload
@@ -75,6 +80,7 @@ const sign = (header, payload, privateKey) => {
 };
 
 /**
+ * @private
  * @typedef {Object} JWTHeader
  * @property {string} jku - JSON Web Key url
  * @property {string} kid - optional param showing which encryption key was used
@@ -82,6 +88,7 @@ const sign = (header, payload, privateKey) => {
 
 /**
  * decodes JWT to header, payload, and signature components
+ * @private
  * @function decode
  * @param {string} token
  * @returns {{header:JWTHeader, payload:Object.<string, number | string>, signature:string}} result
@@ -98,7 +105,8 @@ export const decode = (token) => {
 
 /**
  * Verify JWT against it's signature and algorithm
- * @todo
+ * @todo add validation on the signature
+ * @private
  * @function verify
  * @param {string} signature
  * @param {string} key

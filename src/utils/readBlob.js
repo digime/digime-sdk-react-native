@@ -3,6 +3,8 @@ import { util } from "node-forge";
 /**
  * Reads a blob data type returned from the API
  * into an Uint8Array
+ * @private
+ * @async
  * @function ReadBlob
  * @param {Blob} data
  * @returns {Promise<Uint8Array>}
