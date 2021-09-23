@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="default no-js not-mobile toggle-visibilityprivate toggle-only-exported">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+      Writing Data - Step by step
+    </title>
+
+	<meta name="description" content="Documentation for @digime/digime-sdk-react-native">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+
+    <!-- Adding meta -->
+    
+    
+    <meta name="Author" content="digi.me" />
+    
+    <meta name="Description" content="React Native SDK for digi.me API" />
+    
+    
+</head>
+<body data-new-gr-c-s-check-loaded="14.1027.0" data-gr-ext-installed="">
+
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../../assets/js/search.json" data-base="../.." data-has-instance="true">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text">
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="https://github.com/digime/digime-sdk-react-native#readme" class="title">@digime/digime-sdk-react-native</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter" data-has-instance="true">
+						<a href="https://digime.github.io/digime-sdk-nodejs/pages/guides/start.html#" class="tsd-widget options no-caption" data-toggle="options" data-has-instance="true">Options</a>
+					</div>
+					<a href="https://digime.github.io/digime-sdk-nodejs/pages/guides/start.html#" class="tsd-widget menu no-caption" data-toggle="menu" data-has-instance="true">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>Writing Data - Step by step</h1>
+		</div>
+	</div>
+</header>
+
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+                
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><p><img src="https://securedownloads.digi.me/partners/digime/SDKReadmeBanner.png" alt="" /></p>
+<p align="center">
+    <a href="https://developers.digi.me/slack/join">
+        <img src="https://img.shields.io/badge/chat-slack-blueviolet.svg" alt="Developer Chat">
+    </a>
+    <a href="LICENSE">
+        <img src="https://img.shields.io/badge/license-apache 2.0-blue.svg" alt="Apache 2.0 License">
+    </a>
+    <a href="#">
+        <img src="https://img.shields.io/badge/build-passing-brightgreen.svg">
+    </a>
+    <a href="https://www.javascript.com/">
+        <img src="https://img.shields.io/badge/language-javascript-fcdc00.svg" alt="Javascript">
+    </a>
+    <a href="https://developers.digi.me/">
+        <img src="https://img.shields.io/badge/web-digi.me-red.svg" alt="Web">
+    </a>
+</p>
+<p><br></p>
+<h1 id="writingdatastepbystepguide">Writing data - Step by step guide</h1>
+<p>Use this guide to write data to your user's library in digi.me.</p>
+<p>In order to access the digi.me platform, you need to obtain an application ID, a contract for writing data and its private key.</p>
+<p>Please check out <a href="./start.html">Getting Started</a> for more details.</p>
+<h2 id="1onboardingandauthorization">1. Onboarding and Authorization</h2>
+<p>Before we can write data to user, we need go through the authorization flow and obtain a user access token.</p>
+<p><em>If you already have an user access token for this user for another contract, you will still need to go through this process. Make sure to include any user access tokens you already have so we can link to the same library.</em></p>
+<h3 id="gettinganauthorizationurlandacodeverifier">Getting an authorization URL and a code verifier</h3>
+<p>Start this process by getting the authorization URL by calling <code>getAuthorizeUrl</code>:</p>
+<pre><code class="typescript language-typescript">import { init } from "@digime/digime-sdk-react-native";
+
+const sdk = init({ applicationId });
+
+const contractDetails = {
+    contractId: &lt;your-contract-id&gt;,
+    privateKey: &lt;private-key-for-contract-id&gt;,
+    redirectUri: &lt;an-url-to-call-when-authorization-is-complete&gt;,
+}
+
+const { url, codeVerifier } = await sdk.getAuthorizeUrl({
+    contractDetails,
+    callback: &lt;an-url-to-call-when-an-error-is-encountered&gt;,
+    serviceId: toNumber(serviceId),
+    state: &lt;any-details-to-help-you-identify-user-on-return&gt;,
+    userAccessToken: &lt;if-you-already-have-one&gt;
+});
+
+// Store the codeVerifier against the current user, and redirect them to the url returned.
+// This will kick start the authorization process.
+</code></pre>
+<h3 id="redirecttheuser">Redirect the user</h3>
+<p>From the step above, you will have received a URL to which you can redirect your users to to start the authorization process.
+Don't forget to also store the code verifier against this user as you'll need it later!</p>
+<p>An authorization URL should look something like:</p>
+<pre><code>https://api.digi.me/apps/saas/authorize?code=&lt;code&gt;&amp;callback=&lt;callback&gt;
+</code></pre>
+<h3 id="redirectbacktoyourapplication">Redirect back to your application</h3>
+<p>After the user has onboarded and finished with the authorization, the <code>redirectUri</code> provided in <code>contractDetails</code> will be called.
+For a write contract, a <code>postboxId</code> and a <code>publicKey</code> will also be returned which will need to be stored.</p>
+<p>An example URL might be:</p>
+<pre><code>https://your-website.com/return?success=true&amp;code=&lt;authorization-code&gt;&amp;state=&lt;state-passed-in-from-before&gt;&amp;postboxId=&lt;postbox-id&gt;&amp;publicKey=&lt;public-key&gt;
+</code></pre>
+<h2 id="2exchangeforanuseraccesstoken">2. Exchange for an User Access Token</h2>
+<p>The <code>code</code> returned in step 2 above can be used with the <code>codeVerifier</code> to exchange for a user access token. This allows you to request updated data from this user in the future for as long as the user access token is valid. Read more about the user access token <a href="../fundamentals/access-token.html">here</a>.</p>
+<pre><code class="typescript language-typescript">// ... initialize the SDK
+
+// authorizationCode - The code returned in the query parameter of the returned URL.
+// codeVerifier - The one stored from step 2.
+// contractDetails - The same one used in getAuthorizeUrl().
+
+const userAccessToken = await sdk.exchangeCodeForToken({
+    codeVerifier,
+    authorizationCode,
+    contractDetails,
+});
+
+// Store the userAccessToken against the current user. We can use this for future reads.
+</code></pre>
+<h2 id="3writedata">3. Write Data</h2>
+<p>Once you have the <code>postboxId</code>, <code>publicKey</code> and the <code>userAccessToken</code> from the steps above, we can push data!</p>
+<p>Please take a look at write data to find out more about how to format the data to push.</p>
+<pre><code class="typescript language-typescript">// ... initialize the SDK
+
+// contractDetails - The same one used in getAuthorizeUrl().
+// userAccessToken - The user access token from the authorization step.
+// postboxId - The postboxId from the authorization step.
+// publicKey - The public key from the authorization step.
+// data - An object containing the buffer of the file to upload and some meta data.
+
+const result = await sdk.write({
+    contractDetails,
+    userAccessToken,
+    postboxId,
+    publicKey,
+    data: {
+        fileData: req.file.buffer,
+        fileName: req.file.originalname,
+        fileDescriptor: JSON.parse(fileMeta),
+    },
+});
+
+// A status will be returned.
+// An update user access token will also be returned if the SDK needed to refresh it.
+</code></pre>
+<p>If we need to write other files to the users in the future, we can keep writing as long as the user access token is valid.</p>
+<h2 id="4readingfilesbackout">4. Reading files back out</h2>
+<p>If you've written data to the user, you can read it back out using the <a href="./read-data-overview.html">same process for reading user data</a>. You will need a new contract which reads out raw data, so please contact digi.me <a href="https://go.digi.me/developers/register">here</a> to get yours.</p>
+<p>Make sure you pass in the user access token which you obtained in step 3 above when authorizing the new contract.</p></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>defs.js</p></div>
+        
+
+        <!-- 
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class="details-item-container">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source"><ul class="dummy"><li>
+                <a href="definitions_defs.js.html">definitions/defs.js</a>, <a href="definitions_defs.js.html#line1">line 1</a>
+            </li></ul></dd>
+        </div>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+ -->
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight" data-has-instance="true">
+			<nav class="tsd-navigation primary">
+                <div class="sidebar-main-content" id="sidebar-main-content">
+        <ul>
+            <li class="label pp-nav pp-group">
+        <span>Guides</span>
+    </li>
+            <li class="menu-li pp-nav pp-page">
+        <a href='start.html'>Getting Started</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='read-data-overview.html'>Reading Data - Step by step</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='write-data-overview.html'>Writing Data - Step by step</a>
+    </li>
+        
+            <li class="label pp-nav pp-group">
+        <span>Fundamentals</span>
+    </li>
+            <li class="menu-li pp-nav pp-page">
+        <a href='contracts.html'>Contracts</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='initialise-sdk.html'>Initalizing the SDK</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='available-services.html'>Getting Available Services</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='authorize.html'>Authorizing</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='initialise-sdk.html'>Onboarding Additional Services</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='read.html'>Reading Data</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='write.html'>Writing Data</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='access-token.html'>User Access Tokens</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='handling-errors.html'>Handling Errors</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='example-applications.html'>Example Applications</a>
+    </li>
+        <li class="label pp-nav pp-group">
+        <span>Errors</span>
+    </li><li class='"accordion-list"' id='""'><a href="DigiMeSDKError.html">DigiMeSDKError</a></li><li class='"accordion-list"' id='""'><a href="FileDecryptionError.html">FileDecryptionError</a></li><li class='"accordion-list"' id='""'><a href="OAuthError.html">OAuthError</a></li><li class='"accordion-list"' id='""'><a href="SDKInvalidError.html">SDKInvalidError</a></li><li class='"accordion-list"' id='""'><a href="ServerError.html">ServerError</a></li><li class='"accordion-list"' id='""'><a href="ServerIdentityError.html">ServerIdentityError</a></li><li class='"accordion-list"' id='""'><a href="SigningError.html">SigningError</a></li><li class='"accordion-list"' id='""'><a href="TypeValidationError.html">TypeValidationError</a></li><li class="label pp-nav pp-group">
+        <span>SDK API</span>
+    </li><li class='"accordion-list"' id='""'><a href="global.html#account">account</a></li><li class='"accordion-list"' id='""'><a href="global.html#addRouteCallback">addRouteCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#addRouteReturn">addRouteReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#appLinkingInitReturn">appLinkingInitReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#authorise">authorise</a></li><li class='"accordion-list"' id='""'><a href="global.html#authoriseProps">authoriseProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#Browser">Browser</a></li><li class='"accordion-list"' id='""'><a href="global.html#callbackProps">callbackProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#contractDetails">contractDetails</a></li><li class='"accordion-list"' id='""'><a href="global.html#createObjectFrom">createObjectFrom</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUser">deleteUser</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserCallback">deleteUserCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserProps">deleteUserProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserResponse">deleteUserResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForToken">exchangeCodeForToken</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenCallback">exchangeCodeForTokenCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenProps">exchangeCodeForTokenProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenResponse">exchangeCodeForTokenResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileData">fileData</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileDescriptor">fileDescriptor</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileError">fileError</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthCallback">getAuthCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrl">getAuthorizeUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrlProps">getAuthorizeUrlProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrlResponse">getAuthorizeUrlResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServices">getAvailableServices</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesCallback">getAvailableServicesCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesProps">getAvailableServicesProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesResponse">getAvailableServicesResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardingServiceCallback">getOnboardingServiceCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrl">getOnboardServiceUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrlProps">getOnboardServiceUrlProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrlResponse">getOnboardServiceUrlResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#init">init</a></li><li class='"accordion-list"' id='""'><a href="global.html#onFileDataCallback">onFileDataCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#onFileErrorCallback">onFileErrorCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#openUrl">openUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccounts">readAccounts</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsCallback">readAccountsCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsProps">readAccountsProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsResponse">readAccountsResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFiles">readAllFiles</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesCallback">readAllFilesCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesProps">readAllFilesProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesResponse">readAllFilesResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFile">readFile</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileCallback">readFileCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileList">readFileList</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListCallback">readFileListCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListProps">readFileListProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListResponse">readFileListResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileProps">readFileProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileResponse">readFileResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSession">readSession</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionCallback">readSessionCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionProps">readSessionProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionResponse">readSessionResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#scope">scope</a></li><li class='"accordion-list"' id='""'><a href="global.html#sdkConfig">sdkConfig</a></li><li class='"accordion-list"' id='""'><a href="global.html#sdkInitReturn">sdkInitReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#session">session</a></li><li class='"accordion-list"' id='""'><a href="global.html#state">state</a></li><li class='"accordion-list"' id='""'><a href="global.html#userAccessToken">userAccessToken</a></li><li class='"accordion-list"' id='""'><a href="global.html#write">write</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeCallback">writeCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeProps">writeProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeResponse">writeResponse</a></li></ul></div>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+
+<!--
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+
+<script src="./scripts/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../../assets/js/search.json"><' + '/script>');</script>
+-->
+
+</body>
+</html>

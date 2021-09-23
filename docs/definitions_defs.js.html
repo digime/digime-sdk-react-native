@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html class="default no-js not-mobile toggle-visibilityprivate toggle-only-exported">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+      definitions/defs.js
+    </title>
+
+	<meta name="description" content="Documentation for @digime/digime-sdk-react-native">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+
+    <!-- Adding meta -->
+    
+    
+    <meta name="Author" content="digi.me" />
+    
+    <meta name="Description" content="React Native SDK for digi.me API" />
+    
+    
+</head>
+<body data-new-gr-c-s-check-loaded="14.1027.0" data-gr-ext-installed="">
+
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../../assets/js/search.json" data-base="../.." data-has-instance="true">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text">
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="https://github.com/digime/digime-sdk-react-native#readme" class="title">@digime/digime-sdk-react-native</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter" data-has-instance="true">
+						<a href="https://digime.github.io/digime-sdk-nodejs/pages/guides/start.html#" class="tsd-widget options no-caption" data-toggle="options" data-has-instance="true">Options</a>
+					</div>
+					<a href="https://digime.github.io/digime-sdk-nodejs/pages/guides/start.html#" class="tsd-widget menu no-caption" data-toggle="menu" data-has-instance="true">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>definitions/defs.js</h1>
+		</div>
+	</div>
+</header>
+
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file defs.js
+ */
+
+/**
+ * @description SDK Config Object
+ * @typedef {Object} sdkConfig
+ * @property {Boolean} [autoRedirect=false] - Redirect back to application from api digi.me when an error is encountered
+ * @property {number} [sleepPollingMS=5000] - default time to wait between subsequent calls on `STATE.Pending` from `readAllFiles()`
+ * @property {string} applicationId - Customised, and unique, Application ID from digi.me
+ * @property {string} [baseUrl="https://api.digi.me/v1.6/"] Root URL for the digi.me API
+ * @property {string} [onboardUrl="https://api.digi.me/apps/saas/"] Root URL for the digi.me web onboard
+ * @property {Object} [retryOptions]
+ * @property {number} [retryOptions.retries=5] Options to specify retry logic for failed API calls
+ */
+
+/**
+ * @description Contract details
+ * @typedef {Object} contractDetails
+ * @property {string} contractId contract ID supplied from digi.me
+ * @property {string} privateKey The private key (in PKCS#8 format) for this contract.
+ * @property {string} redirectUri An accepted uri to redirect to after authorization The url must be whitelisted on the contract
+ */
+
+
+/**
+ * @description Init return object
+ * SDK functions returned back after the SDK has been initiated using `init()`
+ * @typedef {Object} sdkInitReturn
+ * @property {getAuthCallback} getAuthorizeUrl
+ * @property {getOnboardingServiceCallback} getOnboardServiceUrl
+ * @property {exchangeCodeForTokenCallback} exchangeCodeForToken
+ * @property {readSessionCallback} readSession
+ * @property {getAvailableServicesCallback} getAvailableServices
+ * @property {readFileCallback} readFile
+ * @property {readFileListCallback} readFileList
+ * @property {readAllFilesCallback} readAllFiles
+ * @property {writeCallback} write
+ * @property {deleteUserCallback} deleteUser
+ * @property {readAccountsCallback} readAccounts
+ */
+
+/**
+ * @description User AccessToken
+ * @typedef {Object} userAccessToken
+ * @property {Object} accessToken
+ * @property {string} accessToken.value
+ * @property {number} accessToken.expires
+ * @property {Object} refreshToken
+ * @property {string} refreshToken.value
+ * @property {number} refreshToken.expires
+ */
+
+/**
+ * @callback getAuthCallback
+ * @param {getAuthorizeUrlProps} props
+ * @returns {Promise&lt;getAuthorizeUrlResponse>}
+ */
+
+/**
+ * @callback getOnboardingServiceCallback
+ * @param {getOnboardServiceUrlProps} props
+ * @returns {Promise&lt;getOnboardServiceUrlResponse>}
+ */
+/**
+ * @callback exchangeCodeForTokenCallback
+ * @param {exchangeCodeForTokenProps} props
+ * @returns {Promise&lt;exchangeCodeForTokenResponse>}
+ */
+/**
+ * @callback readSessionCallback
+ * @param {readSessionProps} props
+ * @returns {Promise&lt;readSessionResponse>}
+ */
+/**
+ * @callback getAvailableServicesCallback
+ * @param {getAvailableServicesProps} props
+ * @returns {Promise&lt;getAvailableServicesResponse>}
+ */
+/**
+ * @callback readFileCallback
+ * @param {readFileProps} props
+ * @returns {Promise&lt;readFileResponse>}
+ */
+/**
+ * @callback readFileListCallback
+ * @param {readFileListProps} props
+ * @returns {Promise&lt;readFileListResponse>}
+ */
+/**
+ * @callback readAllFilesCallback
+ * @param {readAllFilesProps} props
+ * @returns {Promise&lt;readAllFilesResponse>}
+ */
+/**
+ * @callback writeCallback
+ * @param {writeProps} props
+ * @returns {Promise&lt;writeResponse>}
+ */
+/**
+ * @callback deleteUserCallback
+ * @param {deleteUserProps} props
+ * @returns {Promise&lt;deleteUserResponse>}
+ */
+/**
+ * @callback readAccountsCallback
+ * @param {readAccountsProps} props
+ * @returns {Promise&lt;readAccountsResponse>}
+ */
+/**
+ * @typedef {Object} getAuthorizeUrlProps
+ * @property {string} callback
+ * @property {contractDetails} contractDetails
+ * @property {state} [state]
+ * @property {scope} [scope]
+ * @property {number} [serviceId]
+ * @property {userAccessToken} [userAccessToken]
+ */
+/**
+ * @typedef {Object} getAuthorizeUrlResponse
+ * @property {string} url
+ * @property {string} codeVerifier
+ * @property {session} session
+ */
+/**
+ * @typedef {Object} session
+ * @property {string} expires
+ * @property {string} key
+ */
+/**
+ * @typedef {string} state
+ */
+/**
+ * @todo
+ * @description Function arguments from `getOnboardServiceUrl()`
+ * @typedef {Object} getOnboardServiceUrlProps
+ * @property {string} callback
+ * @property {number} serviceId
+ * @property {contractDetails} contractDetails
+ * @property {userAccessToken} userAccessToken
+ */
+/**
+ * @todo
+ * @typedef {Object} getOnboardServiceUrlResponse
+ */
+/**
+ * @description Function arguments from `exchangeCodeForToken()`
+ * @typedef {Object} exchangeCodeForTokenProps
+ * @property {string} authorizationCode
+ * @property {string} codeVerifier
+ * @property {contractDetails} contractDetails
+ */
+/**
+ * @typedef {Object} exchangeCodeForTokenResponse
+ * @property {userAccessToken} userAccessToken
+ */
+/**
+ * @description Function arguments from `readSession()`
+ * @typedef {Object} readSessionProps
+ * @property {contractDetails} contractDetails
+ * @property {userAccessToken} userAccessToken
+ * @property {scope} [scope]
+ */
+/**
+ * @typedef {Object.&lt;string, string>} scope
+ */
+/**
+ * @typedef {Object} readSessionResponse
+ * @property {string} session
+ * @property {userAccessToken} [updatedAccessToken]
+ */
+/**
+ * @description Function arguments from `getAvailableServices()`
+ * @typedef {Object} getAvailableServicesProps
+ * @property {string} contractId contract ID supplied from digi.me
+ */
+/**
+ * @todo
+ * @typedef {Object} getAvailableServicesResponse
+ */
+/**
+ * @description Function arguments from `readFile()`
+ * @typedef {Object} readFileProps
+ * @property {string} fileName
+ * @property {string} privateKey
+ * @property {string} sessionKey
+ */
+/**
+ * @typedef {Object} readFileResponse
+ * @property {string} fileData
+ * @property {string} fileMetadata
+ * @property {string} fileName
+ */
+
+/**
+ * @description Function arguments from `readFileList()`
+ * @typedef {Object} readFileListProps
+ * @property {string} sessionKey
+ */
+
+/**
+ * @todo
+ * @typedef {Object} readFileListResponse
+ */
+
+/**
+ * @description Function arguments from `readAllFiles()`
+ * @typedef {Object} readAllFilesProps
+ * @property {string} sessionKey
+ * @property {string} privateKey
+ * @property {onFileDataCallback} onFileData,
+ * @property {onFileErrorCallback} onFileError
+ */
+
+/**
+ * @callback onFileErrorCallback
+ * @param {fileError} data
+ */
+
+/**
+ * @typedef {Object} fileError
+ * @property {string} error
+ * @property {string} fileName
+ * @property {string[]} fileList
+ */
+
+/**
+ * @callback onFileDataCallback
+ * @param {fileData} data
+ */
+
+/**
+ * @typedef {Object} fileData
+ * @property {string} fileName
+ * @property {string} fileData
+ * @property {string[]} fileList
+ */
+
+/**
+ * @typedef {Object} readAllFilesResponse
+ * @property {()=>any} stopPolling
+ * @property {Promise&lt;any>} filePromise
+ */
+/**
+ * @description Function arguments from `write()`
+ * @typedef {Object} writeProps
+ * @property {contractDetails} contractDetails
+ * @property {userAccessToken} userAccessToken
+ * @property {fileData} data
+ * @property {string} publicKey
+ * @property {string} postboxId
+ */
+
+/**
+ * @description file data definition
+ * @typedef {Object} fileData
+ * @property {fileDescriptor} fileDescriptor
+ * @property {string} fileName
+ * @property {string} fileData
+ */
+
+/**
+ * @typedef {Object} fileDescriptor
+ * @property {string} mimeType MimeType of the file that has been pushed in
+ * @property {string} accounts MimeType of the file that has been pushed in
+ * @property {Array&lt;string>} [tags] Any tags you might want to attach with the file. Used when you want to retrieve it again.
+ * @property {Array&lt;string>} [reference]
+ * @property {Array&lt;account>} accounts An array of account objects used to identify the user in your system.
+ */
+
+/**
+ * @typedef {Object} account
+ * @property {string} accountId Account ID of the user in your system. Currently this is a required field for all data to be pushed in.
+ */
+
+/**
+ * @todo
+ * @description Response from digi.me API on `write()`
+ * @typedef {Object} writeResponse
+ */
+/**
+ * @description Function arguments from `deleteUser()`
+ * @typedef {Object} deleteUserProps
+ * @property {userAccessToken} userAccessToken
+ * @property {contractDetails} contractDetails
+ */
+/**
+ * @typedef {Object} deleteUserResponse
+ * @property {Boolean} deleted
+ * @property {any} response
+ */
+/**
+ * @description Function arguments from `readAccount()`
+ * @typedef {Object} readAccountsProps
+ * @property {string} sessionKey
+ * @property {string} privateKey
+ */
+/**
+ * @typedef {Object} readAccountsResponse
+ * @property {any} accounts
+ */
+/**
+ * @description Function arguments from `triggerPush()`
+ * @private
+ * @typedef {Object} triggerPushProps
+ * @property {string} accessToken
+ * @property {contractDetails} contractDetails
+ * @property {string} postboxId
+ * @property {string} publicKey
+ * @property {Object} data
+ * @property {string} data.fileDescriptor
+ * @property {string} data.fileName
+ */
+
+/**
+ * @typedef {Object} appLinkingInitReturn
+ * @property {addRouteCallback} addRoute
+ * @property {function()} unload
+ */
+
+/**
+ * @callback addRouteCallback
+ * @param {string} route URL route to watch under the scheme, e.g, Scheme://${route}
+ * @param {callbackProps} callback function callback when scheme+route is called
+ * @returns {addRouteReturn}
+ */
+
+/**
+ * @callback callbackProps
+ * @param {Object.&lt;string, number | string>} searchParams
+ */
+
+/**
+ * @typedef {string} addRouteReturn
+ */
+/**
+ * @typedef {Object} authoriseProps
+ * @property {contractDetails} contractDetails
+ * @property {state} [state]
+ * @property {scope} [scope]
+ * @property {userAccessToken} [userAccessToken]
+ */
+module.exports = {};</code></pre>
+        </article>
+    </section>
+
+
+
+
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight" data-has-instance="true">
+			<nav class="tsd-navigation primary">
+                <div class="sidebar-main-content" id="sidebar-main-content">
+        <ul>
+            <li class="label pp-nav pp-group">
+        <span>Guides</span>
+    </li>
+            <li class="menu-li pp-nav pp-page">
+        <a href='start.html'>Getting Started</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='read-data-overview.html'>Reading Data - Step by step</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='write-data-overview.html'>Writing Data - Step by step</a>
+    </li>
+        
+            <li class="label pp-nav pp-group">
+        <span>Fundamentals</span>
+    </li>
+            <li class="menu-li pp-nav pp-page">
+        <a href='contracts.html'>Contracts</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='initialise-sdk.html'>Initalizing the SDK</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='available-services.html'>Getting Available Services</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='authorize.html'>Authorizing</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='initialise-sdk.html'>Onboarding Additional Services</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='read.html'>Reading Data</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='write.html'>Writing Data</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='access-token.html'>User Access Tokens</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='handling-errors.html'>Handling Errors</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='example-applications.html'>Example Applications</a>
+    </li>
+        <li class="label pp-nav pp-group">
+        <span>Errors</span>
+    </li><li class='"accordion-list"' id='""'><a href="DigiMeSDKError.html">DigiMeSDKError</a></li><li class='"accordion-list"' id='""'><a href="FileDecryptionError.html">FileDecryptionError</a></li><li class='"accordion-list"' id='""'><a href="OAuthError.html">OAuthError</a></li><li class='"accordion-list"' id='""'><a href="SDKInvalidError.html">SDKInvalidError</a></li><li class='"accordion-list"' id='""'><a href="ServerError.html">ServerError</a></li><li class='"accordion-list"' id='""'><a href="ServerIdentityError.html">ServerIdentityError</a></li><li class='"accordion-list"' id='""'><a href="SigningError.html">SigningError</a></li><li class='"accordion-list"' id='""'><a href="TypeValidationError.html">TypeValidationError</a></li><li class="label pp-nav pp-group">
+        <span>SDK API</span>
+    </li><li class='"accordion-list"' id='""'><a href="global.html#account">account</a></li><li class='"accordion-list"' id='""'><a href="global.html#addRouteCallback">addRouteCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#addRouteReturn">addRouteReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#appLinkingInitReturn">appLinkingInitReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#authorise">authorise</a></li><li class='"accordion-list"' id='""'><a href="global.html#authoriseProps">authoriseProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#Browser">Browser</a></li><li class='"accordion-list"' id='""'><a href="global.html#callbackProps">callbackProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#contractDetails">contractDetails</a></li><li class='"accordion-list"' id='""'><a href="global.html#createObjectFrom">createObjectFrom</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUser">deleteUser</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserCallback">deleteUserCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserProps">deleteUserProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserResponse">deleteUserResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForToken">exchangeCodeForToken</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenCallback">exchangeCodeForTokenCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenProps">exchangeCodeForTokenProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenResponse">exchangeCodeForTokenResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileData">fileData</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileDescriptor">fileDescriptor</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileError">fileError</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthCallback">getAuthCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrl">getAuthorizeUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrlProps">getAuthorizeUrlProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrlResponse">getAuthorizeUrlResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServices">getAvailableServices</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesCallback">getAvailableServicesCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesProps">getAvailableServicesProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesResponse">getAvailableServicesResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardingServiceCallback">getOnboardingServiceCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrl">getOnboardServiceUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrlProps">getOnboardServiceUrlProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrlResponse">getOnboardServiceUrlResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#init">init</a></li><li class='"accordion-list"' id='""'><a href="global.html#onFileDataCallback">onFileDataCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#onFileErrorCallback">onFileErrorCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#openUrl">openUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccounts">readAccounts</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsCallback">readAccountsCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsProps">readAccountsProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsResponse">readAccountsResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFiles">readAllFiles</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesCallback">readAllFilesCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesProps">readAllFilesProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesResponse">readAllFilesResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFile">readFile</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileCallback">readFileCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileList">readFileList</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListCallback">readFileListCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListProps">readFileListProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListResponse">readFileListResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileProps">readFileProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileResponse">readFileResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSession">readSession</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionCallback">readSessionCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionProps">readSessionProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionResponse">readSessionResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#scope">scope</a></li><li class='"accordion-list"' id='""'><a href="global.html#sdkConfig">sdkConfig</a></li><li class='"accordion-list"' id='""'><a href="global.html#sdkInitReturn">sdkInitReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#session">session</a></li><li class='"accordion-list"' id='""'><a href="global.html#state">state</a></li><li class='"accordion-list"' id='""'><a href="global.html#userAccessToken">userAccessToken</a></li><li class='"accordion-list"' id='""'><a href="global.html#write">write</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeCallback">writeCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeProps">writeProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeResponse">writeResponse</a></li></ul></div>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+
+<!--
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+
+<script src="./scripts/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../../assets/js/search.json"><' + '/script>');</script>
+-->
+
+</body>
+</html>

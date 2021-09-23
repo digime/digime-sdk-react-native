@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="default no-js not-mobile toggle-visibilityprivate toggle-only-exported">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+      sdk/webBrowser.js
+    </title>
+
+	<meta name="description" content="Documentation for @digime/digime-sdk-react-native">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+
+    <!-- Adding meta -->
+    
+    
+    <meta name="Author" content="digi.me" />
+    
+    <meta name="Description" content="React Native SDK for digi.me API" />
+    
+    
+</head>
+<body data-new-gr-c-s-check-loaded="14.1027.0" data-gr-ext-installed="">
+
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../../assets/js/search.json" data-base="../.." data-has-instance="true">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text">
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="https://github.com/digime/digime-sdk-react-native#readme" class="title">@digime/digime-sdk-react-native</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter" data-has-instance="true">
+						<a href="https://digime.github.io/digime-sdk-nodejs/pages/guides/start.html#" class="tsd-widget options no-caption" data-toggle="options" data-has-instance="true">Options</a>
+					</div>
+					<a href="https://digime.github.io/digime-sdk-nodejs/pages/guides/start.html#" class="tsd-widget menu no-caption" data-toggle="menu" data-has-instance="true">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>sdk/webBrowser.js</h1>
+		</div>
+	</div>
+</header>
+
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {InAppBrowser} from "react-native-inappbrowser-reborn";
+import {Linking} from "react-native";
+import { ExternalBrowserError, InternalBrowserError, TypeValidationError } from "./errors/errors";
+import { isString } from "lodash";
+
+
+const getIosOptions = {
+	// iOS Properties
+	dismissButtonStyle: "cancel",
+	preferredBarTintColor: "#453AA4",
+	preferredControlTintColor: "white",
+	readerMode: false,
+	animated: true,
+	modalPresentationStyle: "fullScreen",
+	modalTransitionStyle: "coverVertical",
+	modalEnabled: true,
+	enableBarCollapsing: false,
+};
+
+const getAndroidOptions = {
+	// Android Properties
+	showTitle: true,
+
+	//toolbarColor: '#6200EE',
+	//secondaryToolbarColor: 'black',
+	//navigationBarColor: 'black',
+	//navigationBarDividerColor: 'white',
+	enableUrlBarHiding: true,
+	enableDefaultShare: false,
+	forceCloseOnRedirection: false,
+	showInRecents: false,
+	hasBackButton: false,
+
+
+	// Specify full animation resource identifier(package:anim/name)
+	// or only resource name(in case of animation bundled with app).
+	animations: {
+		startEnter: "slide_in_right",
+		startExit: "slide_out_left",
+		endEnter: "slide_in_left",
+		endExit: "slide_out_right"
+	},
+	headers: {}
+};
+
+const BROWSER_STYLE_OPTIONS = {
+	...getIosOptions,
+	...getAndroidOptions
+};
+
+/**
+ * Open url in app-internal webview
+ * using custom chrome tabs
+ * @async
+ * @private
+ * @function openInternalBrowser
+ * @param {string} url
+ * @returns null
+ */
+const openInternalBrowser = async (url) => {
+	try {
+		if (await InAppBrowser.isAvailable()) {
+			// TODO check iOS behaviour
+			await InAppBrowser.openAuth(url, BROWSER_STYLE_OPTIONS);
+			return;
+		}
+
+		Linking.openURL(url);
+		return;
+
+	} catch (error) {
+		throw new InternalBrowserError(error);
+	}
+};
+
+/**
+ * Open url in external browser app
+ * @async
+ * @private
+ * @function openExternalBrowser
+ * @param {string} url
+ * @returns null
+ */
+const openExternalBrowser = async (url) => {
+	const canOpen = await Linking.canOpenURL(url);
+
+	if (!canOpen) {
+		throw new ExternalBrowserError("Unable to open URL in browser");
+	}
+
+	try {
+		await Linking.openURL(url);
+		return;
+	}
+	catch (error) {
+		throw new ExternalBrowserError(error);
+	}
+};
+
+/**
+ * Opens a URL either in an external web browser, or internal
+ * defaults to using internal browser
+ * @example
+ * // to redirect the user to open a link within the app
+ * await openUrl("https://developers.digi.me", "internal");
+ *
+ * // to redirect the user to open a link using their default browser app
+ * await openUrl("https://developers.digi.me", "example");
+ * @async
+ * @function openUrl
+ * @param {string} url URL to open in the browser
+ * @param {"internal"|"external"} type open in the internal webbrowser, or external using the users default web browser
+ * @returns null
+ */
+export const openUrl = async (url, type="internal") => {
+	if (!isString(url) || url.length === 0) {
+		throw new TypeValidationError("OpenUrl requires a string `url` to be defined");
+	}
+
+	switch(type) {
+	case "internal": {
+		await openInternalBrowser(url);
+		return;
+	}
+
+	case "external": {
+		await openExternalBrowser(url);
+		return;
+	}
+
+	default: {
+		throw new TypeValidationError("Unknown browser type option");
+	}
+	}
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight" data-has-instance="true">
+			<nav class="tsd-navigation primary">
+                <div class="sidebar-main-content" id="sidebar-main-content">
+        <ul>
+            <li class="label pp-nav pp-group">
+        <span>Guides</span>
+    </li>
+            <li class="menu-li pp-nav pp-page">
+        <a href='start.html'>Getting Started</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='read-data-overview.html'>Reading Data - Step by step</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='write-data-overview.html'>Writing Data - Step by step</a>
+    </li>
+        
+            <li class="label pp-nav pp-group">
+        <span>Fundamentals</span>
+    </li>
+            <li class="menu-li pp-nav pp-page">
+        <a href='contracts.html'>Contracts</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='initialise-sdk.html'>Initalizing the SDK</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='available-services.html'>Getting Available Services</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='authorize.html'>Authorizing</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='initialise-sdk.html'>Onboarding Additional Services</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='read.html'>Reading Data</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='write.html'>Writing Data</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='access-token.html'>User Access Tokens</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='handling-errors.html'>Handling Errors</a>
+    </li><li class="menu-li pp-nav pp-page">
+        <a href='example-applications.html'>Example Applications</a>
+    </li>
+        <li class="label pp-nav pp-group">
+        <span>Errors</span>
+    </li><li class='"accordion-list"' id='""'><a href="DigiMeSDKError.html">DigiMeSDKError</a></li><li class='"accordion-list"' id='""'><a href="FileDecryptionError.html">FileDecryptionError</a></li><li class='"accordion-list"' id='""'><a href="OAuthError.html">OAuthError</a></li><li class='"accordion-list"' id='""'><a href="SDKInvalidError.html">SDKInvalidError</a></li><li class='"accordion-list"' id='""'><a href="ServerError.html">ServerError</a></li><li class='"accordion-list"' id='""'><a href="ServerIdentityError.html">ServerIdentityError</a></li><li class='"accordion-list"' id='""'><a href="SigningError.html">SigningError</a></li><li class='"accordion-list"' id='""'><a href="TypeValidationError.html">TypeValidationError</a></li><li class="label pp-nav pp-group">
+        <span>SDK API</span>
+    </li><li class='"accordion-list"' id='""'><a href="global.html#account">account</a></li><li class='"accordion-list"' id='""'><a href="global.html#addRouteCallback">addRouteCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#addRouteReturn">addRouteReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#appLinkingInitReturn">appLinkingInitReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#authorise">authorise</a></li><li class='"accordion-list"' id='""'><a href="global.html#authoriseProps">authoriseProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#Browser">Browser</a></li><li class='"accordion-list"' id='""'><a href="global.html#callbackProps">callbackProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#contractDetails">contractDetails</a></li><li class='"accordion-list"' id='""'><a href="global.html#createObjectFrom">createObjectFrom</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUser">deleteUser</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserCallback">deleteUserCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserProps">deleteUserProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#deleteUserResponse">deleteUserResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForToken">exchangeCodeForToken</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenCallback">exchangeCodeForTokenCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenProps">exchangeCodeForTokenProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#exchangeCodeForTokenResponse">exchangeCodeForTokenResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileData">fileData</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileDescriptor">fileDescriptor</a></li><li class='"accordion-list"' id='""'><a href="global.html#fileError">fileError</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthCallback">getAuthCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrl">getAuthorizeUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrlProps">getAuthorizeUrlProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAuthorizeUrlResponse">getAuthorizeUrlResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServices">getAvailableServices</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesCallback">getAvailableServicesCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesProps">getAvailableServicesProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getAvailableServicesResponse">getAvailableServicesResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardingServiceCallback">getOnboardingServiceCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrl">getOnboardServiceUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrlProps">getOnboardServiceUrlProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#getOnboardServiceUrlResponse">getOnboardServiceUrlResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#init">init</a></li><li class='"accordion-list"' id='""'><a href="global.html#onFileDataCallback">onFileDataCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#onFileErrorCallback">onFileErrorCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#openUrl">openUrl</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccounts">readAccounts</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsCallback">readAccountsCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsProps">readAccountsProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAccountsResponse">readAccountsResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFiles">readAllFiles</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesCallback">readAllFilesCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesProps">readAllFilesProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readAllFilesResponse">readAllFilesResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFile">readFile</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileCallback">readFileCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileList">readFileList</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListCallback">readFileListCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListProps">readFileListProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileListResponse">readFileListResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileProps">readFileProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readFileResponse">readFileResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSession">readSession</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionCallback">readSessionCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionProps">readSessionProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#readSessionResponse">readSessionResponse</a></li><li class='"accordion-list"' id='""'><a href="global.html#scope">scope</a></li><li class='"accordion-list"' id='""'><a href="global.html#sdkConfig">sdkConfig</a></li><li class='"accordion-list"' id='""'><a href="global.html#sdkInitReturn">sdkInitReturn</a></li><li class='"accordion-list"' id='""'><a href="global.html#session">session</a></li><li class='"accordion-list"' id='""'><a href="global.html#state">state</a></li><li class='"accordion-list"' id='""'><a href="global.html#userAccessToken">userAccessToken</a></li><li class='"accordion-list"' id='""'><a href="global.html#write">write</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeCallback">writeCallback</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeProps">writeProps</a></li><li class='"accordion-list"' id='""'><a href="global.html#writeResponse">writeResponse</a></li></ul></div>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+
+<!--
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+
+<script src="./scripts/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../../assets/js/search.json"><' + '/script>');</script>
+-->
+
+</body>
+</html>
