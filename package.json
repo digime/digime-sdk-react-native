@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/digime/digime-sdk-react-native#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.23.0",
     "base64url": "^3.0.1",
     "buffer": "^6.0.3",
     "eslint": "^7.31.0",
