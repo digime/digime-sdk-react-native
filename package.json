@@ -39,7 +39,7 @@
     "buffer": "^6.0.3",
     "eslint": "^7.31.0",
     "hash.js": "^1.1.7",
-    "jsrsasign": "^10.2.0",
+    "jsrsasign": "^10.4.1",
     "lodash": "^4.17.21",
     "node-forge": "^0.10.0",
     "node-rsa": "^1.1.1",
